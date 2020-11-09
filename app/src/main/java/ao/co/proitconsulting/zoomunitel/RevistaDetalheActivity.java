@@ -1,21 +1,16 @@
 package ao.co.proitconsulting.zoomunitel;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MenuItem;
-import android.view.View;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 public class RevistaDetalheActivity extends AppCompatActivity {
 

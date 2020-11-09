@@ -4,32 +4,38 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import ao.co.proitconsulting.zoomunitel.Common;
+import ao.co.proitconsulting.zoomunitel.FavoritosAdapter;
 import ao.co.proitconsulting.zoomunitel.R;
 
 public class FavoritosFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private View view;
+    private RecyclerView recyclerView;
+    private GridLayoutManager gridLayoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+
+        view = inflater.inflate(R.layout.fragment_favoritos, container, false);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        setupAdapter();
+
+        return view;
+    }
+
+    private void setupAdapter(){
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
+        FavoritosAdapter favoritosAdapter = new FavoritosAdapter(Common.getAllRevistas());
+        recyclerView.setAdapter(favoritosAdapter);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
     }
 }

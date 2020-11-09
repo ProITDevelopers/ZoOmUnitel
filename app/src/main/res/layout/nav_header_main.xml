@@ -27,7 +27,6 @@
             />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgUserPhoto"
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -41,7 +40,6 @@
             />
 
         <TextView
-            android:id="@+id/txtUserNameInitial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -58,7 +56,6 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/txtUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -70,7 +67,6 @@
         />
 
     <TextView
-        android:id="@+id/txtUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="gilsonvicente6@outlook.com"

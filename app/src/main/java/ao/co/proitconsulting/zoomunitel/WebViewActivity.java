@@ -1,8 +1,5 @@
 package ao.co.proitconsulting.zoomunitel;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,8 +10,10 @@ import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends AppCompatActivity {
@@ -107,7 +106,7 @@ public class WebViewActivity extends AppCompatActivity {
 
                 }
 
-                if (progress >= 35){
+                if (progress >= 90){
                     swipeRefreshMain.setRefreshing(false);
                     progressDialog.setCancelable(false);
                     progressDialog.dismiss();

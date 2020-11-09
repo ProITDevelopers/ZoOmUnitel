@@ -1,10 +1,8 @@
 package ao.co.proitconsulting.zoomunitel;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
     public RevistaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new RevistaViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.detail_item_container,
+                        R.layout.favoritos_item_container,
                         parent,
                         false)
         );
@@ -54,21 +52,24 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
     static class RevistaViewHolder extends RecyclerView.ViewHolder{
         private ImageView rvImgBackgnd;
         private RoundedImageView rvImg;
+        private TextView txtRvId;
+        private ImageView imgDelete;
         private TextView txtRvTitle;
-        private RatingBar ratingBar;
         private TextView txtDescricao;
-        private Button btnDownload,btnLer;
+        private RatingBar ratingBar;
+        private ImageView imgFav;
 
 
         RevistaViewHolder(@NonNull View itemView) {
             super(itemView);
             rvImgBackgnd = itemView.findViewById(R.id.rvImgBackgnd);
             rvImg = itemView.findViewById(R.id.rvImg);
+            txtRvId = itemView.findViewById(R.id.txtRvId);
+            imgDelete = itemView.findViewById(R.id.imgDelete);
             txtRvTitle = itemView.findViewById(R.id.txtRvTitle);
-            ratingBar = itemView.findViewById(R.id.ratingBar);
             txtDescricao = itemView.findViewById(R.id.txtDescricao);
-            btnDownload = itemView.findViewById(R.id.btnDownload);
-            btnLer = itemView.findViewById(R.id.btnLer);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
+            imgFav = itemView.findViewById(R.id.imgFav);
         }
 
         void setDetalheInfo(final RevistaZoOm revistaZoOm){
@@ -107,31 +108,35 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
                             Picasso.get().load(revistaZoOm.getImagem()).fit().into(rvImg);
                         }
                     });
-            rvImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), ""+revistaZoOm.getTitle(), Toast.LENGTH_SHORT).show();
-                }
-            });
 
 
 
+            txtRvId = itemView.findViewById(R.id.txtRvId);
+            imgDelete = itemView.findViewById(R.id.imgDelete);
+            txtRvTitle = itemView.findViewById(R.id.txtRvTitle);
+            txtDescricao = itemView.findViewById(R.id.txtDescricao);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
+            imgFav = itemView.findViewById(R.id.imgFav);
+
+
+            txtRvId.setText("#".concat(String.valueOf(revistaZoOm.getId())));
             txtRvTitle.setText(revistaZoOm.getTitle());
-            ratingBar.setRating(revistaZoOm.getRating());
             txtDescricao.setText(revistaZoOm.getDescricao());
+            ratingBar.setRating(revistaZoOm.getRating());
 
-            btnDownload.setOnClickListener(new View.OnClickListener() {
+            imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Baixar "+revistaZoOm.getTitle()+"?", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), "Eliminar "+revistaZoOm.getTitle()+" dos favoritos?", Toast.LENGTH_SHORT).show();
                 }
             });
-            btnLer.setOnClickListener(new View.OnClickListener() {
+
+
+
+            imgFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),WebViewActivity.class);
-                    intent.putExtra("link",revistaZoOm.getLink());
-                    v.getContext().startActivity(intent);
+                    Toast.makeText(v.getContext(), "Já adicionou "+revistaZoOm.getTitle()+" aos favoritos!", Toast.LENGTH_SHORT).show();
                 }
             });
 

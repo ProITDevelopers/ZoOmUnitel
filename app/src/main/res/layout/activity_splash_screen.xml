@@ -8,7 +8,6 @@
     tools:context=".SplashScreenActivity">
 
     <TextView
-        android:id="@+id/txtZoom"
         android:text="ZoOm\nunitel"
         android:textSize="65sp"
         app:layout_constraintTop_toTopOf="parent"
