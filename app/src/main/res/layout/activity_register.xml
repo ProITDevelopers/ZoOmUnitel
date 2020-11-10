@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.RegisterActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            >
+
+
+
+            <RelativeLayout
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:id="@+id/hint_nome"
+                android:baselineAligned="false"
+                android:background="@drawable/box_border"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editNome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/primeiro_nome"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:inputType="textCapSentences|textPersonName"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp"
+                    />
+
+
+
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf="@+id/hint_nome"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box_border"
+                android:layout_marginTop="12dp"
+                android:id="@+id/hint_telefone">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editTelefone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/numero_telefone"
+                    android:maxLength="9"
+                    android:inputType="phone"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf="@+id/hint_telefone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box_border"
+                android:layout_marginTop="12dp"
+                android:id="@+id/hint_email">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    android:maxLines="1"
+                    android:inputType="textEmailAddress"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf="@+id/hint_email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box_border"
+                android:layout_marginTop="12dp"
+                android:id="@+id/hint_pass">
+
+                <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
+                    android:id="@+id/editPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_password"
+                    android:maxLines="1"
+                    android:inputType="textPassword"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp"
+                    />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf="@+id/hint_pass"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box_border"
+                android:layout_marginTop="12dp"
+                android:id="@+id/hint_genero">
+
+                <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
+                    android:id="@+id/editConfirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_confirm_password"
+                    android:maxLines="1"
+                    android:inputType="textPassword"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+            <Button
+                android:id="@+id/btnRegistro"
+                app:layout_constraintTop_toBottomOf="@+id/hint_genero"
+                app:layout_constraintStart_toStartOf="@+id/hint_genero"
+                app:layout_constraintEnd_toEndOf="@+id/hint_genero"
+                android:text="@string/btn_registar_text"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@drawable/button_background"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="30dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/txtCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancelar"
+                android:textColor="@color/blue_unitel"
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/btnRegistro"
+                app:layout_constraintStart_toStartOf="@+id/btnRegistro"
+                app:layout_constraintEnd_toEndOf="@+id/btnRegistro"
+                android:gravity="center"
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

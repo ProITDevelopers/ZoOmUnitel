@@ -4,9 +4,21 @@
     <color name="colorPrimaryDark">#fd7217</color>
     <color name="colorAccent">#212062</color>
 
+
+
+    <!--  AMBER Theme  -->
+    <color name="primaryColorAmber">#fd7217</color>
+    <color name="primaryDarkColorAmber">#fd7217</color>
+    <color name="secondaryColorAmber">#212062</color>
+
+    <color name="themeDeselected">#d69b9b9b</color>
+    <color name="themeSelected">#212062</color>
+
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="orange_unitel">#fd7217</color>
     <color name="blue_unitel">#212062</color>
+    <color name="grey">#dcdcdc</color>
     <color name="transparentBlack">#80000000</color>
 
     <color name="btn_login_start_color">#fd7217</color>

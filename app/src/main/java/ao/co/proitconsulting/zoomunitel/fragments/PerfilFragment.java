@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel.ui.perfil;
+package ao.co.proitconsulting.zoomunitel.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

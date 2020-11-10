@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel.ui.home;
+package ao.co.proitconsulting.zoomunitel.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,9 +19,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import ao.co.proitconsulting.zoomunitel.Common;
 import ao.co.proitconsulting.zoomunitel.R;
-import ao.co.proitconsulting.zoomunitel.RevistaZoOmAdapter;
+import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 
 public class HomeFragment extends Fragment {
 

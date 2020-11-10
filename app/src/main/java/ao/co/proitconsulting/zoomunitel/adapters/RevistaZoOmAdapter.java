@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,6 +15,10 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.RevistaDetalheActivity;
+import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
 public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.RevistaViewHolder> {
 
@@ -78,7 +82,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), ""+revistaZoOm.getTitle(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(v.getContext(),RevistaDetalheActivity.class);
+                    Intent intent = new Intent(v.getContext(), RevistaDetalheActivity.class);
                     intent.putExtra("toolbarTitle",revistaZoOm.getTitle());
                     intent.putExtra("position",getAdapterPosition());
                     v.getContext().startActivity(intent);

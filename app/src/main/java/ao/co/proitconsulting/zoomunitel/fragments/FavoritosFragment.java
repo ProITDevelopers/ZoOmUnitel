@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel.ui.favoritos;
+package ao.co.proitconsulting.zoomunitel.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ao.co.proitconsulting.zoomunitel.Common;
-import ao.co.proitconsulting.zoomunitel.FavoritosAdapter;
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.adapters.FavoritosAdapter;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 
 public class FavoritosFragment extends Fragment {
 

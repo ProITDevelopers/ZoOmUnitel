@@ -1,9 +1,24 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.helper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ao.co.proitconsulting.zoomunitel.BuildConfig;
+import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
+import ao.co.proitconsulting.zoomunitel.models.SobreNos;
+
 public class Common {
+
+    public static final String SHARE_URL_PLAYSTORE = "https://play.google.com/store/apps/details?id=";
+    public static final String SHARE_URL_GOOGLE_DRIVE = "https://drive.google.com/file/d/1GOJxw-OENmFA2uL_s0QKkudofZNySaqW/view?usp=sharing";
+
+    public static String bearerApi = "Bearer ";
+
+    public static final int SPAN_COUNT_ONE = 1;
+    public static final int SPAN_COUNT_TWO = 2;
+
+    public static final int VIEW_TYPE_LIST = 1;
+    public static final int VIEW_TYPE_GRID = 2;
 
     public static final String MANUAL_XPRESS_LINK = "https://express2020.s3.us-east-2.amazonaws.com/Docs/Manual_XpressLengueno_android.pdf";
 
@@ -98,5 +113,18 @@ public class Common {
 
 
         return revistaZoOmList;
+    }
+
+
+    public static List<SobreNos> getSobreNosList(){
+        List<SobreNos> sobreNosList = new ArrayList<>();
+
+        sobreNosList.add(new SobreNos(1,"ZoOm Unitel","ZoOm Unitel é o aplicativo onde encontrarás as melhores revistas de Marketing."));
+        sobreNosList.add(new SobreNos(2,"Versão", BuildConfig.VERSION_NAME));
+        sobreNosList.add(new SobreNos(3,"Desenvolvedor","Copyright © 2020 - ZoOm Unitel"+"\n"+"Powered by Pro-IT Consulting"));
+        sobreNosList.add(new SobreNos(4,"Enviar feedback","Tem alguma dúvida? Estamos felizes em ajudar."));
+        sobreNosList.add(new SobreNos(5,"Partilhar","Partilhe o link da app com os seus contactos."));
+
+        return sobreNosList;
     }
 }

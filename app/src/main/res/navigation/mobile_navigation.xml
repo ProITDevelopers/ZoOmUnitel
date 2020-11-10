@@ -6,19 +6,25 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="ao.co.proitconsulting.zoomunitel.ui.home.HomeFragment"
+        android:name="ao.co.proitconsulting.zoomunitel.fragments.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_perfil"
-        android:name="ao.co.proitconsulting.zoomunitel.ui.perfil.PerfilFragment"
+        android:name="ao.co.proitconsulting.zoomunitel.fragments.PerfilFragment"
         android:label="@string/menu_perfil"
         tools:layout="@layout/fragment_perfil" />
 
     <fragment
         android:id="@+id/nav_favoritos"
-        android:name="ao.co.proitconsulting.zoomunitel.ui.favoritos.FavoritosFragment"
+        android:name="ao.co.proitconsulting.zoomunitel.fragments.FavoritosFragment"
         android:label="@string/menu_favoritos"
         tools:layout="@layout/fragment_favoritos" />
+
+    <fragment
+        android:id="@+id/nav_definicoes"
+        android:name="ao.co.proitconsulting.zoomunitel.fragments.DefinicoesFragment"
+        android:label="@string/menu_definicoes"
+        tools:layout="@layout/fragment_definicoes" />
 </navigation>

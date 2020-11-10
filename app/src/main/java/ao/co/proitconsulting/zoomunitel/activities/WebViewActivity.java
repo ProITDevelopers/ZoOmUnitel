@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import ao.co.proitconsulting.zoomunitel.R;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends AppCompatActivity {

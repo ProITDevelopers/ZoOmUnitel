@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange_unitel"
-    tools:context=".SplashScreenActivity">
+    tools:context=".activities.SplashScreenActivity">
 
     <TextView
         android:text="ZoOm\nunitel"

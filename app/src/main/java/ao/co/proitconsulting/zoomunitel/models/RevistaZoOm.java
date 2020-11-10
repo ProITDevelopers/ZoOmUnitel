@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.models;
 
 public class RevistaZoOm {
     private int id;

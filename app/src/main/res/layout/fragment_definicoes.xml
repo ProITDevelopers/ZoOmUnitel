@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragments.DefinicoesFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp"
+            >
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline_esquerda"
+                app:layout_constraintGuide_begin="20dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline_direita"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+
+
+
+            <LinearLayout
+                android:id="@+id/linearDef"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="8dp"
+                android:background="@color/orange_unitel"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="19sp"
+                    android:text="Segurança e login"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgIdiom"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="img_lock_description"
+                android:src="@drawable/ic_baseline_lock_24"
+                app:tint="@color/orange_unitel"
+                app:layout_constraintTop_toBottomOf="@+id/linearDef"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toTopOf="@+id/txtIdioma"
+                app:layout_constraintBottom_toBottomOf="@+id/txtIdioma"
+                />
+
+            <TextView
+                android:id="@+id/txtIdioma"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Alterar senha"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/linearDef"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                android:layout_marginTop="7dp"
+                android:padding="5dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/blue_unitel"
+                />
+
+            <LinearLayout
+                android:id="@+id/linearVisao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/txtIdioma"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="15dp"
+                android:padding="8dp"
+                android:background="@color/orange_unitel"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="19sp"
+                    android:text="Visualização"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgList"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="img_list_description"
+                android:src="@drawable/ic_baseline_list_24"
+                app:tint="@color/orange_unitel"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toTopOf="@+id/txtModoList"
+                app:layout_constraintBottom_toBottomOf="@+id/txtModoList"
+                />
+
+            <TextView
+                android:id="@+id/txtModoList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Modo lista"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/linearVisao"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                android:layout_marginTop="7dp"
+                android:padding="5dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/blue_unitel"
+                />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchListMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/linearVisao"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                app:layout_constraintTop_toTopOf="@+id/txtModoList"
+                app:layout_constraintBottom_toBottomOf="@+id/txtModoList"
+                />
+
+            <ImageView
+                android:id="@+id/imgGrid"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="img_grid_description"
+                android:src="@drawable/ic_baseline_grid_on_24"
+                app:tint="@color/orange_unitel"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toTopOf="@+id/txtModoGrid"
+                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"
+                />
+
+            <TextView
+                android:id="@+id/txtModoGrid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Modo grelha"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/txtModoList"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                android:layout_marginTop="7dp"
+                android:padding="5dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/blue_unitel"
+                />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchGridMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/switchListMode"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                app:layout_constraintTop_toTopOf="@+id/txtModoGrid"
+                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"/>
+
+            <ImageView
+                android:id="@+id/imgDarkMode"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="img_darkmode_description"
+                android:src="@drawable/ic_baseline_wb_sunny_24"
+                app:tint="@color/orange_unitel"
+                app:layout_constraintTop_toBottomOf="@+id/imgGrid"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
+                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
+                />
+
+            <TextView
+                android:id="@+id/txtDarkMode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Modo nocturno"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/txtModoGrid"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                android:layout_marginTop="7dp"
+                android:padding="5dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/blue_unitel"
+                />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchDarkMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/switchGridMode"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
+                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"/>
+
+            <ImageView
+                android:id="@+id/imgTema"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="img_tema_description"
+                android:src="@drawable/ic_baseline_color_lens_24"
+                app:tint="@color/orange_unitel"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toBottomOf="@+id/imgDarkMode"
+                app:layout_constraintTop_toTopOf="@+id/txtTema"
+                app:layout_constraintBottom_toBottomOf="@+id/txtTema"
+                />
+
+            <TextView
+                android:id="@+id/txtTema"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tema"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/txtDarkMode"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                android:layout_marginTop="7dp"
+                android:padding="5dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textColor="@color/blue_unitel"
+                />
+
+            <ao.co.proitconsulting.zoomunitel.utilsClasses.trocarTema.ThemeView
+                android:id="@+id/theme_selected"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:onClick="onClick"
+                app:layout_constraintStart_toStartOf="@+id/switchDarkMode"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                app:layout_constraintTop_toBottomOf="@+id/switchDarkMode"
+                app:layout_constraintTop_toTopOf="@+id/txtTema"
+                app:layout_constraintBottom_toBottomOf="@+id/txtTema"
+                />
+
+
+
+            <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/groupDestaque"
+                app:constraint_referenced_ids="switchDarkMode,txtDarkMode,imgDarkMode,theme_selected,txtTema,
+                                            imgTema,switchGridMode,txtModoGrid,
+                                            imgGrid,guideline_direita,switchListMode,
+                                            txtModoList,imgList,
+                                            guideline_esquerda,linearVisao,
+                                            txtIdioma,imgIdiom,
+                                            linearDef"
+                tools:visibility="visible" android:visibility="visible"/>
+
+
+            <LinearLayout
+                android:id="@+id/linearSobre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/txtTema"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="15dp"
+                android:padding="8dp"
+                android:background="@color/orange_unitel"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="19sp"
+                    android:text="Sobre"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSobre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
+                app:layout_constraintTop_toBottomOf="@+id/linearSobre"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+
+
+            <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/groupCategoriasConteudo"
+                app:constraint_referenced_ids="linearSobre,recyclerViewSobre"
+                android:visibility="visible" tools:visibility="visible"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

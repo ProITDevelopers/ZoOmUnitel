@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+
+import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.adapters.RevistaDetalheAdapter;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 
 public class RevistaDetalheActivity extends AppCompatActivity {
 

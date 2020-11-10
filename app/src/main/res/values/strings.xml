@@ -6,4 +6,39 @@
     <string name="menu_home">Início</string>
     <string name="menu_perfil">Perfil</string>
     <string name="menu_favoritos">Favoritos</string>
+    <string name="menu_share">Partilhar</string>
+    <string name="menu_definicoes">@string/action_settings</string>
+
+<!--    ==========================LOGIN HINTS============================-->
+    <string name="email_ou_num_de_telefone">email ou telemóvel</string>
+    <string name="hint_forgot_password">Esqueceu a senha?</string>
+    <string name="hint_btn_login">Entrar</string>
+    <string name="hint_registe_se">Não tem uma conta? Registe-se</string>
+
+<!--    ============================REGISTER HINTS===========================-->
+    <string name="primeiro_nome">Nome</string>
+    <string name="numero_telefone">Telemóvel</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Senha</string>
+    <string name="hint_confirm_password">Confirmar senha</string>
+    <string name="btn_registar_text">Registar</string>
+    <string name="cancelar">Cancelar</string>
+
+<!--    ==============================STRINGS RESOURCES==========================-->
+    <string name="msg_erro_campo_vazio">Preencha o campo.</string>
+    <string name="msg_erro_campo_com_email_telefone">Preencha o campo com email ou telemóvel.</string>
+    <string name="msg_erro_internet">O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.</string>
+    <string name="msg_login_auth_verification">Verificando…</string>
+    <string name="msg_email_palavra_passe_errada">As suas credenciais estão erradas</string>
+    <string name="msg_erro_user_not_found">Este usuário não exite!</string>
+    <string name="msg_erro_campo_com_letras">Preencha o campo com letras.</string>
+    <string name="msg_erro_min_duas_letras">Preencha o campo no mínimo com duas letras.</string>
+    <string name="msg_erro_email_invalido">Preencha o campo com email válido.</string>
+    <string name="msg_erro_num_telefone_invalido">Preencha com um número válido.</string>
+    <string name="msg_erro_password_fraca">Senha fraca.</string>
+    <string name="msg_erro_password_diferentes">Senha diferente.</string>
+    <string name="enviar_email_client">Enviar email</string>
+    <string name="terminar_sessao">Terminar a sessão</string>
+    <string name="msg_deseja_continuar">Deseja continuar?</string>
+
 </resources>

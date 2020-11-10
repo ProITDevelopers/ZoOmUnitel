@@ -1,4 +1,4 @@
-package ao.co.proitconsulting.zoomunitel;
+package ao.co.proitconsulting.zoomunitel.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +17,9 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
 public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.RevistaViewHolder> {
 
