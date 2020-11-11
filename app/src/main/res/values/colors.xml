@@ -15,7 +15,6 @@
     <color name="themeSelected">#212062</color>
 
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
     <color name="orange_unitel">#fd7217</color>
     <color name="blue_unitel">#212062</color>
     <color name="grey">#dcdcdc</color>
@@ -24,7 +23,4 @@
     <color name="btn_login_start_color">#fd7217</color>
     <color name="btn_login_end_color">#fd7217</color>
 
-    <color name="side_nav_bar_start_color">#fd7217</color>
-    <color name="side_nav_bar_center_color">#fd7217</color>
-    <color name="side_nav_bar_end_color">#fd7217</color>
 </resources>

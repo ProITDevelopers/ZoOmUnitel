@@ -8,7 +8,6 @@
     tools:context=".fragments.DefinicoesFragment">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +59,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -299,7 +297,6 @@
 
 
             <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/groupDestaque"
                 app:constraint_referenced_ids="switchDarkMode,txtDarkMode,imgDarkMode,theme_selected,txtTema,
                                             imgTema,switchGridMode,txtModoGrid,
                                             imgGrid,guideline_direita,switchListMode,
@@ -351,7 +348,6 @@
 
 
             <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/groupCategoriasConteudo"
                 app:constraint_referenced_ids="linearSobre,recyclerViewSobre"
                 android:visibility="visible" tools:visibility="visible"/>
 

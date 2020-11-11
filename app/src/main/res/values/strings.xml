@@ -6,7 +6,6 @@
     <string name="menu_home">Início</string>
     <string name="menu_perfil">Meu Perfil</string>
     <string name="menu_favoritos">Mais lidas</string>
-    <string name="menu_share">Partilhar</string>
     <string name="menu_definicoes">@string/action_settings</string>
 
 <!--    ==========================LOGIN HINTS============================-->
@@ -28,9 +27,6 @@
     <string name="msg_erro_campo_vazio">Preencha o campo.</string>
     <string name="msg_erro_campo_com_email_telefone">Preencha o campo com email ou telemóvel.</string>
     <string name="msg_erro_internet">O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.</string>
-    <string name="msg_login_auth_verification">Verificando…</string>
-    <string name="msg_email_palavra_passe_errada">As suas credenciais estão erradas</string>
-    <string name="msg_erro_user_not_found">Este usuário não exite!</string>
     <string name="msg_erro_campo_com_letras">Preencha o campo com letras.</string>
     <string name="msg_erro_min_duas_letras">Preencha o campo no mínimo com duas letras.</string>
     <string name="msg_erro_email_invalido">Preencha o campo com email válido.</string>
