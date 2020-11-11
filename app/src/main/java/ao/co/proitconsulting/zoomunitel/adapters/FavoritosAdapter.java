@@ -108,7 +108,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().into(rvImg);
+                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
                         }
                     });
 

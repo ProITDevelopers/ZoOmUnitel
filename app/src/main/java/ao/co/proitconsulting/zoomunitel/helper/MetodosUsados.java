@@ -120,6 +120,13 @@ public class MetodosUsados {
         }
     }
 
+    public static void showCustomUI(Activity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
     //=====================================================================//
     //=====================================================================//
 

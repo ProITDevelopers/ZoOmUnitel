@@ -36,7 +36,7 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
 
         swipeRefreshMain = findViewById(R.id.swipeRefresh);
         swipeRefreshMain.setColorSchemeResources(
@@ -110,7 +110,6 @@ public class WebViewActivity extends AppCompatActivity {
 
                 if (progress >= 90){
                     swipeRefreshMain.setRefreshing(false);
-                    progressDialog.setCancelable(false);
                     progressDialog.dismiss();
                 }
 
@@ -122,6 +121,8 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     protected void onResume() {
@@ -139,6 +140,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
+        progressDialog.cancel();
         progressDialog.dismiss();
         super.onDestroy();
     }

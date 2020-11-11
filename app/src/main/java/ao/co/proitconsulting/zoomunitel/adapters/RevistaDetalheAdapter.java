@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -61,6 +62,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         private TextView txtRvTitle;
         private RatingBar ratingBar;
         private TextView txtDescricao;
+        private CardView cardViewDownload,cardViewLer;
         private Button btnDownload,btnLer;
 
 
@@ -71,7 +73,9 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             txtRvTitle = itemView.findViewById(R.id.txtRvTitle);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             txtDescricao = itemView.findViewById(R.id.txtDescricao);
+            cardViewDownload = itemView.findViewById(R.id.cardViewDownload);
             btnDownload = itemView.findViewById(R.id.btnDownload);
+            cardViewLer = itemView.findViewById(R.id.cardViewLer);
             btnLer = itemView.findViewById(R.id.btnLer);
         }
 
@@ -108,7 +112,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().into(rvImg);
+                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
                         }
                     });
             rvImg.setOnClickListener(new View.OnClickListener() {
@@ -124,10 +128,24 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             ratingBar.setRating(revistaZoOm.getRating());
             txtDescricao.setText(revistaZoOm.getDescricao());
 
+            cardViewDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnDownload.performClick();
+                }
+            });
+
             btnDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Baixar "+revistaZoOm.getTitle()+"?", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            cardViewLer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnLer.performClick();
                 }
             });
             btnLer.setOnClickListener(new View.OnClickListener() {

@@ -7,12 +7,14 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MetodosUsados.showCustomUI(this);
         setContentView(R.layout.activity_splash_screen);
 
         new Handler().postDelayed(new Runnable() {

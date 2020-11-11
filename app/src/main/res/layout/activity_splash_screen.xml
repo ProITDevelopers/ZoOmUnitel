@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange_unitel"
+    android:background="@drawable/splash_bk"
     tools:context=".activities.SplashScreenActivity">
 
-    <TextView
-        android:text="ZoOm\nunitel"
-        android:textSize="65sp"
+    <ImageView
+        android:id="@+id/imgAppLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="logo_unitel_white"
+        app:srcCompat="@drawable/logo_unitel_white"
+        android:layout_marginTop="200dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

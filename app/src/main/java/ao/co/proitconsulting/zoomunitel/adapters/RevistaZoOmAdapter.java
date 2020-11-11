@@ -75,7 +75,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().into(imageView);
+                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
                         }
                     });
             imageView.setOnClickListener(new View.OnClickListener() {

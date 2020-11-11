@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f8f4f4"
     tools:context=".activities.RegisterActivity">
 
     <androidx.core.widget.NestedScrollView
@@ -46,7 +46,7 @@
                     android:maxLines="1"
                     android:inputType="textCapSentences|textPersonName"
                     android:background="@android:color/transparent"
-                    android:padding="12dp"
+                    android:padding="15dp"
                     />
 
 
@@ -63,19 +63,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/box_border"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/hint_telefone">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editTelefone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/numero_telefone"
-                    android:maxLength="9"
-                    android:inputType="phone"
                     android:background="@android:color/transparent"
-                    android:padding="12dp"
-                    />
+                    android:hint="@string/numero_telefone"
+                    android:inputType="phone"
+                    android:maxLength="9"
+                    android:padding="15dp" />
 
             </RelativeLayout>
 
@@ -86,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/box_border"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/hint_email">
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -97,7 +96,7 @@
                     android:maxLines="1"
                     android:inputType="textEmailAddress"
                     android:background="@android:color/transparent"
-                    android:padding="12dp"
+                    android:padding="15dp"
                     />
 
             </RelativeLayout>
@@ -109,7 +108,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/box_border"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/hint_pass">
 
                 <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
@@ -120,7 +119,7 @@
                     android:maxLines="1"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
-                    android:padding="12dp"
+                    android:padding="15dp"
                     />
 
             </RelativeLayout>
@@ -134,7 +133,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/box_border"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/hint_genero">
 
                 <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
@@ -145,7 +144,7 @@
                     android:maxLines="1"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
-                    android:padding="12dp"
+                    android:padding="15dp"
                     />
 
             </RelativeLayout>
@@ -178,7 +177,9 @@
                 android:text="@string/cancelar"
                 android:textColor="@color/blue_unitel"
                 android:padding="5dp"
-                android:textSize="14sp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textSize="15sp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"

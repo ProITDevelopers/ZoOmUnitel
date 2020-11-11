@@ -4,19 +4,19 @@
     <string name="action_settings">Definições</string>
 
     <string name="menu_home">Início</string>
-    <string name="menu_perfil">Perfil</string>
-    <string name="menu_favoritos">Favoritos</string>
+    <string name="menu_perfil">Meu Perfil</string>
+    <string name="menu_favoritos">Mais lidas</string>
     <string name="menu_share">Partilhar</string>
     <string name="menu_definicoes">@string/action_settings</string>
 
 <!--    ==========================LOGIN HINTS============================-->
-    <string name="email_ou_num_de_telefone">email ou telemóvel</string>
+    <string name="email_ou_num_de_telefone">Email ou telemóvel</string>
     <string name="hint_forgot_password">Esqueceu a senha?</string>
     <string name="hint_btn_login">Entrar</string>
     <string name="hint_registe_se">Não tem uma conta? Registe-se</string>
 
 <!--    ============================REGISTER HINTS===========================-->
-    <string name="primeiro_nome">Nome</string>
+    <string name="primeiro_nome">Nome de usuário</string>
     <string name="numero_telefone">Telemóvel</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Senha</string>

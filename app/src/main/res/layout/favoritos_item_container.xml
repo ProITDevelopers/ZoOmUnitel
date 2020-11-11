@@ -5,7 +5,10 @@
     android:layout_height="wrap_content"
     app:cardElevation="5dp"
     app:cardCornerRadius="5dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -103,6 +106,9 @@
                     android:layout_height="wrap_content"
                     app:tint="@color/orange_unitel"
                     android:layout_gravity="end"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     />
 
             </FrameLayout>
@@ -154,6 +160,9 @@
                     android:layout_gravity="center_vertical|end"
                     android:src="@drawable/ic_baseline_favorite_24"
                     app:tint="@color/orange_unitel"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     />
 
             </FrameLayout>

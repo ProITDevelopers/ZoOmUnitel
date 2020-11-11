@@ -17,7 +17,7 @@
             android:title="@string/menu_perfil" />
         <item
             android:id="@+id/nav_favoritos"
-            android:icon="@drawable/ic_baseline_favorite_24"
+            android:icon="@drawable/ic_baseline_star_24"
             app:iconTint="@color/orange_unitel"
             android:title="@string/menu_favoritos" />
 
