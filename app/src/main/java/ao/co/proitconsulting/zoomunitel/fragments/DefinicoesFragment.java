@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
 
 
     private View view;
+    private ImageView imgDarkMode;
     private TextView txtIdioma,txtModoList,txtModoGrid,txtDarkMode,txtTema;
     private SwitchCompat switchListMode,switchGridMode,switchDarkMode;
     private ThemeView themeView;
@@ -44,6 +46,8 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     }
 
     private void initViews(){
+        imgDarkMode =  view.findViewById(R.id.imgDarkMode);
+
         txtIdioma =  view.findViewById(R.id.txtIdioma);
         txtModoList =  view.findViewById(R.id.txtModoList);
         txtModoGrid =  view.findViewById(R.id.txtModoGrid);
@@ -102,8 +106,10 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
+                    imgDarkMode.setImageResource(R.drawable.ic_baseline_nights_stay_24);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" activado."));
                 }else{
+                    imgDarkMode.setImageResource(R.drawable.ic_baseline_wb_sunny_24);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" desactivado."));
                 }
             }
@@ -150,6 +156,13 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     }
 
     private void checkSwitchTextViews(SwitchCompat switchCompat, TextView textView){
+        if (textView.getText().toString().equals("Modo nocturno")){
+            if (!switchCompat.isChecked()){
+                imgDarkMode.setImageResource(R.drawable.ic_baseline_nights_stay_24);
+            }else{
+                imgDarkMode.setImageResource(R.drawable.ic_baseline_wb_sunny_24);
+            }
+        }
         if (!switchCompat.isChecked()){
             switchCompat.setChecked(true);
             MetodosUsados.mostrarMensagem(getContext(),""+textView.getText().toString().concat(" activado."));

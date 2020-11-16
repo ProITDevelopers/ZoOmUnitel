@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
     private TextView txtPosition;
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
+    private static int TIME_DELAY = 3000; // Slide duration 3 seconds
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment {
             public void onPageSelected(final int position) {
                 super.onPageSelected(position);
                 slideHandler.removeCallbacks(sliderRunnable);
-                slideHandler.postDelayed(sliderRunnable,3000); // Slide duration 3 seconds
+                slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
 
 //                Picasso.get().load(Common.getAllRevistas().get(position).getImagem()).fit().into(imgBackgnd);
 
@@ -89,7 +90,7 @@ public class HomeFragment extends Fragment {
 
                 if (position+1 == Common.getAllRevistas().size()){
 
-                    slideHandler.postDelayed(runnable,3000); // Slide duration 3 seconds
+                    slideHandler.postDelayed(runnable,TIME_DELAY); // Slide duration 3 seconds
 
                 }
             }
@@ -122,7 +123,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        slideHandler.postDelayed(sliderRunnable,3000); // Slide duration 3 seconds
+        slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
     }
 
 }

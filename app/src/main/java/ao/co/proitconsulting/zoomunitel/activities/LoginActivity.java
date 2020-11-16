@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         SpannableString spannableString = new SpannableString(getString(R.string.hint_registe_se));
-        ForegroundColorSpan fcsOrange = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.blue_unitel));
+        ForegroundColorSpan fcsOrange = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.orange_unitel));
         spannableString.setSpan(fcsOrange,19,29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         txtRegister.setText(spannableString);
 

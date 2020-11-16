@@ -100,7 +100,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/blue_unitel"
+                android:textColor="@color/orange_unitel"
                 />
 
             <LinearLayout
@@ -156,7 +156,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/blue_unitel"
+                android:textColor="@color/orange_unitel"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -167,6 +167,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 app:layout_constraintTop_toTopOf="@+id/txtModoList"
                 app:layout_constraintBottom_toBottomOf="@+id/txtModoList"
+                android:theme="@style/SwitchCompatTheme"
                 />
 
             <ImageView
@@ -197,7 +198,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/blue_unitel"
+                android:textColor="@color/orange_unitel"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -207,7 +208,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/switchListMode"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 app:layout_constraintTop_toTopOf="@+id/txtModoGrid"
-                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"/>
+                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"
+                android:theme="@style/SwitchCompatTheme"/>
 
             <ImageView
                 android:id="@+id/imgDarkMode"
@@ -215,7 +217,6 @@
                 android:layout_height="24dp"
                 android:contentDescription="img_darkmode_description"
                 android:src="@drawable/ic_baseline_wb_sunny_24"
-                app:tint="@color/orange_unitel"
                 app:layout_constraintTop_toBottomOf="@+id/imgGrid"
                 app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
                 app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
@@ -238,7 +239,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/blue_unitel"
+                android:textColor="@color/orange_unitel"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -248,7 +249,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/switchGridMode"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
-                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"/>
+                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
+                android:theme="@style/SwitchCompatTheme"/>
 
             <ImageView
                 android:id="@+id/imgTema"
@@ -279,7 +281,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/blue_unitel"
+                android:textColor="@color/orange_unitel"
                 />
 
             <ao.co.proitconsulting.zoomunitel.utilsClasses.trocarTema.ThemeView
@@ -292,6 +294,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/switchDarkMode"
                 app:layout_constraintTop_toTopOf="@+id/txtTema"
                 app:layout_constraintBottom_toBottomOf="@+id/txtTema"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 />
 
 

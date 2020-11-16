@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fd7217</color>
-    <color name="colorPrimaryDark">#fd7217</color>
-    <color name="colorAccent">#212062</color>
+    <color name="colorPrimary">#e6540f</color>
+    <color name="colorPrimaryDark">#e6540f</color>
+    <color name="colorAccent">#5c0f8b</color>
 
 
 
     <!--  AMBER Theme  -->
-    <color name="primaryColorAmber">#fd7217</color>
-    <color name="primaryDarkColorAmber">#fd7217</color>
-    <color name="secondaryColorAmber">#212062</color>
+    <color name="primaryColorAmber">#e6540f</color>
+    <color name="primaryDarkColorAmber">#e6540f</color>
+    <color name="secondaryColorAmber">#5c0f8b</color>
 
     <color name="themeDeselected">#d69b9b9b</color>
-    <color name="themeSelected">#212062</color>
+    <color name="themeSelected">#5c0f8b</color>
 
     <color name="white">#ffffff</color>
-    <color name="orange_unitel">#fd7217</color>
-    <color name="blue_unitel">#212062</color>
+    <color name="orange_unitel">#e6540f</color>
+    <color name="blue_unitel">#5c0f8b</color>
     <color name="grey">#dcdcdc</color>
     <color name="transparentBlack">#80000000</color>
 
-    <color name="btn_login_start_color">#fd7217</color>
-    <color name="btn_login_end_color">#fd7217</color>
+    <color name="btn_login_start_color">#e6540f</color>
+    <color name="btn_login_end_color">#e6540f</color>
 
 </resources>

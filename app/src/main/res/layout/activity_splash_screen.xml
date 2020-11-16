@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="logo_unitel_white"
-        app:srcCompat="@drawable/logo_unitel_white"
+        app:srcCompat="@drawable/zoom_unitel_logo"
         android:layout_marginTop="200dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

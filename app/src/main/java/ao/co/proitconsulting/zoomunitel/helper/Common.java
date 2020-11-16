@@ -20,25 +20,22 @@ public class Common {
     public static final int VIEW_TYPE_LIST = 1;
     public static final int VIEW_TYPE_GRID = 2;
 
-    public static final String MANUAL_XPRESS_LINK = "https://express2020.s3.us-east-2.amazonaws.com/Docs/Manual_XpressLengueno_android.pdf";
+    public static final String IMAGEM_01_EDICAO_01_2018 =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/revista_zoom_edicao_01_2018.jpeg";
+    public static final String REVISTA_ZOOM_EDICAO_01_2018_PDF =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/Unitel_RevistaA4_ZOOM_edicao_01_2018_bx.pdf";
 
-    public static final String Batman_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fbats.png?alt=media&token=65e5fca6-5405-4bf5-9c07-c7ec7e3990b8";
-    public static final String Batman_LINK = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fbatman_spiderman.pdf?alt=media&token=87ce83c4-1ed5-4b4b-b9a4-70ec18a19025";
+    public static final String IMAGEM_02_EDICAO_02_2019 =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/revista_zoom_edicao_02_2019.jpeg";
+    public static final String REVISTA_ZOOM_EDICAO_02_2019_PDF =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/Unitel_Revista_ZOOM_edicao_02_2019.pdf";
 
-    public static final String CapAmerica_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fcapamerica.png?alt=media&token=d2c579bf-51b9-426a-951f-6e78b91db0ad";
-    public static final String CapAmerica_LINK = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fheroes_history.pdf?alt=media&token=610f1d92-43c4-400a-b08e-04bab0b179bd";
+    public static final String IMAGEM_03_EDICAO_03_2020 =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/revista_zoom_edicao_03_2020.jpeg";
+    public static final String REVISTA_ZOOM_EDICAO_03_2020_PDF =
+            "https://appaws.s3.us-east-2.amazonaws.com/Unitel+Revistas/Unitel_Revista_ZOOM_edicao_03_2020.pdf";
 
-    public static final String Hulk_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fhulk.png?alt=media&token=cb21b684-8f61-441f-b967-59b26ab689d3";
-    public static final String Hulk_LINK = MANUAL_XPRESS_LINK;
 
-    public static final String Spiderman_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fspider.jpg?alt=media&token=e1a42e03-df7d-45df-8f42-2870e24e7f05";
-    public static final String Spiderman_LINK = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fbatman_spiderman.pdf?alt=media&token=87ce83c4-1ed5-4b4b-b9a4-70ec18a19025";
-
-    public static final String Thanos_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fthanos.jpg?alt=media&token=66e3d163-0d70-4998-a3ec-6d6b096089f9";
-    public static final String Thannos_LINK = CapAmerica_LINK;
-
-    public static final String Batman_Spiderman_Imagem = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fbatman_spider.png?alt=media&token=c9e121e4-4671-4ce7-b48f-95dc5dc87aba";
-    public static final String Batman_Spiderman_LINK = "https://firebasestorage.googleapis.com/v0/b/firetutorial-9cfcc.appspot.com/o/zoOmunitel%2Fbatman_spiderman.pdf?alt=media&token=87ce83c4-1ed5-4b4b-b9a4-70ec18a19025";
 
 
 
@@ -46,69 +43,54 @@ public class Common {
     public static List<RevistaZoOm> getAllRevistas(){
         List<RevistaZoOm> revistaZoOmList = new ArrayList<>();
 
-        RevistaZoOm batman = new RevistaZoOm(
+        RevistaZoOm zoom_unitel_edicao01 = new RevistaZoOm(
                 1,
-                "Batman e as Tartarugas Ninjas",
-                "As aventuras de Batman e seus animais de estimação. Muita Pancada em Gotham City." +
-                        "\n\n\uD83E\uDD87\uD83D\uDC22 \uD83D\uDC22 \uD83D\uDC22 \uD83D\uDC22",
-                Batman_Imagem,
-                Batman_LINK,
-                4.5f);
+                "ZoOm Unitel - Edição Nº01 | 2018",
+                "É com enorme prazer que lhe dou as boas vindas a esta primeira edição " +
+                        "da revista “Zoom”.\n\n" +
+                        "A ideia e o conceito desta revista foram concebidos pela Lúcia Moreira, " +
+                        "a nossa responsável da Academia Unitel, que me explicou, no ano " +
+                        "passado, que tinha o incrível privilégio de poder conhecer e interagir " +
+                        "com quase todos os departamentos e direcções dentro da empresa.",
+                "01",
+                IMAGEM_01_EDICAO_01_2018,
+                REVISTA_ZOOM_EDICAO_01_2018_PDF,
+                2.5f);
 
-        revistaZoOmList.add(batman);
+        revistaZoOmList.add(zoom_unitel_edicao01);
 
-        RevistaZoOm capamerica = new RevistaZoOm(
+        RevistaZoOm zoom_unitel_edicao02 = new RevistaZoOm(
                 2,
-                "Capitão América - No limite",
-                "As aventuras do super-soldado Steve Rogers. Soldado forte com a sua incrível bandeja... quer dizer... com o seu incrível escudo que não obedece as leis da física." +
-                        "\n\n" +" "+"\uD83D\uDCAD"+
-                        "\n\uD83E\uDD14",
-                CapAmerica_Imagem,
-                CapAmerica_LINK,
-                3.0f);
-
-        revistaZoOmList.add(capamerica);
-
-        RevistaZoOm hulk = new RevistaZoOm(
-                3,
-                "HULK - Futuro imperfeito",
-                "Bruce Banner sofre de Covid-19 após uma mudança repentina na linha do tempo. Até quando Flash? Até quando? \uD83D\uDE4C\uD83D\uDE1E",
-                Hulk_Imagem,
-                Hulk_LINK,
+                "ZoOm Unitel - Edição Nº02 | 2019",
+                        "Nesta segunda edição em que a Unitel comemora dezoito anos de " +
+                        "existência, são trazidos dezoito artigos, que abordam temas desde o " +
+                        "que nos faz ter orgulho em sermos Unitel desde a sua génese, a criação " +
+                        "do nosso ADN corporativo, os desafios que enfrentamos diariamente " +
+                        "para manter operacionais os nossos serviços e distribuirmos os nossos " +
+                        "produtos até aos locais mais recônditos, que permite a cada cliente " +
+                        "utilizar com satisfação a rede móvel com a maior cobertura e a melhor " +
+                        "qualidade em Angola.",
+                "02",
+                IMAGEM_02_EDICAO_02_2019,
+                REVISTA_ZOOM_EDICAO_02_2019_PDF,
                 3.5f);
 
-        revistaZoOmList.add(hulk);
+        revistaZoOmList.add(zoom_unitel_edicao02);
 
-        RevistaZoOm spiderman = new RevistaZoOm(
-                4,
-                "Homem-Aranha - Guerra Civil",
-                "Peter Parker descobre que a sua namorada está grávida de 9 meses, sendo que os estão juntos apenas 3 meses. \n\n\uD83C\uDFB6Mormão, mormão, mormão, mormão, mormão, mormão, mormão...",
-                Spiderman_Imagem,
-                Spiderman_LINK,
-                4.0f);
-
-        revistaZoOmList.add(spiderman);
-
-        RevistaZoOm thanos = new RevistaZoOm(
-                5,
-                "THANOS e as Jóias do Infinito",
-                "O vilão está de volta. Numa tentativa de mantér o equilíbrio em todo universo, durante a pandemia, Thanos chega ao planeta Terra estalando os dedos, com o objectivo de eliminar os fracos e é brutalmente assaltado no Kikolo. \uD83E\uDD23 \uD83E\uDD23 \uD83E\uDD23",
-                Thanos_Imagem,
-                Thannos_LINK,
-                5.0f);
-
-        revistaZoOmList.add(thanos);
-
-        RevistaZoOm batman_spiderman = new RevistaZoOm(
-                6,
-                "Batman & Homem-Aranha",
-                "Peter Parker junta-se ao melhor detective, Batman, para resolver o mistério da gravidez da sua namorada, Mary Jane. Batman alerta a Peter dizendo: 'não será fácil, pois já fazem 6 meses que a MJ tem tido esse hábito.' \n\n\uD83C\uDFB6Mormão, mormão, mormão, mormão, mormão, mormão, mormão...",
-                Batman_Spiderman_Imagem,
-                Batman_Spiderman_LINK,
+        RevistaZoOm zoom_unitel_edicao03 = new RevistaZoOm(
+                3,
+                "ZoOm Unitel - Edição Nº03 | 2020",
+                "Nesta terceira edição da ZoOm Magazine, dezassete artigos " +
+                        "constituem a revista em que a Era da Informação é o nosso tópico " +
+                        "central.\n\n" +
+                        "O nosso Director-Geral brindou-nos com uma entrevista acerca da " +
+                        "transformação digital da Unitel perante o paradigma da Indústria 4.0.",
+                "03",
+                IMAGEM_03_EDICAO_03_2020,
+                REVISTA_ZOOM_EDICAO_03_2020_PDF,
                 4.5f);
 
-        revistaZoOmList.add(batman_spiderman);
-
+        revistaZoOmList.add(zoom_unitel_edicao03);
 
 
 
@@ -119,7 +101,8 @@ public class Common {
     public static List<SobreNos> getSobreNosList(){
         List<SobreNos> sobreNosList = new ArrayList<>();
 
-        sobreNosList.add(new SobreNos(1,"ZoOm Unitel","ZoOm Unitel é o aplicativo onde encontrarás as melhores revistas de Marketing."));
+        sobreNosList.add(new SobreNos(1,"ZoOm Unitel","A ZoOm Magazine é uma publicação anual promovida pela Academia " +
+                "Unitel, dedicada à partilha de conhecimento sobre projectos (internos e externos), tecnologias e investigação."));
         sobreNosList.add(new SobreNos(2,"Versão", BuildConfig.VERSION_NAME));
         sobreNosList.add(new SobreNos(3,"Desenvolvedor","Copyright © 2020 - ZoOm Unitel"+"\n"+"Powered by Pro-IT Consulting"));
         sobreNosList.add(new SobreNos(4,"Enviar feedback","Tem alguma dúvida? Estamos felizes em ajudar."));

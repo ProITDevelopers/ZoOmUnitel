@@ -1,6 +1,20 @@
 package ao.co.proitconsulting.zoomunitel.adapters;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +28,39 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.WebViewActivity;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
-public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAdapter.RevistaViewHolder> {
+public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAdapter.RevistaViewHolder>{
 
+    public String PDF_FILE_NAME ="";
+    public Activity activity;
     private List<RevistaZoOm> revistaZoOmList;
 
-    public RevistaDetalheAdapter(List<RevistaZoOm> revistaZoOmList) {
+
+    public RevistaDetalheAdapter(Activity activity, List<RevistaZoOm> revistaZoOmList) {
+        this.activity = activity;
         this.revistaZoOmList = revistaZoOmList;
     }
 
@@ -46,7 +77,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
     @Override
     public void onBindViewHolder(@NonNull RevistaViewHolder holder, int position) {
-//        viewPager2.setCurrentItem(position);
+
         holder.setDetalheInfo(revistaZoOmList.get(position));
 
     }
@@ -56,7 +87,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         return revistaZoOmList.size();
     }
 
-    static class RevistaViewHolder extends RecyclerView.ViewHolder{
+    class RevistaViewHolder extends RecyclerView.ViewHolder{
         private ImageView rvImgBackgnd;
         private RoundedImageView rvImg;
         private TextView txtRvTitle;
@@ -80,7 +111,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         }
 
         void setDetalheInfo(final RevistaZoOm revistaZoOm){
-//            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
+
 
             Picasso.get()
                     .load(revistaZoOm.getImagem())
@@ -138,7 +169,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             btnDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Baixar "+revistaZoOm.getTitle()+"?", Toast.LENGTH_LONG).show();
+                    verificarPermissaoArmazenamento(revistaZoOm);
                 }
             });
 
@@ -151,15 +182,199 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             btnLer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), WebViewActivity.class);
-                    intent.putExtra("link",revistaZoOm.getLink());
-                    v.getContext().startActivity(intent);
+
+                    verificarConnecxaoLER(revistaZoOm);
+
+
                 }
             });
 
 
         }
+
+
+
+
+
     }
+
+    private void gotoWebView(RevistaZoOm revistaZoOm) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra("link",revistaZoOm.getLink());
+        activity.startActivity(intent);
+    }
+
+
+    private void verificarPermissaoArmazenamento(final RevistaZoOm revistaZoOm) {
+        Dexter.withContext(activity.getBaseContext())
+                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            verificarConnecxaoDOWNLOAD(revistaZoOm);
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    private void downLoadPDF(RevistaZoOm revistaZoOm) {
+
+        String nomePDF = MetodosUsados.removeAcentos(revistaZoOm.getTitle());
+        nomePDF = nomePDF.replaceAll("\\s+","_");
+        PDF_FILE_NAME = "/"+nomePDF+".pdf";
+        new DownloadFileFromURL().execute(revistaZoOm.getLink());
+
+    }
+
+    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
+        public ProgressDialog pDialog;
+        public String resultMessage="";
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+            SpannableString title = new SpannableString("Baixando o ficheiro");
+            title.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.orange_unitel)),
+                    0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            SpannableString message = new SpannableString("Por favor aguarde...");
+            message.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.blue_unitel)),
+                    0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            pDialog = new ProgressDialog(activity, R.style.MyAlertDialogStyle);
+            pDialog.setTitle(title);
+            pDialog.setMessage(message);
+            pDialog.setIndeterminate(false);
+            pDialog.setMax(100);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected  String doInBackground(String... f_url){
+            int count;
+            try{
+                URL url = new URL(f_url[0]);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+
+                int lenghtOfFile = connection.getContentLength();
+
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                File folder = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "ZoOM_Unitel");
+
+                String storageDir = folder.getAbsolutePath();
+                if (!folder.exists())
+                    folder.mkdirs();
+
+
+                File pdf_File = new File(storageDir+PDF_FILE_NAME);
+
+                if(pdf_File.exists()){
+                    resultMessage = "Já baixou este ficheiro\n"+storageDir;
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            MetodosUsados.mostrarMensagem(activity,resultMessage);
+                        }
+                    });
+
+                }else {
+                    OutputStream output = new FileOutputStream(pdf_File);
+
+                    byte data[] = new byte[1024];
+                    long total = 0;
+
+                    while((count = input.read(data)) != -1){
+                        total += count;
+
+                        publishProgress(""+(int)((total*100)/lenghtOfFile));
+
+                        output.write(data, 0, count);
+                    }
+                    output.flush();
+
+                    output.close();
+                    input.close();
+
+                    resultMessage = "Guardado em\n" +storageDir;
+                }
+
+
+
+            }catch (Exception e){
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+
+        }
+
+        protected void onProgressUpdate(String... progress){
+            pDialog.setProgress(Integer.parseInt(progress[0]));
+
+            if (Integer.parseInt(progress[0])==100){
+                MetodosUsados.mostrarMensagem(activity, resultMessage);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String file_url){
+           pDialog.dismiss();
+           pDialog.cancel();
+
+        }
+    }
+
+    private void verificarConnecxaoDOWNLOAD(RevistaZoOm revistaZoOm) {
+
+
+        ConnectivityManager conMgr =  (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conMgr!=null){
+            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+            if (netInfo == null){
+                Toast.makeText(activity, "Sem acesso a internet!", Toast.LENGTH_SHORT).show();
+            }else{
+                downLoadPDF(revistaZoOm);;
+            }
+        }
+    }
+
+    private void verificarConnecxaoLER(RevistaZoOm revistaZoOm) {
+
+
+        ConnectivityManager conMgr =  (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conMgr!=null){
+            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+            if (netInfo == null){
+                Toast.makeText(activity, "Sem acesso a internet!", Toast.LENGTH_SHORT).show();
+            }else{
+                gotoWebView(revistaZoOm);;
+            }
+        }
+    }
+
+
+
 
 
 }

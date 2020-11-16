@@ -1,7 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,8 +19,10 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 
     private String toolbarTitle;
     private int position;
+    private static int TIME_DELAY = 15000; // Slide duration 15 seconds
     private ViewPager2 viewPager2;
-    private Handler slideHandler = new Handler();
+//    private Handler slideHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,14 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 
         viewPager2 = findViewById(R.id.viewPagerImageDetail);
 
-        viewPager2.setAdapter(new RevistaDetalheAdapter(Common.getAllRevistas()));
+        viewPager2.setAdapter(new RevistaDetalheAdapter(this, Common.getAllRevistas()));
         viewPager2.setCurrentItem(position);
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
 
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(40));
@@ -65,8 +67,8 @@ public class RevistaDetalheActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(final int position) {
                 super.onPageSelected(position);
-                slideHandler.removeCallbacks(sliderRunnable);
-                slideHandler.postDelayed(sliderRunnable,10000); // Slide duration 10 seconds
+//                slideHandler.removeCallbacks(sliderRunnable);
+//                slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 15 seconds
 
                 toolbarTitle = Common.getAllRevistas().get(position).getTitle();
 
@@ -75,11 +77,11 @@ public class RevistaDetalheActivity extends AppCompatActivity {
                 }
 
 
-                if (position+1 == Common.getAllRevistas().size()){
-
-                    slideHandler.postDelayed(runnable,10000); // Slide duration 10 seconds
-
-                }
+//                if (position+1 == Common.getAllRevistas().size()){
+//
+//                    slideHandler.postDelayed(runnable,TIME_DELAY); // Slide duration 10 seconds
+//
+//                }
             }
 
 
@@ -87,6 +89,8 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private Runnable sliderRunnable = new Runnable() {
         @Override
@@ -106,13 +110,13 @@ public class RevistaDetalheActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        slideHandler.removeCallbacks(sliderRunnable);
+//        slideHandler.removeCallbacks(sliderRunnable);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        slideHandler.postDelayed(sliderRunnable,10000); // Slide duration 10 seconds
+//        slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 10 seconds
     }
 
 
@@ -130,4 +134,6 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 
 
     }
+
+
 }

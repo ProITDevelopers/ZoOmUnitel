@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/primeiro_nome"
+                    android:textColor="@color/blue_unitel"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:inputType="textCapSentences|textPersonName"
@@ -71,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:textColor="@color/blue_unitel"
                     android:hint="@string/numero_telefone"
                     android:inputType="phone"
                     android:maxLength="9"
@@ -93,6 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_email"
+                    android:textColor="@color/blue_unitel"
                     android:maxLines="1"
                     android:inputType="textEmailAddress"
                     android:background="@android:color/transparent"
@@ -116,10 +119,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_password"
+                    android:textColor="@color/blue_unitel"
                     android:maxLines="1"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
                     android:padding="15dp"
+                    android:drawableTint="@color/orange_unitel"
                     />
 
             </RelativeLayout>
@@ -141,10 +146,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_confirm_password"
+                    android:textColor="@color/blue_unitel"
                     android:maxLines="1"
                     android:inputType="textPassword"
                     android:background="@android:color/transparent"
                     android:padding="15dp"
+                    android:drawableTint="@color/orange_unitel"
                     />
 
             </RelativeLayout>
@@ -162,6 +169,8 @@
                 app:layout_constraintStart_toStartOf="@+id/hint_genero"
                 app:layout_constraintEnd_toEndOf="@+id/hint_genero"
                 android:text="@string/btn_registar_text"
+                android:clickable="true"
+                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:background="@drawable/button_background"
                 android:textColor="@android:color/white"

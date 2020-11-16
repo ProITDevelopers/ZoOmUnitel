@@ -36,5 +36,7 @@
     <string name="enviar_email_client">Enviar email</string>
     <string name="terminar_sessao">Terminar a sessão</string>
     <string name="msg_deseja_continuar">Deseja continuar?</string>
+    <string name="text_sim">Sim</string>
+    <string name="text_nao">Não</string>
 
 </resources>
