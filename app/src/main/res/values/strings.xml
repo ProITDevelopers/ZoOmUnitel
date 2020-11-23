@@ -5,6 +5,7 @@
 
     <string name="menu_home">Início</string>
     <string name="menu_perfil">Meu Perfil</string>
+    <string name="menu_editar_perfil">Editar Perfil</string>
     <string name="menu_favoritos">Mais lidas</string>
     <string name="menu_definicoes">@string/action_settings</string>
 

@@ -221,6 +221,7 @@
                 app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
                 app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
                 app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
+
                 />
 
             <TextView
@@ -240,6 +241,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/orange_unitel"
+
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -250,7 +252,9 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
                 app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
-                android:theme="@style/SwitchCompatTheme"/>
+                android:theme="@style/SwitchCompatTheme"
+
+                />
 
             <ImageView
                 android:id="@+id/imgTema"
@@ -263,6 +267,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imgDarkMode"
                 app:layout_constraintTop_toTopOf="@+id/txtTema"
                 app:layout_constraintBottom_toBottomOf="@+id/txtTema"
+
                 />
 
             <TextView
@@ -282,6 +287,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/orange_unitel"
+
                 />
 
             <ao.co.proitconsulting.zoomunitel.utilsClasses.trocarTema.ThemeView
@@ -297,6 +303,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
+
                 />
 
 

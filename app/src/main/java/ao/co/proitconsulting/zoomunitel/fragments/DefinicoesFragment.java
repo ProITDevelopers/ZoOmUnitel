@@ -31,6 +31,8 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     private RecyclerView recyclerViewSobre;
     private LinearLayoutManager layoutManager;
 
+    public static boolean mIsNightMode = false;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -82,6 +84,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
+                    switchGridMode.setChecked(false);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtModoList.getText().toString().concat(" activado."));
                 }else{
                     MetodosUsados.mostrarMensagem(getContext(),""+txtModoList.getText().toString().concat(" desactivado."));
@@ -94,6 +97,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
+                    switchListMode.setChecked(false);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtModoGrid.getText().toString().concat(" activado."));
                 }else{
                     MetodosUsados.mostrarMensagem(getContext(),""+txtModoGrid.getText().toString().concat(" desactivado."));
@@ -108,10 +112,14 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
                 if (isChecked){
                     imgDarkMode.setImageResource(R.drawable.ic_baseline_nights_stay_24);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" activado."));
+
                 }else{
                     imgDarkMode.setImageResource(R.drawable.ic_baseline_wb_sunny_24);
                     MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" desactivado."));
+
                 }
+
+
             }
         });
 
