@@ -9,13 +9,13 @@
     <string name="menu_favoritos">Mais lidas</string>
     <string name="menu_definicoes">@string/action_settings</string>
 
-<!--    ==========================LOGIN HINTS============================-->
+    <!--    ==========================LOGIN HINTS============================-->
     <string name="email_ou_num_de_telefone">Email ou telemóvel</string>
     <string name="hint_forgot_password">Esqueceu a senha?</string>
     <string name="hint_btn_login">Entrar</string>
     <string name="hint_registe_se">Não tem uma conta? Registe-se</string>
 
-<!--    ============================REGISTER HINTS===========================-->
+    <!--    ============================REGISTER HINTS===========================-->
     <string name="primeiro_nome">Nome de usuário</string>
     <string name="numero_telefone">Telemóvel</string>
     <string name="hint_email">Email</string>
@@ -24,7 +24,7 @@
     <string name="btn_registar_text">Registar</string>
     <string name="cancelar">Cancelar</string>
 
-<!--    ==============================STRINGS RESOURCES==========================-->
+    <!--    ==============================STRINGS RESOURCES==========================-->
     <string name="msg_erro_campo_vazio">Preencha o campo.</string>
     <string name="msg_erro_campo_com_email_telefone">Preencha o campo com email ou telemóvel.</string>
     <string name="msg_erro_internet">O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.</string>
@@ -39,5 +39,12 @@
     <string name="msg_deseja_continuar">Deseja continuar?</string>
     <string name="text_sim">Sim</string>
     <string name="text_nao">Não</string>
+    <string name="toast_image_intent_null">Falta a opção de seletor de imagem!</string>
+    <string name="lbl_set_profile_photo">Definir imagem de perfil</string>
+    <string name="lbl_take_camera_picture">Tirar uma foto</string>
+    <string name="lbl_choose_from_gallery">Escolha da galeria</string>
+    <string name="dialog_permission_title">Conceder permissões</string>
+    <string name="dialog_permission_message">Este aplicativo precisa de permissão para usar este recurso. Você pode concedê-los nas configurações do aplicativo.</string>
+    <string name="go_to_settings">VÁ PARA AS CONFIGURAÇÕES</string>
 
 </resources>

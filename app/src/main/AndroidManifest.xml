@@ -21,12 +21,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!-- FOTO_CROP_ACTIVITY -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
+        <activity android:name=".activities.imagePicker.ImagePickerActivity"/>
+
+        <!-- Photo cache directory file provider paths -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <!-- Photo cache directory file provider paths -->
+
         <activity
             android:name=".activities.SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -44,7 +59,7 @@
         <activity
             android:name=".activities.AlterarPalavraPasseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/MyCustomAppTheme" />
         <activity
             android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"
@@ -56,12 +71,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RevistaDetalheActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/MyCustomAppTheme" />
+
+
+
+
     </application>
 
 </manifest>

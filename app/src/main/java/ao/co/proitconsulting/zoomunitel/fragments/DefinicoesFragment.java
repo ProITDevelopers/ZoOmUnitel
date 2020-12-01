@@ -1,5 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.AlterarPalavraPasseActivity;
+import ao.co.proitconsulting.zoomunitel.activities.LoginActivity;
 import ao.co.proitconsulting.zoomunitel.adapters.DefinicoesSobreNosAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
@@ -138,7 +141,9 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
         switch (v.getId()){
 
             case R.id.txtIdioma :
-                MetodosUsados.mostrarMensagem(getContext(),""+txtIdioma.getText().toString());
+                Intent intent = new Intent(getContext(), AlterarPalavraPasseActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
 
             case R.id.txtModoList :

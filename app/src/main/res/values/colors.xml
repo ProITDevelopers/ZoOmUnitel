@@ -15,6 +15,7 @@
     <color name="themeSelected">#5c0f8b</color>
 
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="orange_unitel">#e6540f</color>
     <color name="blue_unitel">#5c0f8b</color>
     <color name="grey">#dcdcdc</color>
@@ -22,5 +23,6 @@
 
     <color name="btn_login_start_color">#e6540f</color>
     <color name="btn_login_end_color">#e6540f</color>
+    <color name="alterar_pass_bkg">#f8f4f4</color>
 
 </resources>
