@@ -17,6 +17,7 @@ import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.RevistaDetalheActivity;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
 public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.RevistaViewHolder> {
@@ -62,7 +63,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
 //            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
 
             Picasso.get()
-                    .load(revistaZoOm.getImagem())
+                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.magazine_placeholder)
                     .into(imageView, new Callback() {
@@ -74,7 +75,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
+                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
                         }
                     });
             imageView.setOnClickListener(new View.OnClickListener() {

@@ -9,6 +9,8 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,12 +21,19 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private UsuarioPerfil usuarioPerfil;
+    private CircleImageView imgUserPhoto;
+    private TextView txtUserNameInitial, txtUserName, txtUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
@@ -52,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View view = navigationView.getHeaderView(0);
+        imgUserPhoto = view.findViewById(R.id.imgUserPhoto);
+        txtUserNameInitial = view.findViewById(R.id.txtUserNameInitial);
+        txtUserName = view.findViewById(R.id.txtUserName);
+        txtUserEmail = view.findViewById(R.id.txtUserEmail);
     }
 
     @Override
@@ -84,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        usuarioPerfil = AppPrefsSettings.getInstance().getUser();
+        carregarDadosOffline(usuarioPerfil);
+        super.onResume();
     }
 
     private void mensagemLogOut() {
@@ -127,9 +142,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
+        AppPrefsSettings.getInstance().clearAppPrefs();
         Intent intent = new Intent(this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private void carregarDadosOffline(UsuarioPerfil usuarioPerfil) {
+        if (usuarioPerfil!=null){
+            txtUserName.setText(usuarioPerfil.userNome);
+            txtUserEmail.setText(usuarioPerfil.userEmail);
+            if (usuarioPerfil.userPhoto == null || usuarioPerfil.userPhoto.isEmpty()){
+                if (!usuarioPerfil.userNome.isEmpty()){
+                    String userNameInitial = String.valueOf(usuarioPerfil.userNome.charAt(0));
+                    txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                    txtUserNameInitial.setVisibility(View.VISIBLE);
+
+                }else {
+                    String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
+                    txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                }
+
+            }else {
+                txtUserNameInitial.setVisibility(View.GONE);
+                Picasso.get()
+                        .load(usuarioPerfil.userPhoto)
+//                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.user_placeholder)
+                        .into(imgUserPhoto);
+            }
+        }
     }
 }

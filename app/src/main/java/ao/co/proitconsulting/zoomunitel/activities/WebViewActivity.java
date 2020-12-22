@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -26,6 +27,8 @@ public class WebViewActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshMain;
     private WebView webView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +74,21 @@ public class WebViewActivity extends AppCompatActivity {
         progressDialog.setMessage("Carregando...");
         progressDialog.show();
 
+//        mLinK = "https://2442078988ac.ngrok.io/revista/view/d7803f1a-5070-4c44-afaf-a9876203d1a8.pdf";
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.loadUrl("https://docs.google.com/viewer?embedded=true&url="+mLinK);
+//        webView.getSettings().setDomStorageEnabled(true);
+        webView.clearCache(true);
+        webView.clearHistory();
+        /**
+         * Enabling zoom-in controls
+         * */
+//        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        Uri pdfLink = Uri.parse("https://docs.google.com/viewer?embedded=true&url="+mLinK);
+
+        webView.loadUrl(pdfLink.toString());
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -83,6 +98,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
                 view.loadUrl(url);
                 return true;
             }
@@ -90,8 +106,13 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+
+
                 view.loadUrl("javascript:(function() { " +
                         "document.getElementsByClassName('ndfHFb-c4YZDc-GSQQnc-LgbsSe ndfHFb-c4YZDc-to915-LgbsSe VIpgJd-TzA9Ye-eEGnhe ndfHFb-c4YZDc-LgbsSe')[0].style.display='none'; })()");
+
+
 
             }
 
@@ -100,18 +121,19 @@ public class WebViewActivity extends AppCompatActivity {
                 super.onPageStarted(view, url, favicon);
 
 
-
             }
+
         });
         webView.setWebChromeClient(new WebChromeClient() {
 
             public void onProgressChanged(WebView view, int progress) {
 
-                view.loadUrl("javascript:(function() { " +
-                        "document.getElementsByClassName('ndfHFb-c4YZDc-GSQQnc-LgbsSe ndfHFb-c4YZDc-to915-LgbsSe VIpgJd-TzA9Ye-eEGnhe ndfHFb-c4YZDc-LgbsSe')[0].style.display='none'; })()");
+//                view.loadUrl("javascript:(function() { " +
+//                        "document.getElementsByClassName('ndfHFb-c4YZDc-GSQQnc-LgbsSe ndfHFb-c4YZDc-to915-LgbsSe VIpgJd-TzA9Ye-eEGnhe ndfHFb-c4YZDc-LgbsSe')[0].style.display='none'; })()");
 
                 if (progress < 100){
                     progressDialog.setMessage("Carregando...".concat("("+progress+"%"+")"));
+                    swipeRefreshMain.setEnabled(true);
 
                 }
 
@@ -124,9 +146,47 @@ public class WebViewActivity extends AppCompatActivity {
 
                 if(progress == 100) {
                     progressDialog.dismiss();
+                    swipeRefreshMain.setEnabled(true);
                 }
             }
         });
+
+
+
+        webView.setHorizontalScrollBarEnabled(false);
+//        webView.setOnTouchListener(new View.OnTouchListener() {
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                if (event.getPointerCount() > 1) {
+//                    //Multi touch detected
+//                    return true;
+//                }
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: {
+//                        // save the x
+//                        m_downX = event.getX();
+//                    }
+//                    break;
+//
+//                    case MotionEvent.ACTION_MOVE:
+//                    case MotionEvent.ACTION_CANCEL:
+//                    case MotionEvent.ACTION_UP: {
+//                        // set x so that it doesn't move
+//
+//                        if (event.getY() == 0) {
+//                            swipeRefreshMain.setEnabled(true);
+//                        } else {
+//                            swipeRefreshMain.setEnabled(false);
+//                        }
+//                        event.setLocation(m_downX, event.getY());
+//                    }
+//                    break;
+//                }
+//
+//                return false;
+//            }
+//        });
     }
 
 

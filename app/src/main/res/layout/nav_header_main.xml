@@ -29,6 +29,7 @@
             />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgUserPhoto"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -43,6 +44,7 @@
             />
 
         <TextView
+            android:id="@+id/txtUserNameInitial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -50,8 +52,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:maxLength="1"
-            android:visibility="visible"
-            android:text="G"
+            android:visibility="gone"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white"
             android:textSize="80sp" />
@@ -59,10 +60,10 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/txtUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Gilson Vicente"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="22sp"
         android:gravity="center"
@@ -71,12 +72,12 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtUserEmail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="gilsonvicente6@outlook.com"
         android:padding="5dp"
         android:textSize="16sp"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/blue_unitel"
         android:maxLines="1"
         />

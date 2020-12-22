@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import dmax.dialog.SpotsDialog;
 
 
 public class MetodosUsados {
@@ -37,7 +38,7 @@ public class MetodosUsados {
 
     //=====================SPOTS_DIALOG_LOADING===============================================//
     public static void spotsDialog(Context context) {
-//        waitingDialog = new SpotsDialog.Builder().setContext(context).build();
+        waitingDialog = new SpotsDialog.Builder().setContext(context).build();
     }
 
     public static void showLoadingDialog(String message){

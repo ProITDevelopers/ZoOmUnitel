@@ -37,6 +37,7 @@
                         android:src="@color/orange_unitel" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgUserPhoto"
                         android:layout_width="160dp"
                         android:layout_height="160dp"
                         android:layout_gravity="center"
@@ -50,6 +51,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/txtUserNameInitial"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -57,11 +59,10 @@
                         android:maxLength="1"
                         android:maxLines="1"
                         android:padding="5dp"
-                        android:text="G"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/white"
                         android:textSize="110sp"
-                        android:visibility="visible"
+                        android:visibility="gone"
 
                         />
 
@@ -89,10 +90,10 @@
             app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
             <TextView
+                android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Gilson Vicente"
                 android:textColor="@color/blue_unitel"
                 android:textSize="18sp"
                 android:padding="15dp"
@@ -106,13 +107,13 @@
 
 
             <TextView
+                android:id="@+id/txtUserTelefone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="15dp"
                 android:maxLines="1"
                 android:textSize="18sp"
-                android:text="929983859"
                 android:textColor="@color/blue_unitel"
                 android:drawableStart="@drawable/ic_baseline_phone_android_24"
                 android:drawableLeft="@drawable/ic_baseline_phone_android_24"
@@ -123,13 +124,13 @@
 
 
             <TextView
+                android:id="@+id/txtUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="15dp"
                 android:maxLines="1"
                 android:textSize="18sp"
-                android:text="gilsonvicente6@outlook.com"
                 android:textColor="@color/blue_unitel"
                 android:drawableStart="@drawable/ic_baseline_email_24"
                 android:drawableLeft="@drawable/ic_baseline_email_24"

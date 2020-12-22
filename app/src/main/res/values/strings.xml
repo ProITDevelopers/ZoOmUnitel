@@ -14,6 +14,11 @@
     <string name="hint_forgot_password">Esqueceu a senha?</string>
     <string name="hint_btn_login">Entrar</string>
     <string name="hint_registe_se">Não tem uma conta? Registe-se</string>
+    <string name="msg_login_auth_verification">Verificando…</string>
+    <string name="msg_login_auth_validando">Validando os dados…</string>
+    <string name="msg_email_palavra_passe_errada">As suas credenciais estão erradas</string>
+    <string name="criar_conta">Criar conta</string>
+    <string name="msg_erro_user_not_found">Este usuário não exite!</string>
 
     <!--    ============================REGISTER HINTS===========================-->
     <string name="primeiro_nome">Nome de usuário</string>
@@ -23,11 +28,14 @@
     <string name="hint_confirm_password">Confirmar senha</string>
     <string name="btn_registar_text">Registar</string>
     <string name="cancelar">Cancelar</string>
-
+    <string name="msg_register_quase_pronto">Quase pronto…</string>
+    <string name="msg_register_enviando_dados">Enviando dados…</string>
     <!--    ==============================STRINGS RESOURCES==========================-->
     <string name="msg_erro_campo_vazio">Preencha o campo.</string>
     <string name="msg_erro_campo_com_email_telefone">Preencha o campo com email ou telemóvel.</string>
     <string name="msg_erro_internet">O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.</string>
+    <string name="msg_erro_internet_timeout">O tempo de comunicação excedeu. Possivelmente a internet está lenta.</string>
+    <string name="msg_erro">Algum problema ocorreu no servidor. Relate o problema.</string>
     <string name="msg_erro_campo_com_letras">Preencha o campo com letras.</string>
     <string name="msg_erro_min_duas_letras">Preencha o campo no mínimo com duas letras.</string>
     <string name="msg_erro_email_invalido">Preencha o campo com email válido.</string>
@@ -39,6 +47,7 @@
     <string name="msg_deseja_continuar">Deseja continuar?</string>
     <string name="text_sim">Sim</string>
     <string name="text_nao">Não</string>
+    <string name="text_ok">OK</string>
     <string name="toast_image_intent_null">Falta a opção de seletor de imagem!</string>
     <string name="lbl_set_profile_photo">Definir imagem de perfil</string>
     <string name="lbl_take_camera_picture">Tirar uma foto</string>
@@ -46,5 +55,7 @@
     <string name="dialog_permission_title">Conceder permissões</string>
     <string name="dialog_permission_message">Este aplicativo precisa de permissão para usar este recurso. Você pode concedê-los nas configurações do aplicativo.</string>
     <string name="go_to_settings">VÁ PARA AS CONFIGURAÇÕES</string>
+
+
 
 </resources>

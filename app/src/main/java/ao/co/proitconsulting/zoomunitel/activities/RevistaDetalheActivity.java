@@ -40,7 +40,7 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 
         viewPager2 = findViewById(R.id.viewPagerImageDetail);
 
-        viewPager2.setAdapter(new RevistaDetalheAdapter(this, Common.getAllRevistas()));
+        viewPager2.setAdapter(new RevistaDetalheAdapter(this, Common.revistaZoOmList));
         viewPager2.setCurrentItem(position);
 
         viewPager2.setClipToPadding(false);
@@ -70,7 +70,7 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 //                slideHandler.removeCallbacks(sliderRunnable);
 //                slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 15 seconds
 
-                toolbarTitle = Common.getAllRevistas().get(position).getTitle();
+                toolbarTitle = Common.revistaZoOmList.get(position).getTitle();
 
                 if (getSupportActionBar()!=null){
                     getSupportActionBar().setTitle(toolbarTitle);

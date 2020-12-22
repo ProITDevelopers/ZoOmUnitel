@@ -21,6 +21,7 @@ import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.RevistaDetalheActivity;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
 public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.RevistaViewHolder> {
@@ -83,7 +84,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
 //            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
 
             Picasso.get()
-                    .load(revistaZoOm.getImagem())
+                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.color.colorPrimary)
                     .into(rvImgBackgnd, new Callback() {
@@ -95,12 +96,12 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
+                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
                         }
                     });
 
             Picasso.get()
-                    .load(revistaZoOm.getImagem())
+                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.magazine_placeholder)
                     .into(rvImg, new Callback() {
@@ -112,12 +113,12 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
+                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
                         }
                     });
 
 
-            txtRvId.setText("#".concat(revistaZoOm.getEdicao()));
+            txtRvId.setText("#".concat(revistaZoOm.getCategoria()));
             txtRvTitle.setText(revistaZoOm.getTitle());
             txtDescricao.setText(revistaZoOm.getDescricao());
             ratingBar.setRating(revistaZoOm.getRating());

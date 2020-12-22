@@ -1,21 +1,45 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
+import ao.co.proitconsulting.zoomunitel.models.LoginRequest;
+import ao.co.proitconsulting.zoomunitel.models.RegisterRequest;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioAuth;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
+import dmax.dialog.SpotsDialog;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -57,6 +81,9 @@ public class RegisterActivity extends AppCompatActivity {
         txtCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }
         });
@@ -150,92 +177,215 @@ public class RegisterActivity extends AppCompatActivity {
             if (netInfo == null) {
                 MetodosUsados.mostrarMensagem(this,R.string.msg_erro_internet);
             } else {
-//                registrandoUsuario();
-                launchHomeScreen();
+                registrandoUsuario();
+
             }
         }
     }
 
-//    private void registrandoUsuario(){
-//
-//        MetodosUsados.showLoadingDialog(getString(R.string.msg_register_quase_pronto));
-//
-//        RegisterRequest registerRequest = new RegisterRequest();
-//        registerRequest.nome = nome;
-//        registerRequest.telemovel = telefone;
-//        registerRequest.email = email;
-//        registerRequest.password = senha;
-//
-//
-//        RequestBody nome = RequestBody.create(MediaType.parse("text/plain"),registerRequest.nome);
-//        RequestBody telemovel = RequestBody.create(MediaType.parse("text/plain"), registerRequest.telemovel);
-//        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), registerRequest.email);
-//        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), registerRequest.password);
-//
-//
-//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//        Call<Void> call = apiInterface.registrarUsuario(nome,telemovel, email,password);
-//        call.enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-//                if (response.isSuccessful()){
-//
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            MetodosUsados.hideLoadingDialog();
-//
-//                            editNome.setText("");
-//                            editTelefone.setText("");
-//                            editEmail.setText("");
-//                            editPass.setText("");
-//                            editConfirmPass.setText("");
-//
-//
-//
-//
-//                            dialog_txtConfirmSucesso.setText(getString(R.string.msg_conta_criada_sucesso));
-//                            dialogLayoutSuccess.show();
-//
-//                        }
-//                    },2000);
-//
-//
-//                } else {
-//                    ErrorResponce errorResponce = ErrorUtils.parseError(response);
-//                    MetodosUsados.hideLoadingDialog();
-//
-//                    try {
-//
-//                        Snackbar.make(register_root, errorResponce.getError(), 4000)
-//                                .setActionTextColor(Color.WHITE)
-//                                .show();
-//                    }catch (Exception e){
-//                        Log.i(TAG,"autenticacaoVerif snakBar" + e.getMessage());
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-//                MetodosUsados.hideLoadingDialog();
-//                if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
-//                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet);
-//                }else  if ("timeout".equals(t.getMessage())) {
-//                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
-//                }else {
-//                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro);
-//                }
-//                Log.i(TAG,"onFailure" + t.getMessage());
-//
-//            }
-//        });
-//    }
+    private void registrandoUsuario(){
+
+        MetodosUsados.showLoadingDialog(getString(R.string.msg_register_enviando_dados));
+
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.nome = nome;
+        registerRequest.telefone = telefone;
+        registerRequest.email = email;
+        registerRequest.password = senha;
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.registrarCliente(registerRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+
+                    editNome.setText("");
+                    editTelefone.setText("");
+                    editEmail.setText("");
+                    editPass.setText("");
+                    editConfirmPass.setText("");
+
+                    MetodosUsados.hideLoadingDialog();
+                    String errorMessage="", mensagem="";
+
+
+                    try {
+                        errorMessage = response.body().string();
+                        JSONObject jsonObject = new JSONObject(errorMessage);
+                        mensagem = jsonObject.getString("msg");
+
+                        MetodosUsados.mostrarMensagem(RegisterActivity.this,mensagem);
+                        mostrarMensagemPopUp(mensagem,"true");
+
+                        Log.v(TAG,"ResponseBody: "+errorMessage);
+
+
+                    }catch (JSONException | IOException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+                } else {
+
+                    MetodosUsados.hideLoadingDialog();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+
+//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
+                        mostrarMensagemPopUp(mensagem,"false");
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                MetodosUsados.hideLoadingDialog();
+                if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet);
+                }else  if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
+                }else {
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro);
+                }
+                Log.i(TAG,"onFailure" + t.getMessage());
+
+            }
+        });
+    }
+
+    private void autenticacaoLogin() {
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.email_Telefone = email;
+        loginRequest.password = senha;
+
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog.setMessage(getString(R.string.msg_register_quase_pronto));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<UsuarioAuth> call = apiInterface.autenticarCliente(loginRequest);
+        call.enqueue(new Callback<UsuarioAuth>() {
+            @Override
+            public void onResponse(@NonNull Call<UsuarioAuth> call, @NonNull Response<UsuarioAuth> response) {
+
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    UsuarioAuth usuarioAuth = response.body();
+
+                    UsuarioPerfil usuarioPerfil = new UsuarioPerfil(
+                            usuarioAuth.userId,
+                            usuarioAuth.userName,
+                            usuarioAuth.userEmail);
+
+                    AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
+
+                    AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
+
+
+
+                    launchHomeScreen();
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UsuarioAuth> call, @NonNull Throwable t) {
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
+                if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet);
+                }else  if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
+                }else {
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro);
+                }
+                Log.v(TAG,"onFailure" + t.getMessage());
+
+            }
+        });
+
+    }
 
     private void launchHomeScreen() {
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private void mostrarMensagemPopUp(String msg, final String status) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                if (status.equals("true")){
+                    autenticacaoLogin();
+                }
+            }
+        });
+
+        builder.show();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        MetodosUsados.spotsDialog(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MetodosUsados.hideLoadingDialog();
+        super.onDestroy();
     }
 }

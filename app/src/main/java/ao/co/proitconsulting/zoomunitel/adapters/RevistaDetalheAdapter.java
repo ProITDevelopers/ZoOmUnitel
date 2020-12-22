@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
@@ -49,6 +50,7 @@ import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.WebViewActivity;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 
@@ -114,7 +116,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
 
             Picasso.get()
-                    .load(revistaZoOm.getImagem())
+                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.color.colorPrimary)
                     .into(rvImgBackgnd, new Callback() {
@@ -126,12 +128,12 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
+                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
                         }
                     });
 
             Picasso.get()
-                    .load(revistaZoOm.getImagem())
+                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.magazine_placeholder)
                     .into(rvImg, new Callback() {
@@ -143,7 +145,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
+                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
                         }
                     });
             rvImg.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +202,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
     private void gotoWebView(RevistaZoOm revistaZoOm) {
         Intent intent = new Intent(activity, WebViewActivity.class);
-        intent.putExtra("link",revistaZoOm.getLink());
+        intent.putExtra("link",Common.PDF_PATH + revistaZoOm.getPdfLink());
         activity.startActivity(intent);
     }
 
@@ -231,7 +233,9 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         String nomePDF = MetodosUsados.removeAcentos(revistaZoOm.getTitle());
         nomePDF = nomePDF.replaceAll("\\s+","_");
         PDF_FILE_NAME = "/"+nomePDF+".pdf";
-        new DownloadFileFromURL().execute(revistaZoOm.getLink());
+
+        Uri uriPDF = Uri.parse(Common.PDF_PATH + revistaZoOm.getPdfLink());
+        new DownloadFileFromURL().execute(uriPDF.toString());
 
     }
 
@@ -279,8 +283,10 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
                         File.separator + "ZoOM_Unitel");
 
                 String storageDir = folder.getAbsolutePath();
+
                 if (!folder.exists())
                     folder.mkdirs();
+
 
 
                 File pdf_File = new File(storageDir+PDF_FILE_NAME);

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.AlterarPalavraPasseActivity;
-import ao.co.proitconsulting.zoomunitel.activities.LoginActivity;
 import ao.co.proitconsulting.zoomunitel.adapters.DefinicoesSobreNosAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;

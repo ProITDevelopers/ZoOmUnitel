@@ -33,7 +33,7 @@ public class FavoritosFragment extends Fragment {
 
     private void setupAdapter(){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
-        FavoritosAdapter favoritosAdapter = new FavoritosAdapter(Common.getAllRevistas());
+        FavoritosAdapter favoritosAdapter = new FavoritosAdapter(Common.revistaZoOmList);
         recyclerView.setAdapter(favoritosAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);
 

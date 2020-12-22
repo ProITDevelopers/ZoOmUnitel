@@ -1,11 +1,15 @@
 package ao.co.proitconsulting.zoomunitel.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,11 +23,21 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
+
+    private static final String TAG = "TAG_HomeFragment";
 
     private View view;
     private ImageView imgBackgnd;
@@ -31,6 +45,8 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
     private static int TIME_DELAY = 3000; // Slide duration 3 seconds
+
+    private ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,8 +56,81 @@ public class HomeFragment extends Fragment {
         imgBackgnd = view.findViewById(R.id.imgBackgnd);
         txtPosition = view.findViewById(R.id.txtPosition);
         viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        viewPager2.setAdapter(new RevistaZoOmAdapter(Common.getAllRevistas()));
+        verificarConecxaoNET();
+
+
+        return view;
+    }
+
+    private void verificarConecxaoNET() {
+        if (getActivity()!=null) {
+            ConnectivityManager conMgr =  (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (conMgr!=null) {
+                NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+                if (netInfo == null){
+//                    swipeRefreshEstab.setRefreshing(false);
+                    MetodosUsados.mostrarMensagem(getContext(),getString(R.string.msg_erro_internet));
+//                    mostarMsnErro();
+                } else {
+                    carregarListaRevistas();
+                }
+            }
+        }
+    }
+
+    private void carregarListaRevistas() {
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<RevistaZoOm>> rv = apiInterface.getAllTodasRevistas();
+        rv.enqueue(new retrofit2.Callback<List<RevistaZoOm>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<RevistaZoOm>> call, @NonNull Response<List<RevistaZoOm>> response) {
+
+                if (response.isSuccessful()) {
+//                    swipeRefreshEstab.setRefreshing(false);
+
+                    if (Common.revistaZoOmList!=null)
+                        Common.revistaZoOmList.clear();
+
+                    if (response.body()!=null){
+
+
+                        Common.revistaZoOmList=response.body();
+
+                        progressBar.setVisibility(View.GONE);
+                        setAdapters(response.body());
+
+
+                    }
+
+                } else {
+//                    swipeRefreshEstab.setRefreshing(false);
+                    progressBar.setVisibility(View.GONE);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<RevistaZoOm>> call, @NonNull Throwable t) {
+                progressBar.setVisibility(View.GONE);
+//                swipeRefreshEstab.setRefreshing(false);
+                if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)){
+                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet);
+                }else  if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet_timeout);
+                }else {
+                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro);
+                }
+            }
+        });
+    }
+
+    private void setAdapters(final List<RevistaZoOm>revistaZoOmList) {
+
+        viewPager2.setAdapter(new RevistaZoOmAdapter(revistaZoOmList));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
@@ -70,7 +159,7 @@ public class HomeFragment extends Fragment {
 //                Picasso.get().load(Common.getAllRevistas().get(position).getImagem()).fit().into(imgBackgnd);
 
                 Picasso.get()
-                        .load(Common.getAllRevistas().get(position).getImagem())
+                        .load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem())
                         .networkPolicy(NetworkPolicy.OFFLINE)
                         .placeholder(R.color.colorPrimary)
                         .into(imgBackgnd, new Callback() {
@@ -82,13 +171,13 @@ public class HomeFragment extends Fragment {
 
                             @Override
                             public void onError(Exception e) {
-                                Picasso.get().load(Common.getAllRevistas().get(position).getImagem()).fit().into(imgBackgnd);
+                                Picasso.get().load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem()).fit().into(imgBackgnd);
                             }
                         });
 
-                txtPosition.setText(String.valueOf(position+1).concat("/").concat(String.valueOf(Common.getAllRevistas().size())));
+                txtPosition.setText(String.valueOf(position+1).concat("/").concat(String.valueOf(revistaZoOmList.size())));
 
-                if (position+1 == Common.getAllRevistas().size()){
+                if (position+1 == revistaZoOmList.size()){
 
                     slideHandler.postDelayed(runnable,TIME_DELAY); // Slide duration 3 seconds
 
@@ -96,7 +185,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return view;
+
     }
 
     private Runnable sliderRunnable = new Runnable() {

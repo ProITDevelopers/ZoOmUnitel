@@ -1,20 +1,45 @@
 package ao.co.proitconsulting.zoomunitel.models;
 
-public class RevistaZoOm {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class RevistaZoOm implements Serializable {
+
+    @SerializedName("IDREVISTA")
     private int id;
-    private String title, descricao, imagem, link, edicao;
+
+    @SerializedName("NOME")
+    private String title;
+
+    @SerializedName("DESCRICAO")
+    private String descricao;
+
+    @SerializedName("FOTOKEY")
+    private String imagem;
+
+    @SerializedName("PDFKEY")
+    private String pdfLink;
+
+    @SerializedName("CATEGORIA")
+    private String categoria;
+
+    @SerializedName("CREATEAT")
+    private String created_at;
+
     private float rating;
+
 
     public RevistaZoOm() {
     }
 
-    public RevistaZoOm(int id, String title, String descricao, String edicao, String imagem, String link, float rating) {
+    public RevistaZoOm(int id, String title, String descricao, String categoria, String imagem, String pdfLink, float rating) {
         this.id = id;
         this.title = title;
         this.descricao = descricao;
-        this.edicao = edicao;
+        this.categoria = categoria;
         this.imagem = imagem;
-        this.link = link;
+        this.pdfLink = pdfLink;
         this.rating = rating;
     }
 
@@ -30,16 +55,22 @@ public class RevistaZoOm {
         return descricao;
     }
 
-    public String getEdicao() {
-        return edicao;
+
+    public String getCategoria() {
+        return categoria;
     }
 
     public String getImagem() {
         return imagem;
     }
 
-    public String getLink() {
-        return link;
+
+    public String getPdfLink() {
+        return pdfLink;
+    }
+
+    public String getCreated_at() {
+        return created_at;
     }
 
     public float getRating() {

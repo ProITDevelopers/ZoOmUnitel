@@ -1,6 +1,8 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,39 +10,64 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
 
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
+import ao.co.proitconsulting.zoomunitel.models.LoginRequest;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioAuth;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG_LoginActivity";
+    private RelativeLayout login_root;
     private AppCompatEditText editEmail;
     private ShowHidePasswordEditText editPassword;
     private TextView txtForgotPassword,txtRegister;
     private Button btnLogin;
     private String emailTelefone,password;
+    private LoginRequest loginRequest = new LoginRequest();
+    private UsuarioPerfil usuarioPerfil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MetodosUsados.showCustomUI(this);
         setContentView(R.layout.activity_login);
+
+        Log.v(TAG,"onCreate: " + "Funcionou Verbose");
         //InitViews
         initViews();
     }
 
     private void initViews() {
+        login_root = findViewById(R.id.login_root);
+
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
@@ -55,8 +82,6 @@ public class LoginActivity extends AppCompatActivity {
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                MetodosUsados.mostrarMensagem(LoginActivity.this,txtForgotPassword.getText().toString());
 
                 Intent intent = new Intent(LoginActivity.this, AlterarPalavraPasseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -77,8 +102,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -95,11 +121,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (MetodosUsados.validarEmail(emailTelefone)) {
             emailTelefone = emailTelefone.toLowerCase();
-//            loginRequest.email = emailTelefone;
+            loginRequest.email_Telefone = emailTelefone;
 
         }else {
             if (emailTelefone.matches("9[1-9][0-9]\\d{6}")){
-//                loginRequest.telefone = emailTelefone;
+                loginRequest.email_Telefone = emailTelefone;
                 return true;
             } else {
                 editEmail.requestFocus();
@@ -132,60 +158,78 @@ public class LoginActivity extends AppCompatActivity {
             if (netInfo == null) {
                 MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
             } else {
-//                loginRequest.password = password;
-//                loginRequest.rememberMe = true;
-//                autenticacaoLogin(loginRequest);
-                launchHomeScreen();
+                loginRequest.password = password;
+                autenticacaoLogin(loginRequest);
+
             }
         }
     }
 
 
-    private void autenticacaoLogin(/*LoginRequest loginRequest*/) {
+    private void autenticacaoLogin(LoginRequest loginRequest) {
 
-//        MetodosUsados.showLoadingDialog(getString(R.string.msg_login_auth_verification));
-//
-//
-//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//        Call<UsuarioAuth> call = apiInterface.autenticarCliente(loginRequest);
-//        call.enqueue(new Callback<UsuarioAuth>() {
-//            @Override
-//            public void onResponse(@NonNull Call<UsuarioAuth> call, @NonNull Response<UsuarioAuth> response) {
-//
-//
-//                MetodosUsados.changeMessageDialog(getString(R.string.msg_login_auth_validando));
-//                if (response.isSuccessful() && response.body() != null) {
-//                    UsuarioAuth userToken = response.body();
-//
-//
-//                    AppPrefsSettings.getInstance().saveAuthToken(userToken.tokenuser);
-//                    AppPrefsSettings.getInstance().saveTokenTime(userToken.expiracao);
-//
-//
+        MetodosUsados.showLoadingDialog(getString(R.string.msg_login_auth_verification));
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<UsuarioAuth> call = apiInterface.autenticarCliente(loginRequest);
+        call.enqueue(new Callback<UsuarioAuth>() {
+            @Override
+            public void onResponse(@NonNull Call<UsuarioAuth> call, @NonNull Response<UsuarioAuth> response) {
+
+
+                MetodosUsados.changeMessageDialog(getString(R.string.msg_login_auth_validando));
+                if (response.isSuccessful() && response.body() != null) {
+                    UsuarioAuth usuarioAuth = response.body();
+
+                    usuarioPerfil = new UsuarioPerfil(
+                            usuarioAuth.userId,
+                            usuarioAuth.userName,
+                            usuarioAuth.userEmail);
+
+                    AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
+
+                    AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
+
+                    launchHomeScreen();
+
+
+
 //                    carregarMeuPerfil(userToken.tokenuser);
-//
-//
-//                } else {
-//
-//                    MetodosUsados.hideLoadingDialog();
-//
-//                    String message ="";
-//
-//                    try {
-//                        message = response.errorBody().string();
-//                        Log.v("Error code 400",message);
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    if (message.equals("\"Password ou Email Errados\"")){
+
+
+                } else {
+
+                    MetodosUsados.hideLoadingDialog();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+
+//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
+                        mostrarMensagemPopUp(mensagem);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+//                    if (mensagem.equals("Email and Password incorrect")){
 //                        MetodosUsados.mostrarMensagem(LoginActivity.this,getString(R.string.msg_email_palavra_passe_errada));
 //                    }
 //
-//                    if (message.equals("\"Usuario Não Existe\"")){
+//                    if (mensagem.equals("\"Usuario Não Existe\"")){
 //                        Snackbar.make(login_root, getString(R.string.msg_erro_user_not_found), Snackbar.LENGTH_LONG)
-//                                .setActionTextColor(ContextCompat.getColor(LoginActivity.this, R.color.login_register_text_color))
+//                                .setActionTextColor(ContextCompat.getColor(LoginActivity.this, R.color.orange_unitel))
 //                                .setAction(getString(R.string.criar_conta), new View.OnClickListener() {
 //                                    @Override
 //                                    public void onClick(View v) {
@@ -195,39 +239,24 @@ public class LoginActivity extends AppCompatActivity {
 //                                    }
 //                                }).show();
 //                    }
-//
-//
-//
-//
-//
-//
-//
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<UsuarioAuth> call, @NonNull Throwable t) {
-//                MetodosUsados.hideLoadingDialog();
-//                if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
-//                }else  if ("timeout".equals(t.getMessage())) {
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
-//                }else {
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
-//                }
-//                Log.i(TAG,"onFailure" + t.getMessage());
-//
-//                try {
-//                    Snackbar
-//                            .make(login_root, t.getMessage(), 4000)
-//                            .setActionTextColor(Color.MAGENTA)
-//                            .show();
-//                } catch (Exception e) {
-//                    Log.d(TAG, String.valueOf(e.getMessage()));
-//                }
-//            }
-//        });
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UsuarioAuth> call, @NonNull Throwable t) {
+                MetodosUsados.hideLoadingDialog();
+                if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
+                }else  if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
+                }else {
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
+                }
+                Log.v(TAG,"onFailure: " + t.getMessage());
+
+            }
+        });
 
     }
 
@@ -284,10 +313,52 @@ public class LoginActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-//        String title = "Olá, ".concat(usuarioPerfil.primeiroNome);
-//        String message = "Seja bem-vindo(a) ao ".concat(getString(R.string.app_name));
+        String title = "Olá, ".concat(usuarioPerfil.userNome);
+        String message = "Seja bem-vindo(a) ao ".concat(getString(R.string.app_name));
 //        notificationHelper.createNotification(title,message,false);
 
         finish();
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        MetodosUsados.spotsDialog(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MetodosUsados.hideLoadingDialog();
+        super.onDestroy();
     }
 }
