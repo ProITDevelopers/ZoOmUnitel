@@ -118,7 +118,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
                     });
 
 
-            txtRvId.setText("#".concat(revistaZoOm.getCategoria()));
+            txtRvId.setText(revistaZoOm.getCategoria());
             txtRvTitle.setText(revistaZoOm.getTitle());
             txtDescricao.setText(revistaZoOm.getDescricao());
             ratingBar.setRating(revistaZoOm.getRating());

@@ -92,8 +92,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
     class RevistaViewHolder extends RecyclerView.ViewHolder{
         private ImageView rvImgBackgnd;
         private RoundedImageView rvImg;
-        private TextView txtRvTitle;
-        private RatingBar ratingBar;
+        private TextView txtRvTitle, txtData;
         private TextView txtDescricao;
         private CardView cardViewDownload,cardViewLer;
         private Button btnDownload,btnLer;
@@ -104,7 +103,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             rvImgBackgnd = itemView.findViewById(R.id.rvImgBackgnd);
             rvImg = itemView.findViewById(R.id.rvImg);
             txtRvTitle = itemView.findViewById(R.id.txtRvTitle);
-            ratingBar = itemView.findViewById(R.id.ratingBar);
+            txtData = itemView.findViewById(R.id.txtData);
             txtDescricao = itemView.findViewById(R.id.txtDescricao);
             cardViewDownload = itemView.findViewById(R.id.cardViewDownload);
             btnDownload = itemView.findViewById(R.id.btnDownload);
@@ -158,7 +157,10 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
 
             txtRvTitle.setText(revistaZoOm.getTitle());
-            ratingBar.setRating(revistaZoOm.getRating());
+
+            String time = MetodosUsados.getTimestamp(revistaZoOm.getCreated_at());
+
+            txtData.setText(time);
             txtDescricao.setText(revistaZoOm.getDescricao());
 
             cardViewDownload.setOnClickListener(new View.OnClickListener() {

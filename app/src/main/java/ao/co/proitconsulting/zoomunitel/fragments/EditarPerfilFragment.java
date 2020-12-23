@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +30,32 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.RegisterActivity;
 import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivity;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditarPerfilFragment extends Fragment {
+
+    private static final String TAG = "TAG_EditPerf_Fragment";
 
     public static final int REQUEST_IMAGE = 100;
 
@@ -143,9 +164,9 @@ public class EditarPerfilFragment extends Fragment {
                     Log.d("TAG", "Image Get Uri toString(): " + uri.toString());
 
 //                    // loading profile image from local cache
-                    loadProfile(uri.toString());
+//                    loadProfile(uri.toString());
 
-//                    salvarFoto(postPath);
+                    salvarFoto(postPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -153,11 +174,129 @@ public class EditarPerfilFragment extends Fragment {
         }
     }
 
+    private void salvarFoto(String postPath) {
+
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        waitingDialog.setMessage(getString(R.string.salvando_foto));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+        File file = new File(postPath);
+
+//        String filename  = file.getName();
+        String filename  = System.currentTimeMillis() + ".jpg";
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"),file);
+        MultipartBody.Part imagem  = MultipartBody.Part.createFormData("image",filename,requestFile);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> enviarFoto = apiInterface.actualizarFotoPerfil(imagem);
+
+        enviarFoto.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    waitingDialog.cancel();
+                    // loading profile image from local cache
+                    loadProfile(selectedImage.toString());
+
+
+                    String errorMessage="", mensagem="";
+
+
+                    try {
+                        errorMessage = response.body().string();
+                        JSONObject jsonObject = new JSONObject(errorMessage);
+                        mensagem = jsonObject.getString("msg");
+
+                        MetodosUsados.mostrarMensagem(getContext(),mensagem);
+                        mostrarMensagemPopUp(mensagem);
+
+                        Log.v(TAG,"ResponseBody: "+errorMessage);
+
+
+                    }catch (JSONException | IOException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+
+
+                } else {
+                    waitingDialog.cancel();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+
+//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
+                        mostrarMensagemPopUp(mensagem);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                waitingDialog.cancel();
+                if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)) {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet);
+                } else if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet_timeout);
+                } else {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro);
+                }
+                Log.i(TAG, "onFailure" + t.getMessage());
+            }
+        });
+
+    }
+
     private void loadProfile(String url) {
 //        Log.d(TAG, "Image cache path: " + url);
 
         txtUserNameInitial.setVisibility(View.GONE);
-        Picasso.get().load(url).into(userPhoto);
+        Picasso.get().load(url).placeholder(R.drawable.user_placeholder).into(userPhoto);
+
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
 
     }
 

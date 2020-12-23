@@ -55,6 +55,7 @@
     <string name="dialog_permission_title">Conceder permissões</string>
     <string name="dialog_permission_message">Este aplicativo precisa de permissão para usar este recurso. Você pode concedê-los nas configurações do aplicativo.</string>
     <string name="go_to_settings">VÁ PARA AS CONFIGURAÇÕES</string>
+    <string name="salvando_foto">Salvando a foto…</string>
 
 
 

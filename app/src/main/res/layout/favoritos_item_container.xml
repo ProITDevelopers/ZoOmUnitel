@@ -79,8 +79,8 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="Edição:"
-                        android:textSize="18sp"
+                        android:text="Categoria:"
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/blue_unitel"/>
@@ -88,12 +88,13 @@
                     <TextView
                         android:id="@+id/txtRvId"
                         android:text="#1221:"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/blue_unitel"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/orange_unitel"
+                        android:ellipsize="end"
                         />
 
 

@@ -1,5 +1,7 @@
 package ao.co.proitconsulting.zoomunitel.Api;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
@@ -19,9 +21,9 @@ public class AddTokenInterceptor implements Interceptor {
         builder.addHeader("Content-type", "application/json");
         builder.addHeader("Accept", "application/json");
 
-//        if (!TextUtils.isEmpty(token)) {
-//            builder.header("Authorization", "Bearer " + token);
-//        }
+        if (!TextUtils.isEmpty(token)) {
+            builder.header("Authorization", "Bearer " + token);
+        }
         return chain.proceed(builder.build());
     }
 }

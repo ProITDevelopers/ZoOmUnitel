@@ -1,5 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,6 +33,7 @@ import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -46,7 +48,7 @@ public class HomeFragment extends Fragment {
     private Handler slideHandler = new Handler();
     private static int TIME_DELAY = 3000; // Slide duration 3 seconds
 
-    private ProgressBar progressBar;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment {
         imgBackgnd = view.findViewById(R.id.imgBackgnd);
         txtPosition = view.findViewById(R.id.txtPosition);
         viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
-        progressBar = view.findViewById(R.id.progressBar);
+
 
         verificarConecxaoNET();
 
@@ -82,6 +84,11 @@ public class HomeFragment extends Fragment {
 
     private void carregarListaRevistas() {
 
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        waitingDialog.setMessage("Carregando...");
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<List<RevistaZoOm>> rv = apiInterface.getAllTodasRevistas();
         rv.enqueue(new retrofit2.Callback<List<RevistaZoOm>>() {
@@ -96,10 +103,10 @@ public class HomeFragment extends Fragment {
 
                     if (response.body()!=null){
 
+                        waitingDialog.dismiss();
+                        waitingDialog.cancel();
 
                         Common.revistaZoOmList=response.body();
-
-                        progressBar.setVisibility(View.GONE);
                         setAdapters(response.body());
 
 
@@ -107,7 +114,8 @@ public class HomeFragment extends Fragment {
 
                 } else {
 //                    swipeRefreshEstab.setRefreshing(false);
-                    progressBar.setVisibility(View.GONE);
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
                 }
 
 
@@ -115,7 +123,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<RevistaZoOm>> call, @NonNull Throwable t) {
-                progressBar.setVisibility(View.GONE);
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
 //                swipeRefreshEstab.setRefreshing(false);
                 if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)){
                     MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet);

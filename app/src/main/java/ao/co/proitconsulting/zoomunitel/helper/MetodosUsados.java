@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -226,6 +229,20 @@ public class MetodosUsados {
         Log.i(TAG,"webView " + valorRetorno[0]);
 
         return valorRetorno[0];
+    }
+
+    public static String getTimestamp(String timestamp) {
+        SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat outputFormatter = new SimpleDateFormat("d MMM, yyyy");
+        try {
+            Date date = inputFormatter.parse(timestamp);
+            return outputFormatter.format(date);
+        } catch (ParseException e) {
+//            Timber.e("Exception: %s", e);
+        }
+
+        return "";
+
     }
 
 }

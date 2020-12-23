@@ -26,14 +26,13 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
 
 
     private View view;
-    private ImageView imgDarkMode;
-    private TextView txtIdioma,txtModoList,txtModoGrid,txtDarkMode,txtTema;
-    private SwitchCompat switchListMode,switchGridMode,switchDarkMode;
-    private ThemeView themeView;
+
+    private TextView txtAlterarPass,txtModoList,txtModoGrid;
+    private SwitchCompat switchListMode,switchGridMode;
     private RecyclerView recyclerViewSobre;
     private LinearLayoutManager layoutManager;
 
-    public static boolean mIsNightMode = false;
+
 
 
 
@@ -50,19 +49,16 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     }
 
     private void initViews(){
-        imgDarkMode =  view.findViewById(R.id.imgDarkMode);
 
-        txtIdioma =  view.findViewById(R.id.txtIdioma);
+
+        txtAlterarPass =  view.findViewById(R.id.txtAlterarPass);
         txtModoList =  view.findViewById(R.id.txtModoList);
         txtModoGrid =  view.findViewById(R.id.txtModoGrid);
-        txtDarkMode =  view.findViewById(R.id.txtDarkMode);
-        txtTema =  view.findViewById(R.id.txtTema);
+
 
         switchListMode =  view.findViewById(R.id.switchListMode);
         switchGridMode =  view.findViewById(R.id.switchGridMode);
-        switchDarkMode =  view.findViewById(R.id.switchDarkMode);
 
-        themeView = view.findViewById(R.id.theme_selected);
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewSobre = view.findViewById(R.id.recyclerViewSobre);
@@ -75,12 +71,9 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     }
 
     private void viewsClicked(){
-        txtIdioma.setOnClickListener(this);
+        txtAlterarPass.setOnClickListener(this);
         txtModoList.setOnClickListener(this);
         txtModoGrid.setOnClickListener(this);
-        txtDarkMode.setOnClickListener(this);
-        txtTema.setOnClickListener(this);
-        themeView.setOnClickListener(this);
 
         switchListMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -108,23 +101,6 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
         });
 
 
-        switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    imgDarkMode.setImageResource(R.drawable.ic_baseline_nights_stay_24);
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" activado."));
-
-                }else{
-                    imgDarkMode.setImageResource(R.drawable.ic_baseline_wb_sunny_24);
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtDarkMode.getText().toString().concat(" desactivado."));
-
-                }
-
-
-            }
-        });
-
 
     }
 
@@ -139,7 +115,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
 
-            case R.id.txtIdioma :
+            case R.id.txtAlterarPass :
                 Intent intent = new Intent(getContext(), AlterarPalavraPasseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -153,28 +129,11 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
                 checkSwitchTextViews(switchGridMode,txtModoGrid);
                 break;
 
-            case R.id.txtDarkMode :
-                checkSwitchTextViews(switchDarkMode,txtDarkMode);
-                break;
-
-            case R.id.txtTema :
-                MetodosUsados.mostrarMensagem(getContext(),"Trocar o "+txtTema.getText().toString());
-                break;
-
-            case R.id.theme_selected :
-                MetodosUsados.mostrarMensagem(getContext(),"Trocar o "+txtTema.getText().toString());
-                break;
         }
     }
 
     private void checkSwitchTextViews(SwitchCompat switchCompat, TextView textView){
-        if (textView.getText().toString().equals("Modo nocturno")){
-            if (!switchCompat.isChecked()){
-                imgDarkMode.setImageResource(R.drawable.ic_baseline_nights_stay_24);
-            }else{
-                imgDarkMode.setImageResource(R.drawable.ic_baseline_wb_sunny_24);
-            }
-        }
+
         if (!switchCompat.isChecked()){
             switchCompat.setChecked(true);
             MetodosUsados.mostrarMensagem(getContext(),""+textView.getText().toString().concat(" activado."));

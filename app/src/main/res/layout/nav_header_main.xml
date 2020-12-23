@@ -69,6 +69,7 @@
         android:gravity="center"
         android:textColor="@color/blue_unitel"
         android:maxLines="1"
+        android:ellipsize="end"
         />
 
     <TextView
@@ -80,5 +81,6 @@
         android:gravity="center"
         android:textColor="@color/blue_unitel"
         android:maxLines="1"
+        android:ellipsize="end"
         />
 </LinearLayout>

@@ -72,7 +72,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imgIdiom"
+                android:id="@+id/imgPass"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="img_lock_description"
@@ -80,12 +80,12 @@
                 app:tint="@color/orange_unitel"
                 app:layout_constraintTop_toBottomOf="@+id/linearDef"
                 app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toTopOf="@+id/txtIdioma"
-                app:layout_constraintBottom_toBottomOf="@+id/txtIdioma"
+                app:layout_constraintTop_toTopOf="@+id/txtAlterarPass"
+                app:layout_constraintBottom_toBottomOf="@+id/txtAlterarPass"
                 />
 
             <TextView
-                android:id="@+id/txtIdioma"
+                android:id="@+id/txtAlterarPass"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Alterar senha"
@@ -107,7 +107,7 @@
                 android:id="@+id/linearVisao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtIdioma"
+                app:layout_constraintTop_toBottomOf="@+id/txtAlterarPass"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="15dp"
@@ -211,110 +211,16 @@
                 app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"
                 android:theme="@style/SwitchCompatTheme"/>
 
-            <ImageView
-                android:id="@+id/imgDarkMode"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="img_darkmode_description"
-                android:src="@drawable/ic_baseline_wb_sunny_24"
-                app:layout_constraintTop_toBottomOf="@+id/imgGrid"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
-                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
 
-                />
-
-            <TextView
-                android:id="@+id/txtDarkMode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Modo nocturno"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txtModoGrid"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                android:layout_marginTop="7dp"
-                android:padding="5dp"
-                android:paddingStart="35dp"
-                android:paddingLeft="35dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/orange_unitel"
-
-                />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchDarkMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/switchGridMode"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                app:layout_constraintTop_toTopOf="@+id/txtDarkMode"
-                app:layout_constraintBottom_toBottomOf="@+id/txtDarkMode"
-                android:theme="@style/SwitchCompatTheme"
-
-                />
-
-            <ImageView
-                android:id="@+id/imgTema"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="img_tema_description"
-                android:src="@drawable/ic_baseline_color_lens_24"
-                app:tint="@color/orange_unitel"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toBottomOf="@+id/imgDarkMode"
-                app:layout_constraintTop_toTopOf="@+id/txtTema"
-                app:layout_constraintBottom_toBottomOf="@+id/txtTema"
-
-                />
-
-            <TextView
-                android:id="@+id/txtTema"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Tema"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txtDarkMode"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                android:layout_marginTop="7dp"
-                android:padding="5dp"
-                android:paddingStart="35dp"
-                android:paddingLeft="35dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/orange_unitel"
-
-                />
-
-            <ao.co.proitconsulting.zoomunitel.utilsClasses.trocarTema.ThemeView
-                android:id="@+id/theme_selected"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:onClick="onClick"
-                app:layout_constraintStart_toStartOf="@+id/switchDarkMode"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                app:layout_constraintTop_toBottomOf="@+id/switchDarkMode"
-                app:layout_constraintTop_toTopOf="@+id/txtTema"
-                app:layout_constraintBottom_toBottomOf="@+id/txtTema"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-
-                />
 
 
 
             <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
-                app:constraint_referenced_ids="switchDarkMode,txtDarkMode,imgDarkMode,theme_selected,txtTema,
-                                            imgTema,switchGridMode,txtModoGrid,
+                app:constraint_referenced_ids="switchGridMode,txtModoGrid,
                                             imgGrid,guideline_direita,switchListMode,
                                             txtModoList,imgList,
                                             guideline_esquerda,linearVisao,
-                                            txtIdioma,imgIdiom,
+                                            txtAlterarPass,imgPass,
                                             linearDef"
                 tools:visibility="visible" android:visibility="visible"/>
 
@@ -323,7 +229,7 @@
                 android:id="@+id/linearSobre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtTema"
+                app:layout_constraintTop_toBottomOf="@+id/txtModoGrid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="15dp"
