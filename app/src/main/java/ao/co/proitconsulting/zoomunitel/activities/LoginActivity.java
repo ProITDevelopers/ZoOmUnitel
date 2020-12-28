@@ -223,23 +223,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
 
-//                    if (mensagem.equals("Email and Password incorrect")){
-//                        MetodosUsados.mostrarMensagem(LoginActivity.this,getString(R.string.msg_email_palavra_passe_errada));
-//                    }
-//
-//                    if (mensagem.equals("\"Usuario Não Existe\"")){
-//                        Snackbar.make(login_root, getString(R.string.msg_erro_user_not_found), Snackbar.LENGTH_LONG)
-//                                .setActionTextColor(ContextCompat.getColor(LoginActivity.this, R.color.orange_unitel))
-//                                .setAction(getString(R.string.criar_conta), new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                        startActivity(intent);
-//                                    }
-//                                }).show();
-//                    }
-
                 }
             }
 

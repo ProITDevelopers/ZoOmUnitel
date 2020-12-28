@@ -2,8 +2,10 @@ package ao.co.proitconsulting.zoomunitel.adapters;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -42,8 +45,10 @@ import com.squareup.picasso.Picasso;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -237,17 +242,29 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         PDF_FILE_NAME = "/"+nomePDF+".pdf";
 
         Uri uriPDF = Uri.parse(Common.PDF_PATH + revistaZoOm.getPdfLink());
-        new DownloadFileFromURL().execute(uriPDF.toString());
+//        new DownloadFileFromURL().execute(uriPDF.toString());
 
+        // execute this when the downloader must be fired
+        final DownloadTask downloadTask = new DownloadTask(activity);
+        downloadTask.execute(uriPDF.toString());
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+    // usually, subclasses of AsyncTask are declared inside the activity class.
+    // that way, you can easily modify the UI thread from here
+    private class DownloadTask extends AsyncTask<String, Integer, String> {
 
-        public ProgressDialog pDialog;
-        public String resultMessage="";
+        private Context context;
+        private PowerManager.WakeLock mWakeLock;
+        ProgressDialog mProgressDialog;
+        String resultMessage ="";
+
+        public DownloadTask(Context context) {
+            this.context = context;
+
+        }
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
 
             SpannableString title = new SpannableString("Baixando o ficheiro");
@@ -258,28 +275,69 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
             message.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.blue_unitel)),
                     0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            pDialog = new ProgressDialog(activity, R.style.MyAlertDialogStyle);
-            pDialog.setTitle(title);
-            pDialog.setMessage(message);
-            pDialog.setIndeterminate(false);
-            pDialog.setMax(100);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            // instantiate it within the onCreate method
+            mProgressDialog = new ProgressDialog(activity, R.style.MyAlertDialogStyle);
+            mProgressDialog.setTitle(title);
+            mProgressDialog.setMessage(message);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(false);
+
+            // take CPU lock to prevent CPU from going off if the user
+            // presses the power button during download
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    getClass().getName());
+            mWakeLock.acquire();
+            mProgressDialog.show();
 
         }
 
         @Override
-        protected  String doInBackground(String... f_url){
-            int count;
-            try{
-                URL url = new URL(f_url[0]);
-                URLConnection connection = url.openConnection();
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            // if we get here, length is known, now set indeterminate to false
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setMax(100);
+            mProgressDialog.setProgress(progress[0]);
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            mWakeLock.release();
+            mProgressDialog.dismiss();
+            if (result != null)
+                mostrarMensagemPopUp("Download erro: "+result);
+            else
+                mostrarMensagemPopUp(resultMessage);
+
+        }
+
+        @Override
+        protected String doInBackground(String... sUrl) {
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(sUrl[0]);
+                connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
-                int lenghtOfFile = connection.getContentLength();
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
 
-                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+                // this will be useful to display download percentage
+                // might be -1: server did not report the length
+                int fileLength = connection.getContentLength();
+
+                // download the file
+                input = connection.getInputStream();
 
                 File folder = new File(Environment.getExternalStorageDirectory() +
                         File.separator + "ZoOM_Unitel");
@@ -293,61 +351,42 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
                 File pdf_File = new File(storageDir+PDF_FILE_NAME);
 
-                if(pdf_File.exists()){
-                    resultMessage = "Já baixou este ficheiro\n"+storageDir;
+                output = new FileOutputStream(pdf_File);
 
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            MetodosUsados.mostrarMensagem(activity,resultMessage);
-                        }
-                    });
-
-                }else {
-                    OutputStream output = new FileOutputStream(pdf_File);
-
-                    byte data[] = new byte[1024];
-                    long total = 0;
-
-                    while((count = input.read(data)) != -1){
-                        total += count;
-
-                        publishProgress(""+(int)((total*100)/lenghtOfFile));
-
-                        output.write(data, 0, count);
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    // allow canceling with back button
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
                     }
-                    output.flush();
-
-                    output.close();
-                    input.close();
-
-                    resultMessage = "Guardado em\n" +storageDir;
+                    total += count;
+                    // publishing the progress....
+                    if (fileLength > 0) // only if total length is known
+                        publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
                 }
 
 
+                resultMessage = "Guardado em\n" +storageDir;
 
-            }catch (Exception e){
-                Log.e("Error: ", e.getMessage());
+            } catch (Exception e) {
+                return e.toString();
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null)
+                    connection.disconnect();
             }
-
             return null;
-
-        }
-
-        protected void onProgressUpdate(String... progress){
-            pDialog.setProgress(Integer.parseInt(progress[0]));
-
-            if (Integer.parseInt(progress[0])==100){
-                MetodosUsados.mostrarMensagem(activity, resultMessage);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String file_url){
-           pDialog.dismiss();
-           pDialog.cancel();
-
         }
     }
 
@@ -379,6 +418,35 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
                 gotoWebView(revistaZoOm);;
             }
         }
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(activity.getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(activity.getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
     }
 
 
