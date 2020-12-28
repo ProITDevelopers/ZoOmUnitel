@@ -63,16 +63,20 @@ public class PerfilFragment extends Fragment {
     private void carregarDadosOffline(UsuarioPerfil usuarioPerfil) {
         if (usuarioPerfil!=null){
             txtUserName.setText(usuarioPerfil.userNome);
+            txtUserTelefone.setText(usuarioPerfil.userTelefone);
             txtUserEmail.setText(usuarioPerfil.userEmail);
-            if (usuarioPerfil.userPhoto == null || usuarioPerfil.userPhoto.isEmpty()){
-                if (!usuarioPerfil.userNome.isEmpty()){
+            if (usuarioPerfil.userPhoto == null){
+                if (usuarioPerfil.userNome != null){
                     String userNameInitial = String.valueOf(usuarioPerfil.userNome.charAt(0));
                     txtUserNameInitial.setText(userNameInitial.toUpperCase());
                     txtUserNameInitial.setVisibility(View.VISIBLE);
 
                 }else {
-                    String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
-                    txtUserNameInitial.setText(userNameInitial.toUpperCase());
+
+                    if (usuarioPerfil.userEmail != null){
+                        String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
+                        txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                    }
                 }
 
             }else {

@@ -83,6 +83,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
                 public void onClick(View v) {
 
                     Intent intent = new Intent(v.getContext(), RevistaDetalheActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("toolbarTitle",revistaZoOm.getTitle());
                     intent.putExtra("position",getAdapterPosition());
                     v.getContext().startActivity(intent);

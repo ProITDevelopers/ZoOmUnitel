@@ -1,8 +1,11 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -24,6 +27,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -153,15 +157,19 @@ public class MainActivity extends AppCompatActivity {
         if (usuarioPerfil!=null){
             txtUserName.setText(usuarioPerfil.userNome);
             txtUserEmail.setText(usuarioPerfil.userEmail);
-            if (usuarioPerfil.userPhoto == null || usuarioPerfil.userPhoto.isEmpty()){
-                if (!usuarioPerfil.userNome.isEmpty()){
+            if (usuarioPerfil.userPhoto == null){
+                if (usuarioPerfil.userNome != null){
                     String userNameInitial = String.valueOf(usuarioPerfil.userNome.charAt(0));
                     txtUserNameInitial.setText(userNameInitial.toUpperCase());
                     txtUserNameInitial.setVisibility(View.VISIBLE);
 
                 }else {
-                    String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
-                    txtUserNameInitial.setText(userNameInitial.toUpperCase());
+
+                    if (usuarioPerfil.userEmail != null){
+                        String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
+                        txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                    }
+
                 }
 
             }else {
@@ -175,4 +183,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

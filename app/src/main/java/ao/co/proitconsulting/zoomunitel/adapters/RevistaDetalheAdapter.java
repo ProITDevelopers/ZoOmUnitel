@@ -209,6 +209,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
     private void gotoWebView(RevistaZoOm revistaZoOm) {
         Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("link",Common.PDF_PATH + revistaZoOm.getPdfLink());
         activity.startActivity(intent);
     }

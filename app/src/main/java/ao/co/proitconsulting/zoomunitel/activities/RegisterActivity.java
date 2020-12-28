@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
@@ -294,18 +295,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                     UsuarioAuth usuarioAuth = response.body();
 
-                    UsuarioPerfil usuarioPerfil = new UsuarioPerfil(
-                            usuarioAuth.userId,
-                            usuarioAuth.userName,
-                            usuarioAuth.userEmail);
-
-                    AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
-
                     AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
-
-
-
-                    launchHomeScreen();
+                    carregarTODOSPerfiS(usuarioAuth.userId);
 
 
                 }
@@ -327,6 +318,60 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void carregarTODOSPerfiS(final int userID) {
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog.setMessage(getString(R.string.msg_login_auth_carregando_dados));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.getAll_USERS_PROFILES();
+
+        usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Response<List<UsuarioPerfil>> response) {
+
+                if (response.isSuccessful()) {
+
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    if (response.body()!=null){
+
+                        for (UsuarioPerfil user: response.body()) {
+
+                            if (user.userId == userID){
+                                AppPrefsSettings.getInstance().saveUser(user);
+                            }
+
+                        }
+
+
+                        launchHomeScreen();
+                    }
+
+                } else {
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+                    AppPrefsSettings.getInstance().clearAppPrefs();
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Throwable t) {
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
+
+            }
+        });
     }
 
     private void launchHomeScreen() {

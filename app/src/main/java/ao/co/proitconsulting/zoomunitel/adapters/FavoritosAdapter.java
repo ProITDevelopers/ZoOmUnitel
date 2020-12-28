@@ -127,6 +127,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), RevistaDetalheActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("toolbarTitle",revistaZoOm.getTitle());
                     intent.putExtra("position",getAdapterPosition());
                     v.getContext().startActivity(intent);

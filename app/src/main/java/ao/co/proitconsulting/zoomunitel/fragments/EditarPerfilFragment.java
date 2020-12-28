@@ -17,11 +17,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -43,6 +47,8 @@ import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.RegisterActivity;
 import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivity;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 import okhttp3.MediaType;
@@ -60,8 +66,11 @@ public class EditarPerfilFragment extends Fragment {
     public static final int REQUEST_IMAGE = 100;
 
     private View view;
+    private UsuarioPerfil usuarioPerfil;
     private CircleImageView userPhoto;
     private TextView txtUserNameInitial;
+    private AppCompatEditText editNome, editTelefone, editEmail;
+    private Button btnSalvarPerfil;
     private Uri selectedImage;
     private String postPath="";
 
@@ -69,8 +78,13 @@ public class EditarPerfilFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_editar_perfil, container, false);
+        initViews();
+
+        return view;
+    }
+
+    private void initViews(){
         userPhoto = view.findViewById(R.id.userPhoto);
-        txtUserNameInitial = view.findViewById(R.id.txtUserNameInitial);
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +92,60 @@ public class EditarPerfilFragment extends Fragment {
             }
         });
 
-        return view;
+        txtUserNameInitial = view.findViewById(R.id.txtUserNameInitial);
+        editNome = view.findViewById(R.id.editNome);
+        editTelefone = view.findViewById(R.id.editTelefone);
+        editEmail = view.findViewById(R.id.editEmail);
+
+        btnSalvarPerfil = view.findViewById(R.id.btnSalvarPerfil);
+        btnSalvarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Salvando perfil...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        usuarioPerfil = AppPrefsSettings.getInstance().getUser();
+        carregarDadosOffline(usuarioPerfil);
+
+    }
+
+    private void carregarDadosOffline(UsuarioPerfil usuarioPerfil) {
+        if (usuarioPerfil!=null){
+            editNome.setText(usuarioPerfil.userNome);
+            editNome.setSelection(editNome.getText().length());
+
+            editTelefone.setText(usuarioPerfil.userTelefone);
+            editTelefone.setSelection(editTelefone.getText().length());
+
+            editEmail.setText(usuarioPerfil.userEmail);
+            editEmail.setSelection(editEmail.getText().length());
+
+
+            if (usuarioPerfil.userPhoto == null){
+                if (usuarioPerfil.userNome != null){
+                    String userNameInitial = String.valueOf(usuarioPerfil.userNome.charAt(0));
+                    txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                    txtUserNameInitial.setVisibility(View.VISIBLE);
+
+                }else {
+
+                    if (usuarioPerfil.userEmail != null){
+                        String userNameInitial = String.valueOf(usuarioPerfil.userEmail.charAt(0));
+                        txtUserNameInitial.setText(userNameInitial.toUpperCase());
+                    }
+                }
+
+            }else {
+                txtUserNameInitial.setVisibility(View.GONE);
+                Picasso.get()
+                        .load(usuarioPerfil.userPhoto)
+//                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.user_placeholder)
+                        .into(userPhoto);
+            }
+        }
     }
 
     private void verificarPermissaoFotoCameraGaleria() {

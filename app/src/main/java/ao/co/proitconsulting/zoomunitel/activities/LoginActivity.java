@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private String emailTelefone,password;
     private LoginRequest loginRequest = new LoginRequest();
-    private UsuarioPerfil usuarioPerfil;
+    private UsuarioPerfil usuarioPerfil = new UsuarioPerfil();
 
 
     @Override
@@ -182,18 +183,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UsuarioAuth usuarioAuth = response.body();
 
-                    usuarioPerfil = new UsuarioPerfil(
-                            usuarioAuth.userId,
-                            usuarioAuth.userName,
-                            usuarioAuth.userEmail);
-
-                    AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
-
                     AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
-
-                    launchHomeScreen();
-
-
+                    carregarTODOSPerfiS(usuarioAuth.userId);
 
 //                    carregarMeuPerfil(userToken.tokenuser);
 
@@ -289,6 +280,60 @@ public class LoginActivity extends AppCompatActivity {
 //
 //            }
 //        });
+    }
+
+    private void carregarTODOSPerfiS(final int userID) {
+        MetodosUsados.changeMessageDialog(getString(R.string.msg_login_auth_carregando_dados));
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.getAll_USERS_PROFILES();
+
+        usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Response<List<UsuarioPerfil>> response) {
+
+                if (response.isSuccessful()) {
+
+
+                    MetodosUsados.hideLoadingDialog();
+                    if (response.body()!=null){
+
+                        for (UsuarioPerfil user: response.body()) {
+
+                            if (user.userId == userID){
+                                usuarioPerfil = user;
+                                AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
+                            }
+
+                        }
+
+
+                        launchHomeScreen();
+                    }
+
+                } else {
+                    MetodosUsados.hideLoadingDialog();
+                    AppPrefsSettings.getInstance().clearAppPrefs();
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Throwable t) {
+                AppPrefsSettings.getInstance().clearAppPrefs();
+                MetodosUsados.hideLoadingDialog();
+                if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
+                }else  if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
+                }else {
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
+                }
+
+            }
+        });
     }
 
     private void launchHomeScreen() {

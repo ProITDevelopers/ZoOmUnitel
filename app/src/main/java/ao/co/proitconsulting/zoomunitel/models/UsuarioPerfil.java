@@ -6,26 +6,23 @@ import java.io.Serializable;
 
 public class UsuarioPerfil implements Serializable {
 
-    @SerializedName("userid")
+    @SerializedName("USERID")
     public int userId;
 
-    @SerializedName("nomeCompleto")
+    @SerializedName("NOME")
     public String userNome;
 
-    @SerializedName("email")
+    @SerializedName("EMAIL")
     public String userEmail;
 
-    @SerializedName("telefone")
+    @SerializedName("TELEFONE")
     public String userTelefone;
 
 
-    @SerializedName("imagem")
+    @SerializedName("FOTOKEY")
     public String userPhoto;
 
-
-
-    public UsuarioPerfil() {
-    }
+    public UsuarioPerfil() {}
 
     public UsuarioPerfil(int userId, String userNome, String userEmail) {
         this.userId = userId;
