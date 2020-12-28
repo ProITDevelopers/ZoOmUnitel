@@ -351,7 +351,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
 
 
-                        launchHomeScreen();
+                        launchSplashScreen();
                     }
 
                 } else {
@@ -374,8 +374,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void launchHomeScreen() {
-        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+    private void launchSplashScreen() {
+        Intent intent = new Intent(RegisterActivity.this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
