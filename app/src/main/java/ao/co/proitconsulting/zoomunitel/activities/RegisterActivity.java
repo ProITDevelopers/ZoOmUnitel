@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -216,7 +217,6 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(errorMessage);
                         mensagem = jsonObject.getString("msg");
 
-                        MetodosUsados.mostrarMensagem(RegisterActivity.this,mensagem);
                         mostrarMensagemPopUp(mensagem,"true");
 
                         Log.v(TAG,"ResponseBody: "+errorMessage);
@@ -238,12 +238,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
-                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor),"false");
+                        }else{
+                            JSONObject jsonObject = new JSONObject(responseErrorMsg);
 
-                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+                            mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
 
-//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
-                        mostrarMensagemPopUp(mensagem,"false");
+                            mostrarMensagemPopUp(mensagem,"false");
+                        }
+
+
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -261,7 +266,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else  if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
                 }else {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_servidor);
                 }
                 Log.i(TAG,"onFailure" + t.getMessage());
 
@@ -311,7 +316,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else  if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
                 }else {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_servidor);
                 }
                 Log.v(TAG,"onFailure" + t.getMessage());
 
@@ -395,21 +400,57 @@ public class RegisterActivity extends AppCompatActivity {
         ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                if (status.equals("true")){
-                    autenticacaoLogin();
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    if (status.equals("true")){
+                        autenticacaoLogin();
+                    }
                 }
-            }
-        });
+            });
 
-        builder.show();
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    if (status.equals("true")){
+                        autenticacaoLogin();
+                    }
+                }
+            });
+
+            builder.show();
+        }
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//
+//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//                if (status.equals("true")){
+//                    autenticacaoLogin();
+//                }
+//            }
+//        });
+//
+//        builder.show();
 
     }
 

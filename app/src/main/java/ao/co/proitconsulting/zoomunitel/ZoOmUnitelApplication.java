@@ -2,12 +2,15 @@ package ao.co.proitconsulting.zoomunitel;
 
 import android.app.Application;
 
+
+
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 public class ZoOmUnitelApplication extends Application {
 
     private static ZoOmUnitelApplication mInstance;
+
 
     @Override
     public void onCreate() {
@@ -23,6 +26,9 @@ public class ZoOmUnitelApplication extends Application {
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
+
+
+
     }
 
     public static ZoOmUnitelApplication getInstance() {

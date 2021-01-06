@@ -118,12 +118,12 @@
                     android:textColor="@color/blue_unitel"
                     android:maxLength="20"
                     android:maxLines="1"
-                    android:inputType="textCapSentences|textPersonName"
+                    android:inputType="textCapWords"
                     android:background="@android:color/transparent"
                     android:padding="15dp"
                     android:drawableStart="@drawable/ic_baseline_person_24"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
-                    android:drawableTint="@color/orange_unitel"
+                    app:drawableTint="@color/orange_unitel"
                     android:drawablePadding="15dp"
                     />
 
@@ -151,7 +151,7 @@
                     android:padding="15dp"
                     android:drawableStart="@drawable/ic_baseline_phone_android_24"
                     android:drawableLeft="@drawable/ic_baseline_phone_android_24"
-                    android:drawableTint="@color/orange_unitel"
+                    app:drawableTint="@color/orange_unitel"
                     android:drawablePadding="15dp"/>
 
 
@@ -177,7 +177,7 @@
                     android:padding="15dp"
                     android:drawableStart="@drawable/ic_baseline_email_24"
                     android:drawableLeft="@drawable/ic_baseline_email_24"
-                    android:drawableTint="@color/orange_unitel"
+                    app:drawableTint="@color/orange_unitel"
                     android:drawablePadding="15dp"
                     />
 

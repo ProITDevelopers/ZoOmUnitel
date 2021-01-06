@@ -1,11 +1,15 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -21,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
@@ -46,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG_LoginActivity";
     private RelativeLayout login_root;
+    private Drawable editEmailDrawable, editPasswordDrawable;
     private AppCompatEditText editEmail;
     private ShowHidePasswordEditText editPassword;
     private TextView txtForgotPassword,txtRegister;
@@ -61,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         MetodosUsados.showCustomUI(this);
         setContentView(R.layout.activity_login);
 
-        Log.v(TAG,"onCreate: " + "Funcionou Verbose");
         //InitViews
         initViews();
     }
@@ -108,6 +113,30 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        setEditTextTint_Pre_lollipop();
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void setEditTextTint_Pre_lollipop(){
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            editEmailDrawable = getResources().getDrawable(R.drawable.ic_baseline_phone_email_24);
+            editPasswordDrawable = getResources().getDrawable(R.drawable.ic_baseline_lock_24);
+
+            editEmailDrawable = DrawableCompat.wrap(editEmailDrawable);
+            editPasswordDrawable = DrawableCompat.wrap(editPasswordDrawable);
+
+            DrawableCompat.setTint(editEmailDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(editEmailDrawable, PorterDuff.Mode.SRC_IN);
+
+            DrawableCompat.setTint(editPasswordDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(editPasswordDrawable, PorterDuff.Mode.SRC_IN);
+
+            editEmail.setCompoundDrawablesWithIntrinsicBounds(editEmailDrawable,null,null,null);
+            editPassword.setCompoundDrawablesWithIntrinsicBounds(editPasswordDrawable,null,null,null);
+        }
+
     }
 
     private boolean verificarCamposEmailTelefone() {
@@ -200,12 +229,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
-                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }else{
+                            JSONObject jsonObject = new JSONObject(responseErrorMsg);
 
-                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+                            mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
 
-//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
-                        mostrarMensagemPopUp(mensagem);
+                            mostrarMensagemPopUp(mensagem);
+                        }
+
+
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -225,7 +259,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else  if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
                 }else {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_servidor);
                 }
                 Log.v(TAG,"onFailure: " + t.getMessage());
 
@@ -329,7 +363,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else  if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
                 }else {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_servidor);
                 }
 
             }
@@ -362,18 +396,49 @@ public class LoginActivity extends AppCompatActivity {
         ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
 
-        builder.show();
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//
+//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
 
     }
 

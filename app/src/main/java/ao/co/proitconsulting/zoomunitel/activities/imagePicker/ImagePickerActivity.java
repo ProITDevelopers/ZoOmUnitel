@@ -2,7 +2,7 @@ package ao.co.proitconsulting.zoomunitel.activities.imagePicker;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,9 +12,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -122,16 +126,19 @@ public class ImagePickerActivity extends AppCompatActivity {
 //        });
 //        dialogLayoutEscolherFoto.show();
 
+
+        SpannableString title = new SpannableString(context.getString(R.string.lbl_set_profile_photo));
+        title.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
 //        // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.lbl_set_profile_photo));
+        builder.setTitle(title);
 
         // add a list
-        String[] animals = {context.getString(R.string.lbl_take_camera_picture), context.getString(R.string.lbl_choose_from_gallery)};
+        String[] options = {context.getString(R.string.lbl_take_camera_picture), context.getString(R.string.lbl_choose_from_gallery)};
 
-
-
-        builder.setItems(animals, new DialogInterface.OnClickListener() {
+        builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {

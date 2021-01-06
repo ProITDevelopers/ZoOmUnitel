@@ -1,12 +1,16 @@
 package ao.co.proitconsulting.zoomunitel.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -24,8 +28,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -44,7 +49,6 @@ import java.util.List;
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
-import ao.co.proitconsulting.zoomunitel.activities.RegisterActivity;
 import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivity;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
@@ -69,6 +73,7 @@ public class EditarPerfilFragment extends Fragment {
     private UsuarioPerfil usuarioPerfil;
     private CircleImageView userPhoto;
     private TextView txtUserNameInitial;
+    private Drawable nomeDrawable, telefoneDrawable, emailDrawable;
     private AppCompatEditText editNome, editTelefone, editEmail;
     private Button btnSalvarPerfil;
     private Uri selectedImage;
@@ -97,6 +102,12 @@ public class EditarPerfilFragment extends Fragment {
         editTelefone = view.findViewById(R.id.editTelefone);
         editEmail = view.findViewById(R.id.editEmail);
 
+
+        setEditTextTint_Pre_lollipop();
+
+
+
+
         btnSalvarPerfil = view.findViewById(R.id.btnSalvarPerfil);
         btnSalvarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +118,33 @@ public class EditarPerfilFragment extends Fragment {
 
         usuarioPerfil = AppPrefsSettings.getInstance().getUser();
         carregarDadosOffline(usuarioPerfil);
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void setEditTextTint_Pre_lollipop(){
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            nomeDrawable = getResources().getDrawable(R.drawable.ic_baseline_person_24);
+            telefoneDrawable = getResources().getDrawable(R.drawable.ic_baseline_phone_android_24);
+            emailDrawable = getResources().getDrawable(R.drawable.ic_baseline_email_24);
+
+            nomeDrawable = DrawableCompat.wrap(nomeDrawable);
+            telefoneDrawable = DrawableCompat.wrap(telefoneDrawable);
+            emailDrawable = DrawableCompat.wrap(emailDrawable);
+
+            DrawableCompat.setTint(nomeDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(nomeDrawable, PorterDuff.Mode.SRC_IN);
+            editNome.setCompoundDrawablesWithIntrinsicBounds(nomeDrawable,null,null,null);
+
+            DrawableCompat.setTint(telefoneDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(telefoneDrawable, PorterDuff.Mode.SRC_IN);
+            editTelefone.setCompoundDrawablesWithIntrinsicBounds(telefoneDrawable,null,null,null);
+
+            DrawableCompat.setTint(emailDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(emailDrawable, PorterDuff.Mode.SRC_IN);
+            editEmail.setCompoundDrawablesWithIntrinsicBounds(emailDrawable,null,null,null);
+        }
 
     }
 
@@ -322,7 +360,7 @@ public class EditarPerfilFragment extends Fragment {
                 } else if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet_timeout);
                 } else {
-                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_servidor);
                 }
                 Log.i(TAG, "onFailure" + t.getMessage());
             }
@@ -352,18 +390,52 @@ public class EditarPerfilFragment extends Fragment {
         ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            if (getContext()!=null){
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+
+                builder.setTitle(title);
+                builder.setMessage(message);
+
+                builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
-        });
 
-        builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//
+//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
 
     }
 

@@ -101,7 +101,7 @@
                 android:ellipsize="end"
                 android:drawableStart="@drawable/ic_baseline_person_24"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
-                android:drawableTint="@color/orange_unitel"
+                app:drawableTint="@color/orange_unitel"
                 android:drawablePadding="15dp"
                 android:layout_marginTop="5dp"
                 />
@@ -118,7 +118,7 @@
                 android:textColor="@color/blue_unitel"
                 android:drawableStart="@drawable/ic_baseline_phone_android_24"
                 android:drawableLeft="@drawable/ic_baseline_phone_android_24"
-                android:drawableTint="@color/orange_unitel"
+                app:drawableTint="@color/orange_unitel"
                 android:drawablePadding="15dp"
                 android:layout_marginTop="5dp"
                 />
@@ -136,7 +136,7 @@
                 android:textColor="@color/blue_unitel"
                 android:drawableStart="@drawable/ic_baseline_email_24"
                 android:drawableLeft="@drawable/ic_baseline_email_24"
-                android:drawableTint="@color/orange_unitel"
+                app:drawableTint="@color/orange_unitel"
                 android:drawablePadding="15dp"
                 android:layout_marginTop="5dp"
                 />

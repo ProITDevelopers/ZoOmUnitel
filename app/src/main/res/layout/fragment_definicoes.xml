@@ -71,18 +71,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgPass"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="img_lock_description"
-                android:src="@drawable/ic_baseline_lock_24"
-                app:tint="@color/orange_unitel"
-                app:layout_constraintTop_toBottomOf="@+id/linearDef"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toTopOf="@+id/txtAlterarPass"
-                app:layout_constraintBottom_toBottomOf="@+id/txtAlterarPass"
-                />
 
             <TextView
                 android:id="@+id/txtAlterarPass"
@@ -95,12 +83,14 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 android:layout_marginTop="7dp"
                 android:padding="5dp"
-                android:paddingStart="35dp"
-                android:paddingLeft="35dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/orange_unitel"
+                android:drawableStart="@drawable/ic_baseline_lock_24"
+                android:drawableLeft="@drawable/ic_baseline_lock_24"
+                app:drawableTint="@color/orange_unitel"
+                android:drawablePadding="15dp"
                 />
 
             <LinearLayout
@@ -128,17 +118,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgList"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="img_list_description"
-                android:src="@drawable/ic_baseline_list_24"
-                app:tint="@color/orange_unitel"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toTopOf="@+id/txtModoList"
-                app:layout_constraintBottom_toBottomOf="@+id/txtModoList"
-                />
 
             <TextView
                 android:id="@+id/txtModoList"
@@ -151,12 +130,15 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 android:layout_marginTop="7dp"
                 android:padding="5dp"
-                android:paddingStart="35dp"
-                android:paddingLeft="35dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/orange_unitel"
+
+                android:drawableStart="@drawable/ic_baseline_list_24"
+                android:drawableLeft="@drawable/ic_baseline_list_24"
+                app:drawableTint="@color/orange_unitel"
+                android:drawablePadding="15dp"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -170,17 +152,7 @@
                 android:theme="@style/SwitchCompatTheme"
                 />
 
-            <ImageView
-                android:id="@+id/imgGrid"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="img_grid_description"
-                android:src="@drawable/ic_baseline_grid_on_24"
-                app:tint="@color/orange_unitel"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintTop_toTopOf="@+id/txtModoGrid"
-                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"
-                />
+
 
             <TextView
                 android:id="@+id/txtModoGrid"
@@ -193,12 +165,15 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
                 android:layout_marginTop="7dp"
                 android:padding="5dp"
-                android:paddingStart="35dp"
-                android:paddingLeft="35dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:textColor="@color/orange_unitel"
+
+                android:drawableStart="@drawable/ic_baseline_grid_on_24"
+                android:drawableLeft="@drawable/ic_baseline_grid_on_24"
+                app:drawableTint="@color/orange_unitel"
+                android:drawablePadding="15dp"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -216,11 +191,10 @@
 
 
             <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
-                app:constraint_referenced_ids="switchGridMode,txtModoGrid,
-                                            imgGrid,guideline_direita,switchListMode,
-                                            txtModoList,imgList,
+                app:constraint_referenced_ids="switchGridMode,txtModoGrid,guideline_direita,switchListMode,
+                                            txtModoList,
                                             guideline_esquerda,linearVisao,
-                                            txtAlterarPass,imgPass,
+                                            txtAlterarPass,
                                             linearDef"
                 tools:visibility="visible" android:visibility="visible"/>
 

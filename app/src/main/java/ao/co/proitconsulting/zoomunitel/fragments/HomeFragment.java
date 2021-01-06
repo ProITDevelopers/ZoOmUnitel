@@ -1,19 +1,27 @@
 package ao.co.proitconsulting.zoomunitel.fragments;
 
+
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -24,6 +32,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+
+import java.io.IOException;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
@@ -116,6 +126,23 @@ public class HomeFragment extends Fragment {
 //                    swipeRefreshEstab.setRefreshing(false);
                     waitingDialog.dismiss();
                     waitingDialog.cancel();
+
+                     String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }
+
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -131,7 +158,7 @@ public class HomeFragment extends Fragment {
                 }else  if ("timeout".equals(t.getMessage())) {
                     MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet_timeout);
                 }else {
-                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro);
+                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_servidor);
                 }
             }
         });
@@ -222,6 +249,68 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            if (getContext()!=null){
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+
+                builder.setTitle(title);
+                builder.setMessage(message);
+
+                builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//
+//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
+
     }
 
 }

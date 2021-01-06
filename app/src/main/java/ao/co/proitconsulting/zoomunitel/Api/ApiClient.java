@@ -3,6 +3,8 @@ package ao.co.proitconsulting.zoomunitel.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 import ao.co.proitconsulting.zoomunitel.helper.Common;
@@ -10,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
 
@@ -36,6 +39,7 @@ public class ApiClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(Common.BASE_URL_ZOOM_UNITEL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
+//                    .addConverterFactory(ScalarsConverterFactory.create())
                     .client(okHttpClient)
                     .build();
         }
@@ -54,6 +58,17 @@ public class ApiClient {
 
         httpClient.interceptors().add(interceptor);
         httpClient.interceptors().add(new AddTokenInterceptor());
+
+        /*
+        ** RETROFIT REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
+         */
+        try {
+            httpClient.sslSocketFactory(new TLSSocketFactory());
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
 
         okHttpClient = httpClient.build();

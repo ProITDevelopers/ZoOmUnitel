@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -122,26 +123,72 @@ public class MainActivity extends AppCompatActivity {
         no.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
                 0, no.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-        builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                logOut();
-            }
-        });
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
 
-        builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+            builder.setTitle(title);
+            builder.setMessage(message);
 
-        builder.show();
+            builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    logOut();
+                }
+            });
+
+            builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    logOut();
+                }
+            });
+
+            builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(title);
+//        builder.setMessage(message);
+//
+//        builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//                logOut();
+//            }
+//        });
+//
+//        builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
 
     }
 

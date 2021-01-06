@@ -35,7 +35,7 @@
     <string name="msg_erro_campo_com_email_telefone">Preencha o campo com email ou telemóvel.</string>
     <string name="msg_erro_internet">O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.</string>
     <string name="msg_erro_internet_timeout">O tempo de comunicação excedeu. Possivelmente a internet está lenta.</string>
-    <string name="msg_erro">Algum problema ocorreu no servidor. Relate o problema.</string>
+    <string name="msg_erro_servidor">Algum problema ocorreu no servidor.</string>
     <string name="msg_erro_campo_com_letras">Preencha o campo com letras.</string>
     <string name="msg_erro_min_duas_letras">Preencha o campo no mínimo com duas letras.</string>
     <string name="msg_erro_email_invalido">Preencha o campo com email válido.</string>

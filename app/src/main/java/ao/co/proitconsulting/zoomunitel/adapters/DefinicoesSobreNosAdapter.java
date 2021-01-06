@@ -81,9 +81,6 @@ public class DefinicoesSobreNosAdapter extends RecyclerView.Adapter<DefinicoesSo
         private void goToOptionSelected(SobreNos sobreNos) {
             switch (sobreNos.getId()){
                 case 1:
-//                Intent intent = new Intent(context,AlterarPalavraPasseActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                context.startActivity(intent);
                     MetodosUsados.mostrarMensagem(context,sobreNos.getTitle());
                     break;
                 case 2:

@@ -1,11 +1,17 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
+
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
@@ -58,6 +65,9 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 //-------------------------------------------------------------//
 //-------------------------------------------------------------//
     private String email,telefone,emailPhoneValue,confirmCode,senha,confirmSenha;
+
+    private Drawable dialog_EditEmailDrawable, dialog_EditTelefoneDrawable, dialog_EditConfirmCodeDrawable;
+    private Drawable dialog_EditPasswordDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +174,43 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
         //-------------------------------------------------------------//
         //-------------------------------------------------------------//
+        setEditTextTint_Pre_lollipop();
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void setEditTextTint_Pre_lollipop(){
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+
+            dialog_EditEmailDrawable = getResources().getDrawable(R.drawable.ic_baseline_email_24);
+            dialog_EditTelefoneDrawable = getResources().getDrawable(R.drawable.ic_baseline_phone_android_24);
+            dialog_EditConfirmCodeDrawable = getResources().getDrawable(R.drawable.ic_baseline_phonelink_lock_24);
+            dialog_EditPasswordDrawable = getResources().getDrawable(R.drawable.ic_baseline_lock_24);
+
+            dialog_EditEmailDrawable = DrawableCompat.wrap(dialog_EditEmailDrawable);
+            dialog_EditTelefoneDrawable = DrawableCompat.wrap(dialog_EditTelefoneDrawable);
+            dialog_EditConfirmCodeDrawable = DrawableCompat.wrap(dialog_EditConfirmCodeDrawable);
+            dialog_EditPasswordDrawable = DrawableCompat.wrap(dialog_EditPasswordDrawable);
+
+            DrawableCompat.setTint(dialog_EditEmailDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(dialog_EditEmailDrawable, PorterDuff.Mode.SRC_IN);
+
+            DrawableCompat.setTint(dialog_EditTelefoneDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(dialog_EditTelefoneDrawable, PorterDuff.Mode.SRC_IN);
+
+            DrawableCompat.setTint(dialog_EditConfirmCodeDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(dialog_EditConfirmCodeDrawable, PorterDuff.Mode.SRC_IN);
+
+            DrawableCompat.setTint(dialog_EditPasswordDrawable,getResources().getColor(R.color.orange_unitel));
+            DrawableCompat.setTintMode(dialog_EditPasswordDrawable, PorterDuff.Mode.SRC_IN);
+
+            dialog_EditEmail.setCompoundDrawablesWithIntrinsicBounds(dialog_EditEmailDrawable,null,null,null);
+            dialog_EditTelefone.setCompoundDrawablesWithIntrinsicBounds(dialog_EditTelefoneDrawable,null,null,null);
+            dialog_EditConfirmCode.setCompoundDrawablesWithIntrinsicBounds(dialog_EditConfirmCodeDrawable,null,null,null);
+            dialog_EditPassword.setCompoundDrawablesWithIntrinsicBounds(dialog_EditPasswordDrawable,null,null,null);
+            dialog_editConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(dialog_EditPasswordDrawable,null,null,null);
+        }
 
     }
 

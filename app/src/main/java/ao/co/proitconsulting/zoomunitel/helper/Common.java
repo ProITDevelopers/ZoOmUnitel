@@ -12,9 +12,8 @@ public class Common {
     public static final String SHARE_URL_PLAYSTORE = "https://play.google.com/store/apps/details?id=";
     public static final String SHARE_URL_GOOGLE_DRIVE = "https://drive.google.com/file/d/1GOJxw-OENmFA2uL_s0QKkudofZNySaqW/view?usp=sharing";
 
-    public static String BASE_URL_ZOOM_UNITEL = "https://c35b9440e6ce.ngrok.io/";
+    public static String BASE_URL_ZOOM_UNITEL = "https://99113f7a20cb.ngrok.io/";
 
-    public static String bearerApi = "Bearer ";
 
     public static final int SPAN_COUNT_ONE = 1;
     public static final int SPAN_COUNT_TWO = 2;
