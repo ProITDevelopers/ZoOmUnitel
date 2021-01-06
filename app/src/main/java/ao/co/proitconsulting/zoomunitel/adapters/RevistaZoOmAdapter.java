@@ -83,7 +83,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
             if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
                 /*
-                 ** HttpURLConnection REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
+                 ** PICASSO REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
                  */
                 try {
 
