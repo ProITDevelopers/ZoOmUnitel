@@ -58,7 +58,6 @@ public class ImagePickerActivity extends AppCompatActivity {
 
 
 
-
     public interface PickerOptionListener {
         void onTakeCameraSelected();
 

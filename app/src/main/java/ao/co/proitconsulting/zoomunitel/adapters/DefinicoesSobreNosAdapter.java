@@ -25,8 +25,6 @@ public class DefinicoesSobreNosAdapter extends RecyclerView.Adapter<DefinicoesSo
         this.sobreNosList = sobreNosList;
     }
 
-
-
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

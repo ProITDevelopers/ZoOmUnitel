@@ -197,8 +197,6 @@ public class HomeFragment extends Fragment {
                 slideHandler.removeCallbacks(sliderRunnable);
                 slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
 
-//                Picasso.get().load(Common.getAllRevistas().get(position).getImagem()).fit().into(imgBackgnd);
-
                 if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
                     imgBackgnd.setImageResource(R.color.colorPrimary);

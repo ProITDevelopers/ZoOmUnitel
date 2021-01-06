@@ -111,7 +111,6 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         private CardView cardViewDownload,cardViewLer;
         private Button btnDownload,btnLer;
 
-
         RevistaViewHolder(@NonNull View itemView) {
             super(itemView);
             rvImgBackgnd = itemView.findViewById(R.id.rvImgBackgnd);

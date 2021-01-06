@@ -20,7 +20,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PerfilFragment extends Fragment {
 
-
     private View view;
 
     private UsuarioPerfil usuarioPerfil;

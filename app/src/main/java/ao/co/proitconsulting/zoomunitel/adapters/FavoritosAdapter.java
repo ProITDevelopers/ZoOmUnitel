@@ -45,7 +45,6 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Revi
 
     @Override
     public void onBindViewHolder(@NonNull RevistaViewHolder holder, int position) {
-//        viewPager2.setCurrentItem(position);
         holder.setDetalheInfo(revistaZoOmList.get(position));
 
     }

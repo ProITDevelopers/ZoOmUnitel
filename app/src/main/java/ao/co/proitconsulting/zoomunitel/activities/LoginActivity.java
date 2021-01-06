@@ -427,19 +427,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(title);
-//        builder.setMessage(message);
-//
-//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        builder.show();
-
     }
 
 

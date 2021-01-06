@@ -32,7 +32,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
                 if (!TextUtils.isEmpty(AppPrefsSettings.getInstance().getAuthToken())) {
-
                     launchHomeScreen();
                 }
 

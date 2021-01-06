@@ -78,7 +78,6 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
     }
 
     private void initViews() {
-
         //-------------------------------------------------------------//
         //-------------------------------------------------------------//
         //DIALOG_LAYOUT_ALTERAR_PASS_ALTER_PASS_OPTIONS

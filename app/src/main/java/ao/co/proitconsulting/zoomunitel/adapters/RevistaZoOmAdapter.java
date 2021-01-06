@@ -81,7 +81,6 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
 //            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
 
             if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-
                 /*
                  ** PICASSO REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
                  */

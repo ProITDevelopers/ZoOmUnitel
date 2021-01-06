@@ -28,8 +28,6 @@ public class WebViewActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshMain;
     private WebView webView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
