@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,6 +41,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
@@ -48,16 +50,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+
+import ao.co.proitconsulting.zoomunitel.Api.TLSSocketFactory;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.WebViewActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
+import okhttp3.OkHttpClient;
 
 public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAdapter.RevistaViewHolder>{
 
@@ -118,40 +127,71 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
         void setDetalheInfo(final RevistaZoOm revistaZoOm){
 
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-            Picasso.get()
-                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
-                    .placeholder(R.color.colorPrimary)
-                    .into(rvImgBackgnd, new Callback() {
+                /*
+                 ** HttpURLConnection REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
+                 */
+                try {
+                    rvImgBackgnd.setImageResource(R.color.colorPrimary);
 
-                        @Override
-                        public void onSuccess() {
+                    OkHttpClient.Builder okb=new OkHttpClient.Builder()
+                            .sslSocketFactory(new TLSSocketFactory());
+                    OkHttpClient ok=okb.build();
 
-                        }
+                    Picasso p=new Picasso.Builder(activity)
+                            .downloader(new OkHttp3Downloader(ok))
+                            .build();
 
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
-                        }
-                    });
 
-            Picasso.get()
-                    .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
-                    .placeholder(R.drawable.magazine_placeholder)
-                    .into(rvImg, new Callback() {
+                    p.load(Common.IMAGE_PATH + revistaZoOm.getImagem())
+                            .placeholder(R.drawable.magazine_placeholder)
+                            .into(rvImg);
 
-                        @Override
-                        public void onSuccess() {
+                } catch (KeyManagementException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
 
-                        }
+            }else{
+                Picasso.get()
+                        .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(R.color.colorPrimary)
+                        .into(rvImgBackgnd, new Callback() {
 
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
-                        }
-                    });
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().into(rvImgBackgnd);
+                            }
+                        });
+
+                Picasso.get()
+                        .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(R.drawable.magazine_placeholder)
+                        .into(rvImg, new Callback() {
+
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(rvImg);
+                            }
+                        });
+            }
+
+
+
             rvImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -320,10 +360,26 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         protected String doInBackground(String... sUrl) {
             InputStream input = null;
             OutputStream output = null;
-            HttpURLConnection connection = null;
+            HttpsURLConnection connection = null;
             try {
                 URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
+
+                if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+                    /*
+                     ** HttpURLConnection REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
+                     */
+                    try {
+                        connection.setSSLSocketFactory(new TLSSocketFactory());
+                    } catch (KeyManagementException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
                 connection.connect();
 
                 // expect HTTP 200 OK, so we don't mistakenly save error report
@@ -435,18 +491,37 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         ok.setSpan(new ForegroundColorSpan(activity.getResources().getColor(R.color.orange_unitel)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(activity);
 
-        builder.show();
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+
 
     }
 

@@ -30,20 +30,25 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
+import ao.co.proitconsulting.zoomunitel.Api.TLSSocketFactory;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 import dmax.dialog.SpotsDialog;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -166,7 +171,7 @@ public class HomeFragment extends Fragment {
 
     private void setAdapters(final List<RevistaZoOm>revistaZoOmList) {
 
-        viewPager2.setAdapter(new RevistaZoOmAdapter(revistaZoOmList));
+        viewPager2.setAdapter(new RevistaZoOmAdapter(getContext(), revistaZoOmList));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
@@ -194,22 +199,30 @@ public class HomeFragment extends Fragment {
 
 //                Picasso.get().load(Common.getAllRevistas().get(position).getImagem()).fit().into(imgBackgnd);
 
-                Picasso.get()
-                        .load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem())
-                        .networkPolicy(NetworkPolicy.OFFLINE)
-                        .placeholder(R.color.colorPrimary)
-                        .into(imgBackgnd, new Callback() {
+                if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-                            @Override
-                            public void onSuccess() {
+                    imgBackgnd.setImageResource(R.color.colorPrimary);
 
-                            }
+                }else{
+                    Picasso.get()
+                            .load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem())
+                            .networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.color.colorPrimary)
+                            .into(imgBackgnd, new Callback() {
 
-                            @Override
-                            public void onError(Exception e) {
-                                Picasso.get().load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem()).fit().into(imgBackgnd);
-                            }
-                        });
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    Picasso.get().load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem()).fit().into(imgBackgnd);
+                                }
+                            });
+                }
+
+
 
                 txtPosition.setText(String.valueOf(position+1).concat("/").concat(String.valueOf(revistaZoOmList.size())));
 
