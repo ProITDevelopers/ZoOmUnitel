@@ -1,5 +1,7 @@
 package ao.co.proitconsulting.zoomunitel.Api;
 
+import android.os.Build;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -62,13 +64,16 @@ public class ApiClient {
         /*
         ** RETROFIT REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
          */
-        try {
-            httpClient.sslSocketFactory(new TLSSocketFactory());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                httpClient.sslSocketFactory(new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         }
+
 
 
         okHttpClient = httpClient.build();

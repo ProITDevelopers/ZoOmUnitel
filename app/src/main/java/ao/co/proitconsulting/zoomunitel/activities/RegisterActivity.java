@@ -208,6 +208,8 @@ public class RegisterActivity extends AppCompatActivity {
                     editPass.setText("");
                     editConfirmPass.setText("");
 
+                    AppPrefsSettings.getInstance().clearAppPrefs();
+
                     MetodosUsados.hideLoadingDialog();
                     String errorMessage="", mensagem="";
 
@@ -304,6 +306,14 @@ public class RegisterActivity extends AppCompatActivity {
                     carregarTODOSPerfiS(usuarioAuth.userId);
 
 
+                }else{
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
             }
 
@@ -363,6 +373,11 @@ public class RegisterActivity extends AppCompatActivity {
                     waitingDialog.dismiss();
                     waitingDialog.cancel();
                     AppPrefsSettings.getInstance().clearAppPrefs();
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
 
 
