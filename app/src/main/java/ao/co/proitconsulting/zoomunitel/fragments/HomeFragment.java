@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
     private static int TIME_DELAY = 3000; // Slide duration 3 seconds
-    private SwipeRefreshLayout swipeRefreshMain;
+
 
 
 
@@ -72,13 +72,11 @@ public class HomeFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         imgBackgnd = view.findViewById(R.id.imgBackgnd);
         txtPosition = view.findViewById(R.id.txtPosition);
         viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
 
-        swipeRefreshMain = view.findViewById(R.id.swipeRefresh);
-        swipeRefreshMain.setColorSchemeResources(
-                R.color.colorPrimary,R.color.colorAccent,R.color.transparentBlack);
 
 
         verificarConecxaoNET();
@@ -93,7 +91,6 @@ public class HomeFragment extends Fragment {
             if (conMgr!=null) {
                 NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
                 if (netInfo == null){
-                    swipeRefreshMain.setRefreshing(false);
                     MetodosUsados.mostrarMensagem(getContext(),getString(R.string.msg_erro_internet));
 //                    mostarMsnErro();
                 } else {
@@ -104,7 +101,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void carregarListaRevistas() {
-        swipeRefreshMain.setRefreshing(false);
+
         final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
         waitingDialog.setMessage("Carregando...");
         waitingDialog.setCancelable(false);
@@ -117,7 +114,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(@NonNull Call<List<RevistaZoOm>> call, @NonNull Response<List<RevistaZoOm>> response) {
 
                 if (response.isSuccessful()) {
-//                    swipeRefreshEstab.setRefreshing(false);
+
 
                     if (Common.revistaZoOmList!=null)
                         Common.revistaZoOmList.clear();
@@ -134,7 +131,7 @@ public class HomeFragment extends Fragment {
                     }
 
                 } else {
-//                    swipeRefreshEstab.setRefreshing(false);
+
                     waitingDialog.dismiss();
                     waitingDialog.cancel();
 
@@ -163,7 +160,7 @@ public class HomeFragment extends Fragment {
             public void onFailure(@NonNull Call<List<RevistaZoOm>> call, @NonNull Throwable t) {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
-//                swipeRefreshEstab.setRefreshing(false);
+
                 if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)){
                     MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet);
                 }else  if ("timeout".equals(t.getMessage())) {
@@ -203,13 +200,15 @@ public class HomeFragment extends Fragment {
                 slideHandler.removeCallbacks(sliderRunnable);
                 slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
 
+                final RevistaZoOm revistaZoOm = revistaZoOmList.get(position);
+
                 if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
                     imgBackgnd.setImageResource(R.color.colorPrimary);
 
                 }else{
                     Picasso.get()
-                            .load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem())
+                            .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                             .networkPolicy(NetworkPolicy.OFFLINE)
                             .placeholder(R.color.colorPrimary)
                             .into(imgBackgnd, new Callback() {
@@ -221,7 +220,7 @@ public class HomeFragment extends Fragment {
 
                                 @Override
                                 public void onError(Exception e) {
-                                    Picasso.get().load(Common.IMAGE_PATH + revistaZoOmList.get(position).getImagem()).fit().into(imgBackgnd);
+                                    Picasso.get().load(Common.IMAGE_PATH + revistaZoOm.getImagem()).fit().into(imgBackgnd);
                                 }
                             });
                 }
@@ -264,13 +263,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        //handling swipe refresh
-        swipeRefreshMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                verificarConecxaoNET();
-            }
-        });
+
         super.onResume();
         slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
     }

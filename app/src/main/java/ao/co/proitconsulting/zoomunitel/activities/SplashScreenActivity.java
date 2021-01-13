@@ -35,6 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     launchHomeScreen();
                 }
 
+
             }
         },2000);
     }

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -27,11 +28,20 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         usuarioPerfil = AppPrefsSettings.getInstance().getUser();
-        carregarDadosOffline(usuarioPerfil);
+        verificarConecxaoNETPerfil();
         super.onResume();
     }
 
@@ -203,13 +213,57 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 txtUserNameInitial.setVisibility(View.GONE);
                 Picasso.get()
-                        .load(usuarioPerfil.userPhoto)
+                        .load(Common.USER_IMAGE_PATH + usuarioPerfil.userPhoto)
 //                        .networkPolicy(NetworkPolicy.OFFLINE)
                         .fit().centerCrop()
                         .placeholder(R.drawable.user_placeholder)
                         .into(imgUserPhoto);
             }
         }
+    }
+
+    private void verificarConecxaoNETPerfil() {
+        ConnectivityManager conMgr =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (conMgr!=null) {
+            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+            if (netInfo == null){
+                carregarDadosOffline(usuarioPerfil);
+            }else{
+                carregarMeuPerfil();
+            }
+        }
+    }
+
+    private void carregarMeuPerfil() {
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<UsuarioPerfil>> usuarioCall = apiInterface.get_USER_PROFILE(usuarioPerfil.userId);
+
+        usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Response<List<UsuarioPerfil>> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body()!=null){
+
+                        usuarioPerfil = response.body().get(0);
+                        AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
+                        carregarDadosOffline(usuarioPerfil);
+                    }
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
 

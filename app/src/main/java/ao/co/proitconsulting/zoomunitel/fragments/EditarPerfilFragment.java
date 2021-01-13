@@ -53,6 +53,7 @@ import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivity;
+import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
@@ -182,7 +183,7 @@ public class EditarPerfilFragment extends Fragment {
             }else {
                 txtUserNameInitial.setVisibility(View.GONE);
                 Picasso.get()
-                        .load(usuarioPerfil.userPhoto)
+                        .load(Common.USER_IMAGE_PATH + usuarioPerfil.userPhoto)
 //                        .networkPolicy(NetworkPolicy.OFFLINE)
                         .fit().centerCrop()
                         .placeholder(R.drawable.user_placeholder)
@@ -345,6 +346,7 @@ public class EditarPerfilFragment extends Fragment {
                     // loading profile image from local cache
 
 
+
                     String errorMessage="", mensagem="";
 
 
@@ -469,6 +471,8 @@ public class EditarPerfilFragment extends Fragment {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     waitingDialog.cancel();
+
+
                     // loading profile image from local cache
                     loadProfile(selectedImage.toString());
 

@@ -359,23 +359,25 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         protected String doInBackground(String... sUrl) {
             InputStream input = null;
             OutputStream output = null;
-            HttpsURLConnection connection = null;
+//            HttpsURLConnection connection = null;
+            HttpURLConnection connection = null;
             try {
                 URL url = new URL(sUrl[0]);
-                connection = (HttpsURLConnection) url.openConnection();
+//                connection = (HttpsURLConnection) url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
 
                 if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
                     /*
                      ** HttpURLConnection REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
                      */
-                    try {
-                        connection.setSSLSocketFactory(new TLSSocketFactory());
-                    } catch (KeyManagementException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        connection.setSSLSocketFactory(new TLSSocketFactory());
+//                    } catch (KeyManagementException e) {
+//                        e.printStackTrace();
+//                    } catch (NoSuchAlgorithmException e) {
+//                        e.printStackTrace();
+//                    }
 
                 }
 
