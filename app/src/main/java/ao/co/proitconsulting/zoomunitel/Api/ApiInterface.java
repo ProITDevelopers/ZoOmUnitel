@@ -1,8 +1,11 @@
 package ao.co.proitconsulting.zoomunitel.Api;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.models.LoginRequest;
+import ao.co.proitconsulting.zoomunitel.models.PasswordRequest;
 import ao.co.proitconsulting.zoomunitel.models.RegisterRequest;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioAuth;
@@ -21,11 +24,16 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
+    @POST("/register")
+    Call<ResponseBody> registrarCliente(@Body RegisterRequest registerRequest);
+
     @POST("/signin")
     Call<UsuarioAuth> autenticarCliente(@Body LoginRequest loginRequest);
 
-    @POST("/register")
-    Call<ResponseBody> registrarCliente(@Body RegisterRequest registerRequest);
+    @POST("/sendEmail")
+    Call<ResponseBody> sendUserEmail(@Body PasswordRequest passwordRequest);
+
+
 
     @Multipart
     @PUT("/user/image")

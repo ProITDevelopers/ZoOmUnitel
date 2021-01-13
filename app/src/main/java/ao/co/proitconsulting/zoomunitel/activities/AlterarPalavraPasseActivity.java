@@ -3,8 +3,10 @@ package ao.co.proitconsulting.zoomunitel.activities;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -13,22 +15,44 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
+import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
+import ao.co.proitconsulting.zoomunitel.models.PasswordRequest;
+import ao.co.proitconsulting.zoomunitel.models.RegisterRequest;
+import dmax.dialog.SpotsDialog;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AlterarPalavraPasseActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "TAG_PassWActivity";
 
     //DIALOG_LAYOUT_ALTERAR_PASS_ALTER_PASS_OPTIONS
     private Dialog dialogLayout_ALTERPASS_OPTIONS;
@@ -361,9 +385,71 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
 
     private void enviarEmail() {
-        dialogLayout_ALTERPASS_INSERT_CODE.show();
-        limparEmailTelefone();
-        dialogLayout_ALTERPASS_EMAIL_PHONE.cancel();
+
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog.setMessage(getString(R.string.msg_pass_send_email));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+
+        PasswordRequest passwordRequest = new PasswordRequest();
+        passwordRequest.email = email;
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.sendUserEmail(passwordRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    dialogLayout_ALTERPASS_INSERT_CODE.show();
+                    limparEmailTelefone();
+                    dialogLayout_ALTERPASS_EMAIL_PHONE.cancel();
+
+                } else {
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }else{
+                            JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                            mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
+
+                            mostrarMensagemPopUp(mensagem);
+                        }
+
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
+                Log.i(TAG,"onFailure" + t.getMessage());
+
+            }
+        });
 
     }
 
@@ -452,6 +538,67 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
         dialog_EditPassword.setError(null);
         dialog_editConfirmPassword.setError(null);
         dialogLayout_ALTERPASS_NEWPASS.cancel();
+    }
+
+    private void verificarConecxao_SENDEMAIL() {
+        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (conMgr!=null){
+            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+            if (netInfo == null) {
+                MetodosUsados.mostrarMensagem(this,R.string.msg_erro_internet);
+            } else {
+//                enviarEmail();
+
+            }
+        }
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+
+                }
+            });
+
+            builder.show();
+        }
+
+
     }
 
 

@@ -58,6 +58,7 @@
     <string name="salvando_foto">Salvando a foto…</string>
     <string name="salvando_dados">Salvando dados…</string>
     <string name="msg_login_auth_carregando_dados">Carregando dados…</string>
+    <string name="msg_pass_send_email">Enviando email…</string>
 
 
 
