@@ -6,94 +6,82 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgBackgnd"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@color/transparentBlack"
-            />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@color/transparentBlack"
-            />
+                <ImageView
+                    android:id="@+id/imgBackgnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    />
 
-    </FrameLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@color/transparentBlack"
+                    />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@color/transparentBlack"
+                    />
 
-        <TextView
-            android:id="@+id/txtPosition"
-            android:textColor="@color/white"
-            android:paddingTop="20dp"
-            android:textSize="40sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
+            </FrameLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
 
-
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPagerImageSlider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="60dp"
-            android:paddingLeft="60dp"
-            android:paddingRight="60dp"
-            android:paddingEnd="60dp"
-            />
-
-
-
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/txtPosition"
+                    android:textColor="@color/white"
+                    android:paddingTop="20dp"
+                    android:textSize="40sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    />
 
 
 
 
-
-<!--    <TextView-->
-<!--        android:id="@+id/txtPosition"-->
-<!--        android:text="jdhjhjfd"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="30sp"-->
-<!--        android:gravity="center"-->
-<!--        android:textStyle="bold"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/viewPagerImageSlider"-->
-<!--        />-->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerImageSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="60dp"
+                    android:paddingLeft="60dp"
+                    android:paddingRight="60dp"
+                    android:paddingEnd="60dp"
+                    />
 
 
-<!--    <androidx.viewpager2.widget.ViewPager2-->
-<!--        android:id="@+id/viewPagerImageSlider"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:paddingStart="60dp"-->
-<!--        android:paddingEnd="60dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/txtPosition"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        />-->
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

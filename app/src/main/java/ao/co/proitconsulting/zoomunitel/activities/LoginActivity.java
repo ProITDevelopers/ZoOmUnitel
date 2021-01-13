@@ -213,9 +213,9 @@ public class LoginActivity extends AppCompatActivity {
                     UsuarioAuth usuarioAuth = response.body();
 
                     AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
-                    carregarTODOSPerfiS(usuarioAuth.userId);
+//                    carregarTODOSPerfiS(usuarioAuth.userId);
 
-//                    carregarMeuPerfil(userToken.tokenuser);
+                    carregarMeuPerfil(usuarioAuth.userId);
 
 
                 } else {
@@ -268,58 +268,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void carregarMeuPerfil(String token) {
-//        MetodosUsados.changeMessageDialog(getString(R.string.msg_login_auth_carregando_dados));
-//        String bearerToken = Common.bearerApi.concat(token);
-//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.getPerfilLogin(bearerToken);
-//
-//        usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Response<List<UsuarioPerfil>> response) {
-//
-//                if (response.isSuccessful()) {
-//
-//
-//                    MetodosUsados.hideLoadingDialog();
-//                    if (response.body()!=null){
-//                        usuarioPerfil = response.body().get(0);
-//                        AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
-//
-//
-//                        launchHomeScreen();
-//                    }
-//
-//                } else {
-//                    MetodosUsados.hideLoadingDialog();
-//                    AppPrefsSettings.getInstance().clearAppPrefs();
-//                }
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Throwable t) {
-//                AppPrefsSettings.getInstance().clearAppPrefs();
-//                MetodosUsados.hideLoadingDialog();
-//                if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
-//                }else  if ("timeout".equals(t.getMessage())) {
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
-//                }else {
-//                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro);
-//                }
-//
-//            }
-//        });
-    }
-
-    private void carregarTODOSPerfiS(final int userID) {
+    private void carregarMeuPerfil(int userID) {
         MetodosUsados.changeMessageDialog(getString(R.string.msg_login_auth_carregando_dados));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.getAll_USERS_PROFILES();
+        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.get_USER_PROFILE(userID);
 
         usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
             @Override
@@ -331,16 +283,8 @@ public class LoginActivity extends AppCompatActivity {
                     MetodosUsados.hideLoadingDialog();
                     if (response.body()!=null){
 
-                        for (UsuarioPerfil user: response.body()) {
-
-                            if (user.userId == userID){
-                                usuarioPerfil = user;
-                                AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
-                            }
-
-                        }
-
-
+                        usuarioPerfil = response.body().get(0);
+                        AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
                         launchHomeScreen();
                     }
 
@@ -369,6 +313,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void launchHomeScreen() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

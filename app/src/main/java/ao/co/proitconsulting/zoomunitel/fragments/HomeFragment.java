@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
     private static int TIME_DELAY = 3000; // Slide duration 3 seconds
+    private SwipeRefreshLayout swipeRefreshMain;
 
 
 
@@ -73,6 +75,10 @@ public class HomeFragment extends Fragment {
         imgBackgnd = view.findViewById(R.id.imgBackgnd);
         txtPosition = view.findViewById(R.id.txtPosition);
         viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
+
+        swipeRefreshMain = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshMain.setColorSchemeResources(
+                R.color.colorPrimary,R.color.colorAccent,R.color.transparentBlack);
 
 
         verificarConecxaoNET();
@@ -87,7 +93,7 @@ public class HomeFragment extends Fragment {
             if (conMgr!=null) {
                 NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
                 if (netInfo == null){
-//                    swipeRefreshEstab.setRefreshing(false);
+                    swipeRefreshMain.setRefreshing(false);
                     MetodosUsados.mostrarMensagem(getContext(),getString(R.string.msg_erro_internet));
 //                    mostarMsnErro();
                 } else {
@@ -98,7 +104,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void carregarListaRevistas() {
-
+        swipeRefreshMain.setRefreshing(false);
         final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
         waitingDialog.setMessage("Carregando...");
         waitingDialog.setCancelable(false);
@@ -258,6 +264,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+        //handling swipe refresh
+        swipeRefreshMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                verificarConecxaoNET();
+            }
+        });
         super.onResume();
         slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 3 seconds
     }

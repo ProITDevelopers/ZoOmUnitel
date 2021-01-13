@@ -4,11 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +56,7 @@ import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivi
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioUpdate;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 import okhttp3.MediaType;
@@ -78,6 +82,7 @@ public class EditarPerfilFragment extends Fragment {
     private Button btnSalvarPerfil;
     private Uri selectedImage;
     private String postPath="";
+    private String nome,email,telefone;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -101,23 +106,23 @@ public class EditarPerfilFragment extends Fragment {
         editNome = view.findViewById(R.id.editNome);
         editTelefone = view.findViewById(R.id.editTelefone);
         editEmail = view.findViewById(R.id.editEmail);
+        btnSalvarPerfil = view.findViewById(R.id.btnSalvarPerfil);
 
 
         setEditTextTint_Pre_lollipop();
 
+        usuarioPerfil = AppPrefsSettings.getInstance().getUser();
+        carregarDadosOffline(usuarioPerfil);
 
 
-
-        btnSalvarPerfil = view.findViewById(R.id.btnSalvarPerfil);
         btnSalvarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Salvando perfil...", Toast.LENGTH_SHORT).show();
+                if (verificarCampos()){
+                    verificarConecxaoInternet();
+                }
             }
         });
-
-        usuarioPerfil = AppPrefsSettings.getInstance().getUser();
-        carregarDadosOffline(usuarioPerfil);
 
     }
 
@@ -251,6 +256,152 @@ public class EditarPerfilFragment extends Fragment {
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
+    private boolean verificarCampos() {
+
+        nome = editNome.getText().toString().trim();
+        telefone = editTelefone.getText().toString().trim();
+        email = editEmail.getText().toString().trim();
+
+
+
+        if (nome.isEmpty()){
+            editNome.setError(getString(R.string.msg_erro_campo_vazio));
+            return false;
+        }
+
+
+        if (nome.matches(".*\\d.*")){
+            editNome.setError(getString(R.string.msg_erro_campo_com_letras));
+            return false;
+        }
+
+        if (nome.length()<2){
+            editNome.setError(getString(R.string.msg_erro_min_duas_letras));
+            return false;
+        }
+
+
+
+        if (email.isEmpty()){
+            editEmail.setError(getString(R.string.msg_erro_campo_vazio));
+            return false;
+        }
+
+        if (!MetodosUsados.validarEmail(email)){
+            editEmail.setError(getString(R.string.msg_erro_email_invalido));
+            return false;
+        }
+
+
+        if (telefone.isEmpty()){
+            editTelefone.setError(getString(R.string.msg_erro_campo_vazio));
+            return false;
+        }
+
+        if (!telefone.matches("9[1-9][0-9]\\d{6}")){
+            editTelefone.setError(getString(R.string.msg_erro_num_telefone_invalido));
+            return false;
+        }
+
+
+        return true;
+    }
+
+    private void verificarConecxaoInternet() {
+        if (getActivity()!=null) {
+            ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (conMgr!=null){
+                NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+                if (netInfo == null) {
+                    MetodosUsados.mostrarMensagem(getActivity(),R.string.msg_erro_internet);
+                } else {
+                    actualizarPerfil();
+
+                }
+            }
+        }
+
+    }
+
+    private void actualizarPerfil(){
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        waitingDialog.setMessage(getString(R.string.salvando_dados));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+        UsuarioUpdate usuarioUpdate = new UsuarioUpdate();
+        usuarioUpdate.userNome = nome;
+        usuarioUpdate.userTelefone = telefone;
+        usuarioUpdate.userEmail = email;
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> enviarDadosPerfil = apiInterface.actualizarPerfil(usuarioUpdate);
+
+        enviarDadosPerfil.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    waitingDialog.cancel();
+                    // loading profile image from local cache
+
+
+                    String errorMessage="", mensagem="";
+
+
+                    try {
+                        errorMessage = response.body().string();
+                        JSONObject jsonObject = new JSONObject(errorMessage);
+                        mensagem = jsonObject.getString("msg");
+
+                        MetodosUsados.mostrarMensagem(getContext(),mensagem);
+                        mostrarMensagemPopUp(mensagem);
+
+                        Log.v(TAG,"ResponseBody: "+errorMessage);
+
+
+                    }catch (JSONException | IOException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+
+
+                } else {
+                    waitingDialog.cancel();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                waitingDialog.cancel();
+                if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)) {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet);
+                } else if ("timeout".equals(t.getMessage())) {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet_timeout);
+                } else {
+                    MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_servidor);
+                }
+                Log.i(TAG, "onFailure" + t.getMessage());
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -271,12 +422,29 @@ public class EditarPerfilFragment extends Fragment {
 //                    // loading profile image from local cache
 //                    loadProfile(uri.toString());
 
-                    salvarFoto(postPath);
+//                    salvarFoto(postPath);
+                    verificarConecxaoInternetFOTO();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    private void verificarConecxaoInternetFOTO() {
+        if (getActivity()!=null) {
+            ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (conMgr!=null){
+                NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+                if (netInfo == null) {
+                    MetodosUsados.mostrarMensagem(getActivity(),R.string.msg_erro_internet);
+                } else {
+                    salvarFoto(postPath);
+
+                }
+            }
+        }
+
     }
 
     private void salvarFoto(String postPath) {
@@ -336,17 +504,12 @@ public class EditarPerfilFragment extends Fragment {
 
                         Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
-                        JSONObject jsonObject = new JSONObject(responseErrorMsg);
-
-                        mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
-
-//                        MetodosUsados.mostrarMensagem(LoginActivity.this,mensagem);
-                        mostrarMensagemPopUp(mensagem);
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }catch (JSONException err){
-                        Log.v(TAG, err.toString());
                     }
 
                 }

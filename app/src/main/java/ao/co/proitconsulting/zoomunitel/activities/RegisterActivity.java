@@ -303,7 +303,8 @@ public class RegisterActivity extends AppCompatActivity {
                     UsuarioAuth usuarioAuth = response.body();
 
                     AppPrefsSettings.getInstance().saveAuthToken(usuarioAuth.userToken);
-                    carregarTODOSPerfiS(usuarioAuth.userId);
+                    carregarMeuPerfil(usuarioAuth.userId);
+
 
 
                 }else{
@@ -335,7 +336,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void carregarTODOSPerfiS(final int userID) {
+    private void carregarMeuPerfil(final int userID) {
         final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
         waitingDialog.setMessage(getString(R.string.msg_login_auth_carregando_dados));
         waitingDialog.setCancelable(false);
@@ -343,7 +344,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.getAll_USERS_PROFILES();
+        Call<List<UsuarioPerfil>>  usuarioCall = apiInterface.get_USER_PROFILE(userID);
 
         usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
             @Override
@@ -357,15 +358,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (response.body()!=null){
 
-                        for (UsuarioPerfil user: response.body()) {
+//                        for (UsuarioPerfil user: response.body()) {
+//
+//                            if (user.userId == userID){
+//                                AppPrefsSettings.getInstance().saveUser(user);
+//                            }
+//
+//                        }
 
-                            if (user.userId == userID){
-                                AppPrefsSettings.getInstance().saveUser(user);
-                            }
-
-                        }
-
-
+                        UsuarioPerfil user = response.body().get(0);
+                        AppPrefsSettings.getInstance().saveUser(user);
                         launchSplashScreen();
                     }
 
