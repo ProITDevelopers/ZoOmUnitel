@@ -144,7 +144,7 @@ public class WebViewActivity extends AppCompatActivity {
 
                 if(progress == 100) {
                     progressDialog.dismiss();
-                    swipeRefreshMain.setEnabled(true);
+                    swipeRefreshMain.setEnabled(false);
                 }
             }
         });

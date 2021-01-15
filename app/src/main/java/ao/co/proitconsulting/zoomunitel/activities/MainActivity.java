@@ -245,11 +245,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
 
-                    if (response.body()!=null){
+                    if (response.body()!=null && response.body().size()>0){
 
                         usuarioPerfil = response.body().get(0);
                         AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
                         carregarDadosOffline(usuarioPerfil);
+                    }else{
+                        mostrarMensagemPopUp("Seu perfil foi eliminado.");
                     }
 
                 }
@@ -264,6 +266,57 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+            builder.setTitle(title);
+            builder.setMessage(message);
+            builder.setCancelable(false);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    logOut();
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title);
+            builder.setMessage(message);
+            builder.setCancelable(false);
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    logOut();
+                }
+            });
+
+            builder.show();
+        }
+
+
     }
 
 

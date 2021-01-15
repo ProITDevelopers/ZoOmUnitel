@@ -3,10 +3,15 @@ package ao.co.proitconsulting.zoomunitel.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,11 +150,13 @@ public class PerfilFragment extends Fragment {
 
                     waitingDialog.cancel();
                     waitingDialog.dismiss();
-                    if (response.body()!=null){
+                    if (response.body()!=null && response.body().size()>0){
 
                         usuarioPerfil = response.body().get(0);
                         AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
                         carregarDadosOffline(usuarioPerfil);
+                    }else{
+                        mostrarMensagemPopUp("Seu perfil foi eliminado.");
                     }
 
                 } else {
@@ -169,5 +176,55 @@ public class PerfilFragment extends Fragment {
 
             }
         });
+    }
+
+    private void mostrarMensagemPopUp(String msg) {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        SpannableString message = new SpannableString(msg);
+        message.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.blue_unitel)),
+                0, message.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        SpannableString ok = new SpannableString(getString(R.string.text_ok));
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+                0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+
+                }
+            });
+
+            builder.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(title);
+            builder.setMessage(message);
+
+
+            builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+
+
     }
 }
