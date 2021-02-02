@@ -1,7 +1,5 @@
 package ao.co.proitconsulting.zoomunitel.Api;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.models.LoginRequest;
@@ -16,6 +14,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -32,6 +31,14 @@ public interface ApiInterface {
 
     @POST("/sendEmail")
     Call<ResponseBody> sendUserEmail(@Body PasswordRequest passwordRequest);
+
+    @POST("/verifyCode")
+    Call<ResponseBody> sendVerificationCode(@Body PasswordRequest passwordRequest);
+
+    @PUT("/resetPass")
+    Call<ResponseBody> resetPassWord(@Header("Authorization") String bearerToken, @Body PasswordRequest passwordRequest);
+
+
 
 
 

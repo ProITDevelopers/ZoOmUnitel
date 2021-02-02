@@ -2,7 +2,6 @@ package ao.co.proitconsulting.zoomunitel.activities.imagePicker;
 
 import android.Manifest;
 import android.app.Activity;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;

@@ -55,40 +55,15 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/orange_unitel"
                         android:gravity="center"
-                        android:text="Insira o seu código de confirmação"
+                        android:text="Código de redefinição enviado para"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/blue_unitel"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:text="Não recebeu o código?"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        />
 
-                    <TextView
-                        android:id="@+id/txtTenteOutraVez"
-                        android:layout_width="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="@color/orange_unitel"
-                        android:layout_height="wrap_content"
-                        android:text="Tentar outra vez"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        />
+
 
                     <TextView
                         android:id="@+id/txt_EmailTelefone_Result"
@@ -101,7 +76,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="center"
                         android:lines="2"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -123,7 +98,7 @@
                                 android:id="@+id/dialog_EditConfirmCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Código de confirmação"
+                                android:hint="Código de redefinição"
                                 android:textColor="@color/blue_unitel"
                                 android:maxLines="1"
                                 android:maxLength="6"

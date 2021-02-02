@@ -1,7 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
 
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -41,9 +41,10 @@ import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
+import ao.co.proitconsulting.zoomunitel.helper.NotificationHelper;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.PasswordRequest;
-import ao.co.proitconsulting.zoomunitel.models.RegisterRequest;
+import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
 import dmax.dialog.SpotsDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -70,7 +71,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 //-------------------------------------------------------------//
     //DIALOG_LAYOUT_ALTERAR_PASS_INSERT_CODE
     private Dialog dialogLayout_ALTERPASS_INSERT_CODE;
-    private TextView txtTenteOutraVez, txt_EmailTelefone_Result;
+    private TextView  txt_EmailTelefone_Result;
     private ShowHidePasswordEditText dialog_EditConfirmCode;
     private Button dialog_btn_cancelar_InsertCode,dialog_btn_confirmar_InsertCode;
 //-------------------------------------------------------------//
@@ -88,10 +89,11 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
     private Button dialog_btn_sucesso;
 //-------------------------------------------------------------//
 //-------------------------------------------------------------//
-    private String email,telefone,emailPhoneValue,confirmCode,senha,confirmSenha;
+    private String email,telefone,emailPhoneValue,confirmCode,senha,confirmSenha, tempTOKEN, MY_DEFAULT_TOKEN;
 
     private Drawable dialog_EditEmailDrawable, dialog_EditTelefoneDrawable, dialog_EditConfirmCodeDrawable;
     private Drawable dialog_EditPasswordDrawable;
+    private NotificationHelper notificationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +154,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
         if (dialogLayout_ALTERPASS_INSERT_CODE.getWindow()!=null)
             dialogLayout_ALTERPASS_INSERT_CODE.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        txtTenteOutraVez = dialogLayout_ALTERPASS_INSERT_CODE.findViewById(R.id.txtTenteOutraVez);
+
         txt_EmailTelefone_Result = dialogLayout_ALTERPASS_INSERT_CODE.findViewById(R.id.txt_EmailTelefone_Result);
         dialog_EditConfirmCode = dialogLayout_ALTERPASS_INSERT_CODE.findViewById(R.id.dialog_EditConfirmCode);
         dialog_btn_cancelar_InsertCode = dialogLayout_ALTERPASS_INSERT_CODE.findViewById(R.id.dialog_btn_cancelar_InsertCode);
@@ -199,6 +201,11 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
         //-------------------------------------------------------------//
         setEditTextTint_Pre_lollipop();
 
+        if (!TextUtils.isEmpty(AppPrefsSettings.getInstance().getAuthToken())){
+            MY_DEFAULT_TOKEN = AppPrefsSettings.getInstance().getAuthToken();
+        }
+        AppPrefsSettings.getInstance().deleteToken();
+        notificationHelper = new NotificationHelper(AlterarPalavraPasseActivity.this);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -405,7 +412,25 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
                     waitingDialog.dismiss();
                     waitingDialog.cancel();
+                    String msgTitle = "";
+                    UsuarioPerfil usuarioPerfil = AppPrefsSettings.getInstance().getUser();
+                    if (usuarioPerfil!=null){
+                        if (usuarioPerfil.userNome != null){
 
+                            msgTitle = "Olá, "+usuarioPerfil.userNome;
+                        }
+                    }else{
+                        msgTitle = "Email enviado!";
+                    }
+
+
+
+                    notificationHelper.createNotification(
+                            msgTitle,
+                            "Foi-lhe enviado(a) um e-mail com o código de redefinição da sua palavra-passe!",
+                            false);
+
+                    txt_EmailTelefone_Result.setText(email);
                     dialogLayout_ALTERPASS_INSERT_CODE.show();
                     limparEmailTelefone();
                     dialogLayout_ALTERPASS_EMAIL_PHONE.cancel();
@@ -446,7 +471,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
-                Log.i(TAG,"onFailure" + t.getMessage());
+                Log.v(TAG,"onFailure" + t.getMessage());
 
             }
         });
@@ -490,10 +515,91 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
     }
 
     private void enviarConfirmCode() {
-        dialogLayout_ALTERPASS_NEWPASS.show();
-        dialog_EditConfirmCode.setText(null);
-        dialog_EditConfirmCode.setError(null);
-        dialogLayout_ALTERPASS_INSERT_CODE.cancel();
+
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog.setMessage(getString(R.string.msg_login_auth_verification));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+
+        PasswordRequest passwordRequest = new PasswordRequest();
+        passwordRequest.email = email;
+        passwordRequest.codigo = confirmCode;
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.sendVerificationCode(passwordRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    dialogLayout_ALTERPASS_NEWPASS.show();
+                    dialog_EditConfirmCode.setText(null);
+                    dialog_EditConfirmCode.setError(null);
+                    dialogLayout_ALTERPASS_INSERT_CODE.cancel();
+
+                    String mensagem="";
+
+
+                    try {
+                        mensagem = response.body().string();
+                        JSONObject jsonObject = new JSONObject(mensagem);
+                        tempTOKEN = jsonObject.getString("token");
+
+
+                        Log.v(TAG,"ResponseBody: "+mensagem);
+
+
+                    }catch (JSONException | IOException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+
+                } else {
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }else{
+                            JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                            mensagem = jsonObject.getString("mensagem");
+
+                            mostrarMensagemPopUp(mensagem);
+                        }
+
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
+                Log.i(TAG,"onFailure" + t.getMessage());
+
+            }
+        });
     }
 
     private boolean verificarCampoSenha() {
@@ -531,13 +637,96 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
     }
 
     private void enviarNovaSenha() {
-        imgStatusSuccess.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-        dialogLayout_SUCESSO.show();
-        dialog_EditPassword.setText(null);
-        dialog_editConfirmPassword.setText(null);
-        dialog_EditPassword.setError(null);
-        dialog_editConfirmPassword.setError(null);
-        dialogLayout_ALTERPASS_NEWPASS.cancel();
+
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog.setMessage(getString(R.string.msg_register_quase_pronto));
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
+
+
+        PasswordRequest passwordRequest = new PasswordRequest();
+        passwordRequest.novapassword = senha;
+
+
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.resetPassWord("Bearer "+tempTOKEN, passwordRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    String mensagem="";
+
+                    AppPrefsSettings.getInstance().saveAuthToken(MY_DEFAULT_TOKEN);
+                    try {
+                        mensagem = response.body().string();
+                        JSONObject jsonObject = new JSONObject(mensagem);
+                        String result = jsonObject.getString("mensagem");
+
+                        dialog_txtConfirmSucesso.setText(result);
+                        imgStatusSuccess.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
+                        dialogLayout_SUCESSO.show();
+
+                        dialog_EditPassword.setText(null);
+                        dialog_editConfirmPassword.setText(null);
+                        dialog_EditPassword.setError(null);
+                        dialog_editConfirmPassword.setError(null);
+                        dialogLayout_ALTERPASS_NEWPASS.cancel();
+
+                        Log.v(TAG,"ResponseBody: "+mensagem);
+
+
+                    }catch (JSONException | IOException err){
+                        Log.v(TAG, err.toString());
+                    }
+
+
+
+                } else {
+
+                    waitingDialog.dismiss();
+                    waitingDialog.cancel();
+
+                    String responseErrorMsg ="",mensagem ="";
+
+                    try {
+                        responseErrorMsg = response.errorBody().string();
+
+                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+
+                        if (responseErrorMsg.contains("Tunnel")){
+                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+                        }else{
+                            JSONObject jsonObject = new JSONObject(responseErrorMsg);
+
+                            mensagem = jsonObject.getString( "msg");
+
+                            mostrarMensagemPopUp(mensagem);
+                        }
+
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }catch (JSONException err){
+                        Log.v(TAG, err.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                waitingDialog.dismiss();
+                waitingDialog.cancel();
+                Log.i(TAG,"onFailure" + t.getMessage());
+
+            }
+        });
     }
 
     private void verificarConecxao_SENDEMAIL() {
@@ -601,5 +790,10 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        if (MY_DEFAULT_TOKEN !=null)
+            AppPrefsSettings.getInstance().saveAuthToken(MY_DEFAULT_TOKEN);
+        super.onDestroy();
+    }
 }

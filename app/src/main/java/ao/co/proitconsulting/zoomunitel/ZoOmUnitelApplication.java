@@ -2,8 +2,6 @@ package ao.co.proitconsulting.zoomunitel;
 
 import android.app.Application;
 
-
-
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 

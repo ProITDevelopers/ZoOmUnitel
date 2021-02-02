@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,6 @@ import ao.co.proitconsulting.zoomunitel.activities.AlterarPalavraPasseActivity;
 import ao.co.proitconsulting.zoomunitel.adapters.DefinicoesSobreNosAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
-import ao.co.proitconsulting.zoomunitel.utilsClasses.trocarTema.ThemeView;
 
 public class DefinicoesFragment extends Fragment implements View.OnClickListener {
 
