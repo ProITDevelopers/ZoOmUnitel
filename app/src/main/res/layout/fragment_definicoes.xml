@@ -93,107 +93,15 @@
                 android:drawablePadding="15dp"
                 />
 
-            <LinearLayout
-                android:id="@+id/linearVisao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtAlterarPass"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="15dp"
-                android:padding="8dp"
-                android:background="@color/orange_unitel"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="19sp"
-                    android:text="Visualização"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"
-                    />
-
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/txtModoList"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Modo lista"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/linearVisao"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                android:layout_marginTop="7dp"
-                android:padding="5dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/orange_unitel"
-
-                android:drawableStart="@drawable/ic_baseline_list_24"
-                android:drawableLeft="@drawable/ic_baseline_list_24"
-                app:drawableTint="@color/orange_unitel"
-                android:drawablePadding="15dp"
-                />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchListMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/linearVisao"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                app:layout_constraintTop_toTopOf="@+id/txtModoList"
-                app:layout_constraintBottom_toBottomOf="@+id/txtModoList"
-                android:theme="@style/SwitchCompatTheme"
-                />
-
-
-
-            <TextView
-                android:id="@+id/txtModoGrid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Modo grelha"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txtModoList"
-                app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                android:layout_marginTop="7dp"
-                android:padding="5dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/orange_unitel"
-
-                android:drawableStart="@drawable/ic_baseline_grid_on_24"
-                android:drawableLeft="@drawable/ic_baseline_grid_on_24"
-                app:drawableTint="@color/orange_unitel"
-                android:drawablePadding="15dp"
-                />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchGridMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/switchListMode"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_direita"
-                app:layout_constraintTop_toTopOf="@+id/txtModoGrid"
-                app:layout_constraintBottom_toBottomOf="@+id/txtModoGrid"
-                android:theme="@style/SwitchCompatTheme"/>
 
 
 
 
 
             <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
-                app:constraint_referenced_ids="switchGridMode,txtModoGrid,guideline_direita,switchListMode,
-                                            txtModoList,
-                                            guideline_esquerda,linearVisao,
+                app:constraint_referenced_ids="guideline_direita,
+                                            guideline_esquerda,
                                             txtAlterarPass,
                                             linearDef"
                 tools:visibility="visible" android:visibility="visible"/>
@@ -203,7 +111,7 @@
                 android:id="@+id/linearSobre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtModoGrid"
+                app:layout_constraintTop_toBottomOf="@+id/txtAlterarPass"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="15dp"

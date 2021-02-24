@@ -15,11 +15,11 @@
             android:icon="@drawable/ic_baseline_person_24"
             app:iconTint="@color/orange_unitel"
             android:title="@string/menu_perfil" />
-        <item
-            android:id="@+id/nav_favoritos"
-            android:icon="@drawable/ic_baseline_star_24"
-            app:iconTint="@color/orange_unitel"
-            android:title="@string/menu_favoritos" />
+<!--        <item-->
+<!--            android:id="@+id/nav_favoritos"-->
+<!--            android:icon="@drawable/ic_baseline_star_24"-->
+<!--            app:iconTint="@color/orange_unitel"-->
+<!--            android:title="@string/menu_favoritos" />-->
 
         <item
             android:id="@+id/nav_definicoes"

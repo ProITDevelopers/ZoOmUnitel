@@ -25,8 +25,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
 
     private View view;
 
-    private TextView txtAlterarPass,txtModoList,txtModoGrid;
-    private SwitchCompat switchListMode,switchGridMode;
+    private TextView txtAlterarPass;
     private RecyclerView recyclerViewSobre;
     private LinearLayoutManager layoutManager;
 
@@ -50,12 +49,6 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
 
 
         txtAlterarPass =  view.findViewById(R.id.txtAlterarPass);
-        txtModoList =  view.findViewById(R.id.txtModoList);
-        txtModoGrid =  view.findViewById(R.id.txtModoGrid);
-
-
-        switchListMode =  view.findViewById(R.id.switchListMode);
-        switchGridMode =  view.findViewById(R.id.switchGridMode);
 
 
         layoutManager = new LinearLayoutManager(getContext());
@@ -70,35 +63,6 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
 
     private void viewsClicked(){
         txtAlterarPass.setOnClickListener(this);
-        txtModoList.setOnClickListener(this);
-        txtModoGrid.setOnClickListener(this);
-
-        switchListMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    switchGridMode.setChecked(false);
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtModoList.getText().toString().concat(" activado."));
-                }else{
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtModoList.getText().toString().concat(" desactivado."));
-                }
-            }
-        });
-
-
-        switchGridMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    switchListMode.setChecked(false);
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtModoGrid.getText().toString().concat(" activado."));
-                }else{
-                    MetodosUsados.mostrarMensagem(getContext(),""+txtModoGrid.getText().toString().concat(" desactivado."));
-                }
-            }
-        });
-
-
 
     }
 
@@ -119,25 +83,7 @@ public class DefinicoesFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
 
-            case R.id.txtModoList :
-                checkSwitchTextViews(switchListMode,txtModoList);
-                break;
-
-            case R.id.txtModoGrid :
-                checkSwitchTextViews(switchGridMode,txtModoGrid);
-                break;
-
         }
     }
 
-    private void checkSwitchTextViews(SwitchCompat switchCompat, TextView textView){
-
-        if (!switchCompat.isChecked()){
-            switchCompat.setChecked(true);
-            MetodosUsados.mostrarMensagem(getContext(),""+textView.getText().toString().concat(" activado."));
-        }else{
-            switchCompat.setChecked(false);
-            MetodosUsados.mostrarMensagem(getContext(),""+textView.getText().toString().concat(" desactivado."));
-        }
-    }
 }

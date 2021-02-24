@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         usuarioPerfil = AppPrefsSettings.getInstance().getUser();
+        carregarDadosOffline(usuarioPerfil);
         verificarConecxaoNETPerfil();
         super.onResume();
     }
@@ -224,9 +225,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager conMgr =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if (conMgr!=null) {
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-            if (netInfo == null){
-                carregarDadosOffline(usuarioPerfil);
-            }else{
+            if (netInfo != null){
                 carregarMeuPerfil();
             }
         }

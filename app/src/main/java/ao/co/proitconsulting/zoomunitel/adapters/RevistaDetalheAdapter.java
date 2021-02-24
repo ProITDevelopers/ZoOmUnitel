@@ -182,12 +182,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
 
 
 
-            rvImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), ""+revistaZoOm.getTitle(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
 
 
 

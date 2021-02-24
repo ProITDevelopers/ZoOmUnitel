@@ -69,7 +69,7 @@ public class RevistaDetalheActivity extends AppCompatActivity {
 //                slideHandler.removeCallbacks(sliderRunnable);
 //                slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 15 seconds
 
-                toolbarTitle = Common.revistaZoOmList.get(position).getTitle();
+                toolbarTitle = Common.revistaZoOmList.get(position).getCategoria();
 
                 if (getSupportActionBar()!=null){
                     getSupportActionBar().setTitle(toolbarTitle);
