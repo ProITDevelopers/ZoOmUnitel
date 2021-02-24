@@ -66,21 +66,16 @@ public class RevistaDetalheActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(final int position) {
                 super.onPageSelected(position);
-//                slideHandler.removeCallbacks(sliderRunnable);
-//                slideHandler.postDelayed(sliderRunnable,TIME_DELAY); // Slide duration 15 seconds
 
-                toolbarTitle = Common.revistaZoOmList.get(position).getCategoria();
+
+//                toolbarTitle = Common.revistaZoOmList.get(position).getCategoria();
+                toolbarTitle = "ZoOm Unitel";
 
                 if (getSupportActionBar()!=null){
                     getSupportActionBar().setTitle(toolbarTitle);
                 }
 
 
-//                if (position+1 == Common.getAllRevistas().size()){
-//
-//                    slideHandler.postDelayed(runnable,TIME_DELAY); // Slide duration 10 seconds
-//
-//                }
             }
 
 
