@@ -12,9 +12,9 @@ import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
 public class AppPrefsSettings {
 
     private static final String APP_SHARED_PREF_NAME = "ZM_UNITEL_REF";
-    private static final String KEY_USER = "USUARIO_KEY";
-    private static final String KEY_AUTH_TOKEN = "USER_AUTH_TOKEN";
-    private static final String KEY_CHANGE_VIEW = "CHANGE_VIEW";
+    private static final String KEY_USER = "ZM_USER_KEY";
+    private static final String KEY_AUTH_TOKEN = "ZM_AUTH_TOKEN";
+    private static final String KEY_CHANGE_VIEW = "ZM_CHANGE_VIEW";
 
     private static AppPrefsSettings mInstance;
     private static SharedPreferences sharedPreferences;

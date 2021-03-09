@@ -16,9 +16,6 @@
     <string name="hint_registe_se">Não tem uma conta? Registe-se</string>
     <string name="msg_login_auth_verification">Verificando…</string>
     <string name="msg_login_auth_validando">Validando os dados…</string>
-    <string name="msg_email_palavra_passe_errada">As suas credenciais estão erradas</string>
-    <string name="criar_conta">Criar conta</string>
-    <string name="msg_erro_user_not_found">Este usuário não exite!</string>
 
     <!--    ============================REGISTER HINTS===========================-->
     <string name="primeiro_nome">Nome de usuário</string>
@@ -59,7 +56,6 @@
     <string name="salvando_dados">Salvando dados…</string>
     <string name="msg_login_auth_carregando_dados">Carregando dados…</string>
     <string name="msg_pass_send_email">Enviando email…</string>
-
 
 
 </resources>

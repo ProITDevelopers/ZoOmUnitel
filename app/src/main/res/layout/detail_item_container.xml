@@ -19,7 +19,7 @@
             <FrameLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:fillViewport="true"
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingTop="20dp"

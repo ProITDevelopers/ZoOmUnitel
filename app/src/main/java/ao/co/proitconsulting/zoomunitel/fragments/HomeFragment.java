@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void transformPage(@NonNull View page, float position) {
                 float r = 1 - Math.abs(position);
-                page.setScaleY(0.85f + r * 0.25f);
+                page.setScaleY(0.60f + r * 0.25f);
             }
         });
 

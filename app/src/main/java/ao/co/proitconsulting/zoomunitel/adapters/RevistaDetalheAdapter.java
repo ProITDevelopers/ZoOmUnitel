@@ -53,7 +53,7 @@ import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.TLSSocketFactory;
 import ao.co.proitconsulting.zoomunitel.R;
-import ao.co.proitconsulting.zoomunitel.activities.WebViewActivity;
+import ao.co.proitconsulting.zoomunitel.activities.PdfViewActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
@@ -233,7 +233,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
     }
 
     private void gotoWebView(RevistaZoOm revistaZoOm) {
-        Intent intent = new Intent(activity, WebViewActivity.class);
+        Intent intent = new Intent(activity, PdfViewActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("link",Common.PDF_PATH + revistaZoOm.getPdfLink());
         activity.startActivity(intent);

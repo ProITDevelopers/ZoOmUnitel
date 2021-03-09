@@ -67,6 +67,11 @@ dependencies {
     //RoundedImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
+    //FILE-LOADER
+    implementation 'com.github.kk121:File-Loader:1.2' //1.5MB
+    //BARTEKSC:PDF-VIEWER
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2' //12MB
+
 
     //RETROFIT
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
