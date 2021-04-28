@@ -56,6 +56,7 @@
     <string name="salvando_dados">Salvando dados…</string>
     <string name="msg_login_auth_carregando_dados">Carregando dados…</string>
     <string name="msg_pass_send_email">Enviando email…</string>
+    <string name="tentar_outra_vez">Tentar outra vez</string>
 
 
 </resources>

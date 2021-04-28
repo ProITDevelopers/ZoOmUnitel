@@ -53,6 +53,7 @@ import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.TLSSocketFactory;
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.LoginActivity;
 import ao.co.proitconsulting.zoomunitel.activities.PdfViewActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
@@ -76,7 +77,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
     public RevistaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new RevistaViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.detail_item_container,
+                        R.layout.revista_item_detail,
                         parent,
                         false)
         );
@@ -442,7 +443,8 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         if (conMgr!=null){
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (netInfo == null){
-                Toast.makeText(activity, "Sem acesso a internet!", Toast.LENGTH_SHORT).show();
+                MetodosUsados.mostrarMensagem(activity, activity.getString(R.string.msg_erro_internet));
+
             }else{
                 downLoadPDF(revistaZoOm);;
             }
@@ -457,7 +459,7 @@ public class RevistaDetalheAdapter extends RecyclerView.Adapter<RevistaDetalheAd
         if (conMgr!=null){
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (netInfo == null){
-                Toast.makeText(activity, "Sem acesso a internet!", Toast.LENGTH_SHORT).show();
+                MetodosUsados.mostrarMensagem(activity, activity.getString(R.string.msg_erro_internet));
             }else{
                 gotoWebView(revistaZoOm);;
             }

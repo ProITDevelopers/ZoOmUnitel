@@ -13,8 +13,11 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -177,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (conMgr!=null){
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (netInfo == null) {
-                MetodosUsados.mostrarMensagem(this,R.string.msg_erro_internet);
+                MetodosUsados.mostrarMensagem(this, getString(R.string.msg_erro_internet));
             } else {
                 registrandoUsuario();
 
@@ -264,11 +267,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 MetodosUsados.hideLoadingDialog();
                 if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet));
                 }else  if ("timeout".equals(t.getMessage())) {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_servidor);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_servidor));
                 }
                 Log.i(TAG,"onFailure" + t.getMessage());
 
@@ -323,11 +326,11 @@ public class RegisterActivity extends AppCompatActivity {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
                 if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet));
                 }else  if ("timeout".equals(t.getMessage())) {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_internet_timeout);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
-                    MetodosUsados.mostrarMensagem(RegisterActivity.this,R.string.msg_erro_servidor);
+                    MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_servidor));
                 }
                 Log.v(TAG,"onFailure" + t.getMessage());
 
@@ -405,7 +408,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void mostrarMensagemPopUp(String msg, final String status) {
         SpannableString title = new SpannableString(getString(R.string.app_name));
-        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         SpannableString message = new SpannableString(msg);
@@ -414,15 +417,16 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         SpannableString ok = new SpannableString(getString(R.string.text_ok));
-        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this,R.style.MyDialogTheme);
 
             builder.setTitle(title);
             builder.setMessage(message);
+            builder.setCancelable(false);
 
             builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -436,9 +440,10 @@ public class RegisterActivity extends AppCompatActivity {
 
             builder.show();
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
+            builder.setCancelable(false);
 
             builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -453,21 +458,23 @@ public class RegisterActivity extends AppCompatActivity {
             builder.show();
         }
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(title);
-//        builder.setMessage(message);
-//
-//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//                if (status.equals("true")){
-//                    autenticacaoLogin();
-//                }
-//            }
-//        });
-//
-//        builder.show();
+    }
+
+    private void showCustomToast(Context mContexto, int imageResource, String mensagem) {
+        ViewGroup viewGroup = findViewById(R.id.container_toast);
+        View view = getLayoutInflater().inflate(R.layout.custom_toast_message,viewGroup);
+
+        ImageView imgToast = view.findViewById(R.id.imgToast);
+        imgToast.setImageResource(imageResource);
+
+        TextView txtMessage = view.findViewById(R.id.txtToast);
+        txtMessage.setText(mensagem);
+
+        Toast toast = new Toast(mContexto);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+//        toast.setGravity(Gravity.BOTTOM,0,20);
+        toast.show();
 
     }
 

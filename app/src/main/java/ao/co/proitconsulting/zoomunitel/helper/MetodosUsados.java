@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -71,7 +72,14 @@ public class MetodosUsados {
         Toast.makeText(mContexto,mensagem,Toast.LENGTH_SHORT).show();
     }
 
-    public static void mostrarMensagemSnackBar(View view, String mensagem) {
+
+
+    public static void showCustomToast(View view, String mensagem) {
+        Snackbar.make(view, mensagem, 4000)
+                .setActionTextColor(Color.WHITE).show();
+    }
+
+    public static void showCustomSnackbar(View view, String mensagem) {
         Snackbar.make(view, mensagem, 4000)
                 .setActionTextColor(Color.WHITE).show();
     }

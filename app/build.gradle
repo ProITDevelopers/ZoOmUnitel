@@ -71,12 +71,13 @@ dependencies {
     implementation 'com.github.kk121:File-Loader:1.2' //1.5MB
     //BARTEKSC:PDF-VIEWER
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2' //12MB
+    //EVENTBUS
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
 
     //RETROFIT
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
 

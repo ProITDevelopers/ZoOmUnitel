@@ -1,26 +1,27 @@
-package ao.co.proitconsulting.zoomunitel.fragments;
+package ao.co.proitconsulting.zoomunitel.fragments.home;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -30,137 +31,77 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
-import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
-import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
-import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 import dmax.dialog.SpotsDialog;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "TAG_HomeFragment";
+    private HomeViewModel homeViewModel;
+    private AlertDialog waitingDialog;
 
     private View view;
     private ImageView imgBackgnd;
     private TextView txtPosition;
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
-    private static int TIME_DELAY = 3000; // Slide duration 3 seconds
+    private static int TIME_DELAY = 3500; // Slide duration 3 seconds
 
+    private ConstraintLayout coordinatorLayout;
+    private RelativeLayout errorLayout;
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        homeViewModel =
+                new ViewModelProvider(this).get(HomeViewModel.class);
+
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        errorLayout = view.findViewById(R.id.erroLayout);
+
+
+
+        waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        waitingDialog.setMessage("Carregando...");
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
 
         imgBackgnd = view.findViewById(R.id.imgBackgnd);
         txtPosition = view.findViewById(R.id.txtPosition);
         viewPager2 = view.findViewById(R.id.viewPagerImageSlider);
 
+        homeViewModel.getRevistaZoomList().observe(this, new Observer<List<RevistaZoOm>>() {
+            @Override
+            public void onChanged(List<RevistaZoOm> revistaZoOms) {
+                waitingDialog.dismiss();
 
+                if (Common.revistaZoOmList!=null)
+                    Common.revistaZoOmList.clear();
+                Common.revistaZoOmList.addAll(revistaZoOms);
+                //Create adapter
+                setAdapters(revistaZoOms);
+            }
+        });
 
-        verificarConecxaoNET();
+        homeViewModel.getMessageError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                waitingDialog.dismiss();
+                mostrarMensagemPopUp(s);
+            }
+        });
 
 
         return view;
-    }
-
-    private void verificarConecxaoNET() {
-        if (getActivity()!=null) {
-            ConnectivityManager conMgr =  (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (conMgr!=null) {
-                NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-                if (netInfo == null){
-                    MetodosUsados.mostrarMensagem(getContext(),getString(R.string.msg_erro_internet));
-//                    mostarMsnErro();
-                } else {
-                    carregarListaRevistas();
-                }
-            }
-        }
-    }
-
-    private void carregarListaRevistas() {
-
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
-        waitingDialog.setMessage("Carregando...");
-        waitingDialog.setCancelable(false);
-        waitingDialog.show();
-
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<RevistaZoOm>> rv = apiInterface.getAllTodasRevistas();
-        rv.enqueue(new retrofit2.Callback<List<RevistaZoOm>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<RevistaZoOm>> call, @NonNull Response<List<RevistaZoOm>> response) {
-
-                if (response.isSuccessful()) {
-
-
-                    if (Common.revistaZoOmList!=null)
-                        Common.revistaZoOmList.clear();
-
-                    if (response.body()!=null){
-
-                        waitingDialog.dismiss();
-                        waitingDialog.cancel();
-
-                        Common.revistaZoOmList=response.body();
-                        setAdapters(response.body());
-
-
-                    }
-
-                } else {
-
-                    waitingDialog.dismiss();
-                    waitingDialog.cancel();
-
-                     String responseErrorMsg ="",mensagem ="";
-
-                    try {
-                        responseErrorMsg = response.errorBody().string();
-
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
-
-                        if (responseErrorMsg.contains("Tunnel")){
-                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
-                        }
-
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<RevistaZoOm>> call, @NonNull Throwable t) {
-                waitingDialog.dismiss();
-                waitingDialog.cancel();
-
-                if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)){
-                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet);
-                }else  if ("timeout".equals(t.getMessage())) {
-                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_internet_timeout);
-                }else {
-                    MetodosUsados.mostrarMensagem(getContext(),R.string.msg_erro_servidor);
-                }
-            }
-        });
     }
 
     private void setAdapters(final List<RevistaZoOm>revistaZoOmList) {
@@ -246,6 +187,8 @@ public class HomeFragment extends Fragment {
     };
 
 
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -261,7 +204,7 @@ public class HomeFragment extends Fragment {
 
     private void mostrarMensagemPopUp(String msg) {
         SpannableString title = new SpannableString(getString(R.string.app_name));
-        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         SpannableString message = new SpannableString(msg);
@@ -270,13 +213,13 @@ public class HomeFragment extends Fragment {
 
 
         SpannableString ok = new SpannableString(getString(R.string.text_ok));
-        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
             if (getContext()!=null){
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
 
                 builder.setTitle(title);
                 builder.setMessage(message);
@@ -285,6 +228,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        mostarMsnErro();
                     }
                 });
 
@@ -292,7 +236,7 @@ public class HomeFragment extends Fragment {
             }
 
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
 
@@ -300,25 +244,25 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
+                    mostarMsnErro();
                 }
             });
 
             builder.show();
         }
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setTitle(title);
-//        builder.setMessage(message);
-//
-//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        builder.show();
 
+
+    }
+
+    private void mostarMsnErro(){
+
+        if (errorLayout.getVisibility() == View.GONE){
+            errorLayout.setVisibility(View.VISIBLE);
+
+            coordinatorLayout.setVisibility(View.GONE);
+
+        }
     }
 
 }

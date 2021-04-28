@@ -1,7 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +15,16 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.Api.TLSSocketFactory;
+import ao.co.proitconsulting.zoomunitel.Callback.IRecyclerClickListener;
+import ao.co.proitconsulting.zoomunitel.EventBus.RevistaClick;
 import ao.co.proitconsulting.zoomunitel.R;
-import ao.co.proitconsulting.zoomunitel.activities.RevistaDetalheActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 import okhttp3.OkHttpClient;
@@ -43,7 +45,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
     public RevistaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new RevistaViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.slide_item_container,
+                        R.layout.revista_slide_item,
                         parent,
                         false)
         );
@@ -52,6 +54,16 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
     @Override
     public void onBindViewHolder(@NonNull RevistaViewHolder holder, int position) {
         holder.setImage(revistaZoOmList.get(position), context);
+        //Event
+        holder.setListener(new IRecyclerClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Common.selectedRevista = revistaZoOmList.get(position);
+                Common.selectedRevistaPosition = position;
+                EventBus.getDefault().postSticky(new RevistaClick(true, revistaZoOmList.get(position)));
+
+            }
+        });
 
     }
 
@@ -60,18 +72,24 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
         return revistaZoOmList.size();
     }
 
-    static class RevistaViewHolder extends RecyclerView.ViewHolder{
+    static class RevistaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private RoundedImageView imageView;
+        private IRecyclerClickListener listener;
 
         RevistaViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageSlide);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setListener(IRecyclerClickListener listener) {
+            this.listener = listener;
         }
 
         void setImage(final RevistaZoOm revistaZoOm, Context context){
 //            Picasso.get().load(revistaZoOm.getImagem()).fit().placeholder(R.drawable.magazine_placeholder).into(imageView);
 
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 /*
                  ** PICASSO REQUEST FOR WORKING ON PRE LOLLIPOP DEVICES
                  */
@@ -116,19 +134,14 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
 
 
 
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(v.getContext(), RevistaDetalheActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("toolbarTitle","ZoOm Unitel");
-                    intent.putExtra("position",getAdapterPosition());
-                    v.getContext().startActivity(intent);
-                }
-            });
 
 
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onItemClickListener(view,getAdapterPosition());
         }
 
     }

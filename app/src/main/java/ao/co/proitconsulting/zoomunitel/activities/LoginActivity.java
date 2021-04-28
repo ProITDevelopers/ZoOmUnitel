@@ -15,11 +15,15 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -186,7 +190,8 @@ public class LoginActivity extends AppCompatActivity {
         if (conMgr!=null){
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (netInfo == null) {
-                MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
+
+                MetodosUsados.mostrarMensagem(this,getString(R.string.msg_erro_internet));
             } else {
                 loginRequest.password = password;
                 autenticacaoLogin(loginRequest);
@@ -231,12 +236,15 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
+//                            showCustomToast(LoginActivity.this, R.drawable.ic_baseline_error_24,getString(R.string.msg_erro_servidor));
                         }else{
                             JSONObject jsonObject = new JSONObject(responseErrorMsg);
 
                             mensagem = jsonObject.getJSONObject("erro").getString("mensagem");
 
                             mostrarMensagemPopUp(mensagem);
+
+//                            showCustomToast(LoginActivity.this, R.drawable.ic_baseline_error_24,mensagem);
                         }
 
 
@@ -255,11 +263,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(@NonNull Call<UsuarioAuth> call, @NonNull Throwable t) {
                 MetodosUsados.hideLoadingDialog();
                 if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet));
                 }else  if ("timeout".equals(t.getMessage())) {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_servidor);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_servidor));
                 }
                 Log.v(TAG,"onFailure: " + t.getMessage());
 
@@ -303,11 +311,11 @@ public class LoginActivity extends AppCompatActivity {
                 AppPrefsSettings.getInstance().clearAppPrefs();
                 MetodosUsados.hideLoadingDialog();
                 if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet));
                 }else  if ("timeout".equals(t.getMessage())) {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_internet_timeout);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
-                    MetodosUsados.mostrarMensagem(LoginActivity.this,R.string.msg_erro_servidor);
+                    MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_servidor));
                 }
 
             }
@@ -330,7 +338,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void mostrarMensagemPopUp(String msg) {
         SpannableString title = new SpannableString(getString(R.string.app_name));
-        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         SpannableString message = new SpannableString(msg);
@@ -339,12 +347,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
         SpannableString ok = new SpannableString(getString(R.string.text_ok));
-        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this, R.style.MyDialogTheme);
 
             builder.setTitle(title);
             builder.setMessage(message);
@@ -358,7 +366,7 @@ public class LoginActivity extends AppCompatActivity {
 
             builder.show();
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
 
@@ -372,6 +380,24 @@ public class LoginActivity extends AppCompatActivity {
             builder.show();
         }
 
+
+    }
+
+    private void showCustomToast(Context mContexto, int imageResource, String mensagem) {
+        ViewGroup viewGroup = findViewById(R.id.container_toast);
+        View view = getLayoutInflater().inflate(R.layout.custom_toast_message,viewGroup);
+
+        ImageView imgToast = view.findViewById(R.id.imgToast);
+        imgToast.setImageResource(imageResource);
+
+        TextView txtMessage = view.findViewById(R.id.txtToast);
+        txtMessage.setText(mensagem);
+
+        Toast toast = new Toast(mContexto);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+//        toast.setGravity(Gravity.BOTTOM,0,20);
+        toast.show();
 
     }
 

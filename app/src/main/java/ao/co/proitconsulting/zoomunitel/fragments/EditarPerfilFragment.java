@@ -127,7 +127,7 @@ public class EditarPerfilFragment extends Fragment {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setEditTextTint_Pre_lollipop(){
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
             nomeDrawable = getResources().getDrawable(R.drawable.ic_baseline_person_24);
             telefoneDrawable = getResources().getDrawable(R.drawable.ic_baseline_phone_android_24);
@@ -312,7 +312,7 @@ public class EditarPerfilFragment extends Fragment {
             if (conMgr!=null){
                 NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
                 if (netInfo == null) {
-                    MetodosUsados.mostrarMensagem(getActivity(),R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(getActivity(), R.string.msg_erro_internet);
                 } else {
                     actualizarPerfil();
 
@@ -344,7 +344,6 @@ public class EditarPerfilFragment extends Fragment {
                     // loading profile image from local cache
 
 
-
                     String errorMessage="", mensagem="";
 
 
@@ -362,8 +361,7 @@ public class EditarPerfilFragment extends Fragment {
                     }catch (JSONException | IOException err){
                         Log.v(TAG, err.toString());
                     }
-
-
+                    verificarConecxaoNETPerfil();
 
 
                 } else {
@@ -437,7 +435,7 @@ public class EditarPerfilFragment extends Fragment {
             if (conMgr!=null){
                 NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
                 if (netInfo == null) {
-                    MetodosUsados.mostrarMensagem(getActivity(),R.string.msg_erro_internet);
+                    MetodosUsados.mostrarMensagem(getActivity(), R.string.msg_erro_internet);
                 } else {
                     salvarFoto(postPath);
 
@@ -538,6 +536,7 @@ public class EditarPerfilFragment extends Fragment {
 
         txtUserNameInitial.setVisibility(View.GONE);
         Picasso.get().load(url).placeholder(R.drawable.user_placeholder).into(userPhoto);
+        verificarConecxaoNETPerfil();
 
     }
 
@@ -555,7 +554,7 @@ public class EditarPerfilFragment extends Fragment {
         ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
             if (getContext()!=null){
                 androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
@@ -589,19 +588,48 @@ public class EditarPerfilFragment extends Fragment {
         }
 
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setTitle(title);
-//        builder.setMessage(message);
-//
-//        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        builder.show();
 
+
+    }
+
+    private void verificarConecxaoNETPerfil() {
+        if (getActivity()!=null) {
+            ConnectivityManager conMgr =  (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (conMgr!=null) {
+                NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+                if (netInfo != null){
+                    carregarMeuPerfil();
+                }
+            }
+        }
+    }
+
+    private void carregarMeuPerfil() {
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<UsuarioPerfil>> usuarioCall = apiInterface.get_USER_PROFILE(usuarioPerfil.userId);
+
+        usuarioCall.enqueue(new Callback<List<UsuarioPerfil>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Response<List<UsuarioPerfil>> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body()!=null && response.body().size()>0){
+
+                        UsuarioPerfil usuarioPerfil = response.body().get(0);
+                        AppPrefsSettings.getInstance().saveUser(usuarioPerfil);
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<UsuarioPerfil>> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     /**

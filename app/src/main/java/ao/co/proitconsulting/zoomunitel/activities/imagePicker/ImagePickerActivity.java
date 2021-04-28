@@ -126,11 +126,11 @@ public class ImagePickerActivity extends AppCompatActivity {
 
 
         SpannableString title = new SpannableString(context.getString(R.string.lbl_set_profile_photo));
-        title.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 //        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.MyDialogTheme);
         builder.setTitle(title);
 
         // add a list
