@@ -16,6 +16,11 @@
         tools:layout="@layout/fragment_revista_detail" />
 
     <fragment
+        android:id="@+id/nav_revista_detail_ler_down"
+        android:name="ao.co.proitconsulting.zoomunitel.fragments.revistadetailLerDown.RevistaDetailLerDownloadFragment"
+        tools:layout="@layout/fragment_revista_detail_ler_download" />
+
+    <fragment
         android:id="@+id/nav_perfil"
         android:name="ao.co.proitconsulting.zoomunitel.fragments.PerfilFragment"
         android:label="@string/menu_perfil"

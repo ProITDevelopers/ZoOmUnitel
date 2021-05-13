@@ -37,6 +37,7 @@ import java.util.List;
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.EventBus.RevistaClick;
+import ao.co.proitconsulting.zoomunitel.EventBus.RevistaDetailClick;
 import ao.co.proitconsulting.zoomunitel.R;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_revista_detail, R.id.nav_perfil, R.id.nav_definicoes)
+                R.id.nav_home, R.id.nav_revista_detail,R.id.nav_revista_detail_ler_down, R.id.nav_perfil, R.id.nav_definicoes)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -110,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Click to: "+event.getRevista().getTitle(), Toast.LENGTH_SHORT).show();
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_revista_detail);
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onRevistaItemDetailClick(RevistaDetailClick event){
+        if (event.isSuccess()){
+//            Toast.makeText(this, "Click to: "+event.getRevista().getTitle(), Toast.LENGTH_SHORT).show();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_revista_detail_ler_down);
         }
     }
 

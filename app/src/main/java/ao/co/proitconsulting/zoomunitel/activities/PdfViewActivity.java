@@ -1,7 +1,6 @@
 package ao.co.proitconsulting.zoomunitel.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -47,7 +46,7 @@ public class PdfViewActivity extends AppCompatActivity {
 
         waitingDialog = new SpotsDialog.Builder().setContext(this).build();
         waitingDialog.setMessage("Por favor aguarde...");
-        waitingDialog.setCancelable(false);
+        waitingDialog.setCancelable(true);
         waitingDialog.show();
 
         verificarConnecxao();

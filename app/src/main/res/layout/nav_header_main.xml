@@ -14,24 +14,24 @@
 <!--    android:layout_height="@dimen/nav_header_height"-->
 <!--    android:background="@drawable/side_nav_bar"-->
     <FrameLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:src="@color/orange_unitel"
+            android:src="@color/white"
             android:layout_gravity="center"
 
             />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgUserPhoto"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:contentDescription="@string/nav_header_desc"
             android:layout_gravity="center"
@@ -39,7 +39,7 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:civ_border_color="@color/orange_unitel"
-            app:civ_border_width="3dp"
+            app:civ_border_width="2dp"
 
             />
 
@@ -54,7 +54,7 @@
             android:maxLength="1"
             android:visibility="gone"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"
+            android:textColor="@color/orange_unitel"
             android:textSize="80sp" />
 
     </FrameLayout>
@@ -67,7 +67,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="22sp"
         android:gravity="center"
-        android:textColor="@color/blue_unitel"
+        android:textColor="@color/white"
         android:maxLines="1"
         android:ellipsize="end"
         />
@@ -79,7 +79,7 @@
         android:padding="5dp"
         android:textSize="14sp"
         android:gravity="center"
-        android:textColor="@color/blue_unitel"
+        android:textColor="@color/white"
         android:maxLines="1"
         android:ellipsize="end"
         />

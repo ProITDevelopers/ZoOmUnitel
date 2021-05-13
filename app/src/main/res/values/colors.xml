@@ -23,5 +23,6 @@
     <color name="btn_login_start_color">#e6540f</color>
     <color name="btn_login_end_color">#e6540f</color>
     <color name="alterar_pass_bkg">#f8f4f4</color>
+    <color name="orange_light">#f8f4f4</color>
 
 </resources>
