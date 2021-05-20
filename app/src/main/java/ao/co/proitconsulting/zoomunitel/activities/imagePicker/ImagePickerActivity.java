@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 
@@ -170,6 +171,8 @@ public class ImagePickerActivity extends AppCompatActivity {
                             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                             }
+                        } else {
+                            MetodosUsados.mostrarMensagem(ImagePickerActivity.this,"A ZoOm Unitel precisa das permissões da Câmera e Armazenamento para continuar.");
                         }
                     }
 
@@ -190,6 +193,8 @@ public class ImagePickerActivity extends AppCompatActivity {
                             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE);
+                        } else {
+                            MetodosUsados.mostrarMensagem(ImagePickerActivity.this,"A ZoOm Unitel precisa das permissões da Câmera e Armazenamento para continuar.");
                         }
                     }
 

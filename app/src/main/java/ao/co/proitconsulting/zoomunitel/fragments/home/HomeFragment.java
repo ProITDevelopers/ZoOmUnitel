@@ -222,6 +222,7 @@ public class HomeFragment extends Fragment {
 
                 builder.setTitle(title);
                 builder.setMessage(message);
+                builder.setCancelable(false);
 
                 builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -238,6 +239,7 @@ public class HomeFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
+            builder.setCancelable(false);
 
             builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
                 @Override

@@ -206,7 +206,8 @@ public class RevistaDetalheLerDownloadAdapter extends RecyclerView.Adapter<Revis
     private void gotoWebView(RevistaZoOm revistaZoOm) {
         Intent intent = new Intent(activity, PdfViewActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("link",Common.PDF_PATH + revistaZoOm.getPdfLink());
+        intent.putExtra("revistaZoOm",revistaZoOm);
+//        intent.putExtra("link",Common.PDF_PATH + revistaZoOm.getPdfLink());
         activity.startActivity(intent);
     }
 
@@ -220,6 +221,8 @@ public class RevistaDetalheLerDownloadAdapter extends RecyclerView.Adapter<Revis
                         if (report.areAllPermissionsGranted()) {
                             verificarConnecxaoDOWNLOAD(revistaZoOm);
 
+                        }else {
+                            MetodosUsados.mostrarMensagem(activity,"A ZoOm Unitel precisa de permissão de Armazenamento para continuar.");
                         }
 
 

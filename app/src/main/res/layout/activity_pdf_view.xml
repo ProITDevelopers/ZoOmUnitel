@@ -12,4 +12,6 @@
         android:layout_height="match_parent">
     </com.github.barteksc.pdfviewer.PDFView>
 
+
+
 </RelativeLayout>
