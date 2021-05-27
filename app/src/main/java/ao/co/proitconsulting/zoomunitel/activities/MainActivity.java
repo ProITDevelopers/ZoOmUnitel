@@ -14,6 +14,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,12 +56,18 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView imgUserPhoto;
     private TextView txtUserNameInitial, txtUserName, txtUserEmail;
 
+    private Toolbar toolbar;
+    private FrameLayout frameLayoutImgToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
+        frameLayoutImgToolbar = toolbar.findViewById(R.id.frameLayoutImgToolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -356,6 +364,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public FrameLayout getFrameLayoutImgToolbar(){
+        return frameLayoutImgToolbar;
     }
 
 

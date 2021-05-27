@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.MainActivity;
 import ao.co.proitconsulting.zoomunitel.adapters.RevistaZoOmAdapter;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
@@ -63,6 +65,11 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        FrameLayout frameLayout = ((MainActivity) getActivity()).getFrameLayoutImgToolbar();
+        if (frameLayout != null) {
+            frameLayout.setVisibility(View.VISIBLE);
+        }
 
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         errorLayout = view.findViewById(R.id.erroLayout);

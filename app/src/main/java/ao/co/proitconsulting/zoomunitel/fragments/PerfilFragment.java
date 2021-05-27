@@ -5,15 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.squareup.picasso.Picasso;
 
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.MainActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.localDB.AppPrefsSettings;
 import ao.co.proitconsulting.zoomunitel.models.UsuarioPerfil;
@@ -44,6 +48,11 @@ public class PerfilFragment extends Fragment {
     }
 
     private void initViews(){
+        FrameLayout frameLayout = ((MainActivity) getActivity()).getFrameLayoutImgToolbar();
+        if (frameLayout != null) {
+            frameLayout.setVisibility(View.GONE);
+        }
+
         imgUserPhoto = view.findViewById(R.id.imgUserPhoto);
         txtUserNameInitial = view.findViewById(R.id.txtUserNameInitial);
         txtUserName = view.findViewById(R.id.txtUserName);

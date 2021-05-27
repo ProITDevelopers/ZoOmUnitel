@@ -56,9 +56,9 @@ public class RevistaDetailLerDownloadFragment extends Fragment {
     }
 
     private void initViews() {
-        ((AppCompatActivity)getActivity())
-                .getSupportActionBar()
-                .setTitle(getString(R.string.app_name));
+//        ((AppCompatActivity)getActivity())
+//                .getSupportActionBar()
+//                .setTitle(getString(R.string.app_name));
 //                .setTitle(Common.selectedRevista.getTitle());
 
         viewPager2 = view.findViewById(R.id.viewPagerDetailLerDown);

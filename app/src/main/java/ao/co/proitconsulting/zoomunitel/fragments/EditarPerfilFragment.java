@@ -25,10 +25,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
@@ -50,6 +52,7 @@ import java.util.List;
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.R;
+import ao.co.proitconsulting.zoomunitel.activities.MainActivity;
 import ao.co.proitconsulting.zoomunitel.activities.imagePicker.ImagePickerActivity;
 import ao.co.proitconsulting.zoomunitel.helper.Common;
 import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
@@ -93,6 +96,11 @@ public class EditarPerfilFragment extends Fragment {
     }
 
     private void initViews(){
+        FrameLayout frameLayout = ((MainActivity) getActivity()).getFrameLayoutImgToolbar();
+        if (frameLayout != null) {
+            frameLayout.setVisibility(View.GONE);
+        }
+
         userPhoto = view.findViewById(R.id.userPhoto);
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
