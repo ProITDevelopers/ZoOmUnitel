@@ -49,6 +49,8 @@ public class NotificationHelper {
                     .setAutoCancel(true)
                     .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                     .setContentIntent(resultPendingIntent)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message))
                     .setStyle(new NotificationCompat.BigPictureStyle()
                             .bigPicture(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.zoom_unitel_logo)));
 
@@ -58,7 +60,9 @@ public class NotificationHelper {
             mBuilder.setContentTitle(title)
                     .setContentText(message)
                     .setAutoCancel(true)
-                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message));
 
         }
 

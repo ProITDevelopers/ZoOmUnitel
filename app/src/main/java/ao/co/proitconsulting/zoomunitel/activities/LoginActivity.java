@@ -231,7 +231,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
 
 
@@ -263,12 +263,12 @@ public class LoginActivity extends AppCompatActivity {
                 MetodosUsados.hideLoadingDialog();
                 if (!MetodosUsados.conexaoInternetTrafego(LoginActivity.this,TAG)){
                     MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet));
-                }else  if ("timeout".equals(t.getMessage())) {
+                }else  if (t.getMessage().contains("timeout")) {
                     MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
                     MetodosUsados.mostrarMensagem(LoginActivity.this, getString(R.string.msg_erro_servidor));
                 }
-                Log.v(TAG,"onFailure: " + t.getMessage());
+                Log.d(TAG,"onFailure: " + t.getMessage());
 
             }
         });

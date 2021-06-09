@@ -71,7 +71,7 @@ import retrofit2.Response;
 
 public class EditarPerfilFragment extends Fragment {
 
-    private static final String TAG = "TAG_EditPerf_Fragment";
+    private static final String TAG = "TAG_EditFragment";
 
     public static final int REQUEST_IMAGE = 100;
 
@@ -331,7 +331,7 @@ public class EditarPerfilFragment extends Fragment {
     }
 
     private void actualizarPerfil(){
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.salvando_dados));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -352,22 +352,20 @@ public class EditarPerfilFragment extends Fragment {
                     // loading profile image from local cache
 
 
-                    String errorMessage="", mensagem="";
+                    String mensagem="";
+
+                    mostrarMensagemPopUp(getString(R.string.perfil_atualizado_sucesso));
+
 
 
                     try {
-                        errorMessage = response.body().string();
-                        JSONObject jsonObject = new JSONObject(errorMessage);
+                        mensagem = response.body().string();
+                        JSONObject jsonObject = new JSONObject(mensagem);
                         mensagem = jsonObject.getString("msg");
 
-                        MetodosUsados.mostrarMensagem(getContext(),mensagem);
-                        mostrarMensagemPopUp(mensagem);
-
-                        Log.v(TAG,"ResponseBody: "+errorMessage);
-
-
+                        Log.d(TAG,"ResponseBody: "+mensagem);
                     }catch (JSONException | IOException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
                     verificarConecxaoNETPerfil();
 
@@ -380,7 +378,7 @@ public class EditarPerfilFragment extends Fragment {
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
@@ -398,12 +396,12 @@ public class EditarPerfilFragment extends Fragment {
                 waitingDialog.cancel();
                 if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)) {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet);
-                } else if ("timeout".equals(t.getMessage())) {
+                } else if (t.getMessage().contains("timeout")) {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet_timeout);
                 } else {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_servidor);
                 }
-                Log.i(TAG, "onFailure" + t.getMessage());
+                Log.d(TAG, "onFailure" + t.getMessage());
             }
         });
     }
@@ -455,7 +453,7 @@ public class EditarPerfilFragment extends Fragment {
 
     private void salvarFoto(String postPath) {
 
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(getContext()).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.salvando_foto));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -476,45 +474,23 @@ public class EditarPerfilFragment extends Fragment {
                 if (response.isSuccessful()) {
                     waitingDialog.cancel();
 
-
+                    mostrarMensagemPopUp(getString(R.string.foto_atualizada_sucesso));
                     // loading profile image from local cache
                     loadProfile(selectedImage.toString());
-
-
-                    String errorMessage="", mensagem="";
-
-
-                    try {
-                        errorMessage = response.body().string();
-                        JSONObject jsonObject = new JSONObject(errorMessage);
-                        mensagem = jsonObject.getString("msg");
-
-                        MetodosUsados.mostrarMensagem(getContext(),mensagem);
-                        mostrarMensagemPopUp(mensagem);
-
-                        Log.v(TAG,"ResponseBody: "+errorMessage);
-
-
-                    }catch (JSONException | IOException err){
-                        Log.v(TAG, err.toString());
-                    }
-
-
 
 
                 } else {
                     waitingDialog.cancel();
 
-                    String responseErrorMsg ="",mensagem ="";
+
+                    String responseErrorMsg ="";
 
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        mostrarMensagemPopUp(responseErrorMsg);
 
-                        if (responseErrorMsg.contains("Tunnel")){
-                            mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
-                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -528,12 +504,12 @@ public class EditarPerfilFragment extends Fragment {
                 waitingDialog.cancel();
                 if (!MetodosUsados.conexaoInternetTrafego(getContext(),TAG)) {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet);
-                } else if ("timeout".equals(t.getMessage())) {
+                } else if (t.getMessage().contains("timeout")) {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_internet_timeout);
                 } else {
                     MetodosUsados.mostrarMensagem(getContext(), R.string.msg_erro_servidor);
                 }
-                Log.i(TAG, "onFailure" + t.getMessage());
+                Log.d(TAG, "onFailure" + t.getMessage());
             }
         });
 
@@ -550,7 +526,7 @@ public class EditarPerfilFragment extends Fragment {
 
     private void mostrarMensagemPopUp(String msg) {
         SpannableString title = new SpannableString(getString(R.string.app_name));
-        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         SpannableString message = new SpannableString(msg);
@@ -559,13 +535,13 @@ public class EditarPerfilFragment extends Fragment {
 
 
         SpannableString ok = new SpannableString(getString(R.string.text_ok));
-        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
             if (getContext()!=null){
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
 
                 builder.setTitle(title);
                 builder.setMessage(message);
@@ -581,7 +557,7 @@ public class EditarPerfilFragment extends Fragment {
             }
 
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
 

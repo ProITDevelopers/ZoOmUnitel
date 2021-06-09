@@ -29,7 +29,7 @@
                     android:id="@+id/imgAppLogo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="logo_unitel_white"
+                    android:contentDescription="@string/logo_unitel_white"
                     app:srcCompat="@drawable/zoom_unitel_logo"
                     app:tint="@color/white"
                     android:scaleX="2.2"

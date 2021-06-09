@@ -64,7 +64,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:textSize="19sp"
-                    android:text="Segurança e login"
+                    android:text="@string/seguranca_e_login"
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
                     />
@@ -76,7 +76,7 @@
                 android:id="@+id/txtAlterarPass"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Alterar senha"
+                android:text="@string/alterar_senha"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/linearDef"
                 app:layout_constraintStart_toEndOf="@+id/guideline_esquerda"
@@ -86,7 +86,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textColor="@color/orange_unitel"
+
                 android:drawableStart="@drawable/ic_baseline_lock_24"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 app:drawableTint="@color/orange_unitel"
@@ -125,7 +125,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:textSize="19sp"
-                    android:text="Sobre"
+                    android:text="@string/sobre"
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
                     />

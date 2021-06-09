@@ -20,17 +20,20 @@
             android:src="@drawable/zoom_unitel_logo"/>
 
         <ImageView
+            android:id="@+id/imgErro"
             android:layout_marginTop="15dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/ic_baseline_wifi_off_24"
-            app:tint="@color/white"/>
+            app:tint="@color/blue_unitel"/>
 
-        <TextView android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtErro"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginTop="50dp"
-            android:textColor="@color/white"
+            android:textColor="@color/blue_unitel"
             android:layout_margin="20dp"
             android:padding="8dp"
             android:gravity="center"

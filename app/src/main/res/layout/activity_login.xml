@@ -25,7 +25,7 @@
                 android:id="@+id/imgAppLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="logo_unitel_blue"
+                android:contentDescription="@string/logo_unitel_blue"
                 app:srcCompat="@drawable/zoom_unitel_logo"
                 android:clickable="true"
                 android:focusable="true"

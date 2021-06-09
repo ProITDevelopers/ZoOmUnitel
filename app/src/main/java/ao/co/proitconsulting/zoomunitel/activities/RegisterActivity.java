@@ -97,8 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean verificarCampos() {
 
         nome = editNome.getText().toString().trim();
-        email = editEmail.getText().toString().trim();
         telefone = editTelefone.getText().toString().trim();
+        email = editEmail.getText().toString().trim();
         senha = editPass.getText().toString().trim();
         confirmSenha = editConfirmPass.getText().toString().trim();
 
@@ -123,6 +123,18 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
+        if (telefone.isEmpty()){
+            editTelefone.setError(getString(R.string.msg_erro_campo_vazio));
+//            MetodosUsados.mostrarMensagem(this,"Preencha o campo: 'Telemóvel'");
+            return false;
+        }
+
+        if (!telefone.matches("9[1-9][0-9]\\d{6}")){
+            editTelefone.setError(getString(R.string.msg_erro_num_telefone_invalido));
+//            MetodosUsados.mostrarMensagem(this,"'Telemóvel' inválido");
+            return false;
+        }
+
 
 
         if (email.isEmpty()){
@@ -138,17 +150,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-        if (telefone.isEmpty()){
-            editTelefone.setError(getString(R.string.msg_erro_campo_vazio));
-//            MetodosUsados.mostrarMensagem(this,"Preencha o campo: 'Telemóvel'");
-            return false;
-        }
-
-        if (!telefone.matches("9[1-9][0-9]\\d{6}")){
-            editTelefone.setError(getString(R.string.msg_erro_num_telefone_invalido));
-//            MetodosUsados.mostrarMensagem(this,"'Telemóvel' inválido");
-            return false;
-        }
 
 
 
@@ -214,21 +215,21 @@ public class RegisterActivity extends AppCompatActivity {
                     AppPrefsSettings.getInstance().clearAppPrefs();
 
                     MetodosUsados.hideLoadingDialog();
-                    String errorMessage="", mensagem="";
+                    String  mensagem="";
 
 
                     try {
-                        errorMessage = response.body().string();
-                        JSONObject jsonObject = new JSONObject(errorMessage);
+                        mensagem = response.body().string();
+                        JSONObject jsonObject = new JSONObject(mensagem);
                         mensagem = jsonObject.getString("msg");
 
                         mostrarMensagemPopUp(mensagem,"true");
 
-                        Log.v(TAG,"ResponseBody: "+errorMessage);
+                        Log.d(TAG,"ResponseBody: "+mensagem);
 
 
                     }catch (JSONException | IOException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
 
 
@@ -241,7 +242,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor),"false");
@@ -258,7 +259,7 @@ public class RegisterActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
                 }
             }
@@ -268,12 +269,12 @@ public class RegisterActivity extends AppCompatActivity {
                 MetodosUsados.hideLoadingDialog();
                 if (!MetodosUsados.conexaoInternetTrafego(RegisterActivity.this,TAG)){
                     MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet));
-                }else  if ("timeout".equals(t.getMessage())) {
+                }else  if (t.getMessage().contains("timeout")) {
                     MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_internet_timeout));
                 }else {
                     MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_servidor));
                 }
-                Log.i(TAG,"onFailure" + t.getMessage());
+                Log.d(TAG,"onFailure" + t.getMessage());
 
             }
         });
@@ -285,7 +286,7 @@ public class RegisterActivity extends AppCompatActivity {
         loginRequest.email_Telefone = email;
         loginRequest.password = senha;
 
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.msg_register_quase_pronto));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -332,7 +333,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else {
                     MetodosUsados.mostrarMensagem(RegisterActivity.this, getString(R.string.msg_erro_servidor));
                 }
-                Log.v(TAG,"onFailure" + t.getMessage());
+                Log.d(TAG,"onFailure" + t.getMessage());
 
             }
         });

@@ -107,10 +107,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/orange_unitel"
-                android:textSize="17sp"
                 android:textStyle="bold"
-                android:text="gjhjhjhgf"
                 android:gravity="center"
+                android:textSize="17sp"
                 android:padding="5dp"
                 />
 
@@ -129,11 +128,11 @@
 
                 <TextView
                     android:id="@+id/txtDetalhe"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Detalhes"
+                    android:text="@string/detalhes"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_weight="1"
 
@@ -144,7 +143,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="hshdshd"
                     android:textColor="@color/orange_unitel"
                     android:visibility="invisible"
                     />
@@ -159,11 +157,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="25dp"
-                android:textSize="16sp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
+                android:textSize="15sp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginEnd="12dp"
                 />
 
 
@@ -172,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
-                android:text="Ver mais"
+                android:text="@string/ver_mais"
                 android:textColor="@color/white"
                 android:clickable="true"
                 android:focusable="true"

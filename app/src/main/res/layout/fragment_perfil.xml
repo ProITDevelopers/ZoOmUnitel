@@ -96,7 +96,7 @@
 
                 <TextView
                     android:textSize="16sp"
-                    android:text="Nome"
+                    android:text="@string/nome"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -127,7 +127,7 @@
 
                 <TextView
                     android:textSize="16sp"
-                    android:text="Telemóvel"
+                    android:text="@string/telemovel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -158,7 +158,7 @@
 
                 <TextView
                     android:textSize="16sp"
-                    android:text="Email"
+                    android:text="@string/email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -199,7 +199,7 @@
             android:paddingRight="100dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_background"
-            android:text="Editar Perfil"
+            android:text="@string/editar_perfil"
             android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

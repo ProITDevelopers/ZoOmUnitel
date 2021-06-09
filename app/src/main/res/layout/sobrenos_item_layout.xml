@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/txtDescription"
-        android:textColor="@color/blue_unitel"
-        android:textSize="14sp"
+
+        android:textSize="15sp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_width="match_parent"

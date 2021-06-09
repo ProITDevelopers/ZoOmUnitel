@@ -55,6 +55,8 @@ public class HomeFragment extends Fragment {
 
     private ConstraintLayout coordinatorLayout;
     private RelativeLayout errorLayout;
+    private ImageView imgErro;
+    private TextView txtErro;
 
 
 
@@ -73,10 +75,12 @@ public class HomeFragment extends Fragment {
 
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         errorLayout = view.findViewById(R.id.erroLayout);
+        imgErro = view.findViewById(R.id.imgErro);
+        txtErro = view.findViewById(R.id.txtErro);
 
 
 
-        waitingDialog = new SpotsDialog.Builder().setContext(getContext()).build();
+        waitingDialog = new SpotsDialog.Builder().setContext(getContext()).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage("Carregando...");
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -209,6 +213,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void mostrarMensagemPopUp(String msg) {
+        if (msg.equals("Algum problema ocorreu. Relate o problema.")){
+            imgErro.setImageResource(R.drawable.ic_baseline_error_outline_24);
+            txtErro.setText(msg);
+        }else if (msg.equals("O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.")){
+            imgErro.setImageResource(R.drawable.ic_baseline_wifi_off_24);
+            txtErro.setText(msg);
+        }else {
+            imgErro.setImageResource(R.drawable.ic_baseline_error_outline_24);
+            txtErro.setText(msg);
+        }
         SpannableString title = new SpannableString(getString(R.string.app_name));
         title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

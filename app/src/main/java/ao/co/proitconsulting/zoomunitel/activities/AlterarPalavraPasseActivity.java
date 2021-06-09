@@ -393,7 +393,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
     private void enviarEmail() {
 
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.msg_pass_send_email));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -445,7 +445,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
@@ -462,7 +462,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
                 }
             }
@@ -471,7 +471,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
-                Log.v(TAG,"onFailure" + t.getMessage());
+                Log.d(TAG,"onFailure" + t.getMessage());
 
             }
         });
@@ -516,7 +516,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
     private void enviarConfirmCode() {
 
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.msg_login_auth_verification));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -551,11 +551,11 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                         tempTOKEN = jsonObject.getString("token");
 
 
-                        Log.v(TAG,"ResponseBody: "+mensagem);
+                        Log.d(TAG,"ResponseBody: "+mensagem);
 
 
                     }catch (JSONException | IOException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
 
 
@@ -570,7 +570,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
@@ -587,7 +587,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
                 }
             }
@@ -596,7 +596,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
-                Log.i(TAG,"onFailure" + t.getMessage());
+                Log.d(TAG,"onFailure" + t.getMessage());
 
             }
         });
@@ -638,7 +638,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
     private void enviarNovaSenha() {
 
-        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        final AlertDialog waitingDialog = new SpotsDialog.Builder().setContext(this).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage(getString(R.string.msg_register_quase_pronto));
         waitingDialog.setCancelable(false);
         waitingDialog.show();
@@ -678,11 +678,11 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                         dialog_editConfirmPassword.setError(null);
                         dialogLayout_ALTERPASS_NEWPASS.cancel();
 
-                        Log.v(TAG,"ResponseBody: "+mensagem);
+                        Log.d(TAG,"ResponseBody: "+mensagem);
 
 
                     }catch (JSONException | IOException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
 
 
@@ -697,7 +697,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     try {
                         responseErrorMsg = response.errorBody().string();
 
-                        Log.v(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
+                        Log.d(TAG,"Error code: "+response.code()+", ErrorBody msg: "+responseErrorMsg);
 
                         if (responseErrorMsg.contains("Tunnel")){
                             mostrarMensagemPopUp(getString(R.string.msg_erro_servidor));
@@ -714,7 +714,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException err){
-                        Log.v(TAG, err.toString());
+                        Log.d(TAG, err.toString());
                     }
                 }
             }
@@ -723,7 +723,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 waitingDialog.dismiss();
                 waitingDialog.cancel();
-                Log.i(TAG,"onFailure" + t.getMessage());
+                Log.d(TAG,"onFailure" + t.getMessage());
 
             }
         });
@@ -744,7 +744,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
     private void mostrarMensagemPopUp(String msg) {
         SpannableString title = new SpannableString(getString(R.string.app_name));
-        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        title.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         SpannableString message = new SpannableString(msg);
@@ -753,12 +753,12 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
 
         SpannableString ok = new SpannableString(getString(R.string.text_ok));
-        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.orange_unitel)),
+        ok.setSpan(new ForegroundColorSpan(this.getResources().getColor(R.color.white)),
                 0, ok.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this,R.style.MyDialogTheme);
 
             builder.setTitle(title);
             builder.setMessage(message);
@@ -772,7 +772,7 @@ public class AlterarPalavraPasseActivity extends AppCompatActivity implements Vi
 
             builder.show();
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.MyDialogTheme);
             builder.setTitle(title);
             builder.setMessage(message);
 

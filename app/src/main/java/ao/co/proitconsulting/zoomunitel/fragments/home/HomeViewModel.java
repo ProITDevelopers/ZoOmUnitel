@@ -11,6 +11,7 @@ import java.util.List;
 import ao.co.proitconsulting.zoomunitel.Api.ApiClient;
 import ao.co.proitconsulting.zoomunitel.Api.ApiInterface;
 import ao.co.proitconsulting.zoomunitel.Callback.IRevistaCallbackListener;
+import ao.co.proitconsulting.zoomunitel.helper.MetodosUsados;
 import ao.co.proitconsulting.zoomunitel.models.RevistaZoOm;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +62,12 @@ public class HomeViewModel extends ViewModel implements IRevistaCallbackListener
                     String responseErrorMsg ="";
 
                     try {
-                        responseErrorMsg = response.errorBody().string();
+
+                        if(response.code() == 502 || response.code() == 500){
+                            responseErrorMsg = "Algum problema ocorreu. Relate o problema.";
+                        }else{
+                            responseErrorMsg = response.errorBody().string();
+                        }
 
                         revistaCallbackListener.onRevistaLoadFailed(responseErrorMsg);
 
@@ -77,8 +83,15 @@ public class HomeViewModel extends ViewModel implements IRevistaCallbackListener
 
             @Override
             public void onFailure(@NonNull Call<List<RevistaZoOm>> call, @NonNull Throwable t) {
+                if (!MetodosUsados.isConnected(10000)){
+                    revistaCallbackListener.onRevistaLoadFailed("O dispositivo não está conectado a nenhuma rede 3G ou WI-FI.");
+                }else  if (t.getMessage().contains("timeout")) {
+                    revistaCallbackListener.onRevistaLoadFailed("O tempo de comunicação excedeu. Possivelmente a internet está lenta.");
+                }else {
+                    revistaCallbackListener.onRevistaLoadFailed("Algum problema ocorreu. Relate o problema.");
 
-                revistaCallbackListener.onRevistaLoadFailed(t.getMessage());
+                }
+
             }
         });
 

@@ -20,9 +20,8 @@ public class ApiClient {
 
 
     private static Retrofit retrofit = null;
-    private static int REQUEST_TIMEOUT = 90;
+    private static int REQUEST_TIMEOUT = 15000;
     private static OkHttpClient okHttpClient;
-
 
 
     public static Retrofit getClient() {
@@ -50,9 +49,9 @@ public class ApiClient {
     private static void initOkHttp() {
 
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS);
+                .connectTimeout(REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(REQUEST_TIMEOUT, TimeUnit.MILLISECONDS);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
