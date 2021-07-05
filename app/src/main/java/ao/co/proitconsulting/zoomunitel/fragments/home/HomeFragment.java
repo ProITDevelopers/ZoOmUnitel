@@ -149,6 +149,7 @@ public class HomeFragment extends Fragment {
                     imgBackgnd.setImageResource(R.color.colorPrimary);
 
                 }else{
+
                     Picasso.get()
                             .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                             .networkPolicy(NetworkPolicy.OFFLINE)

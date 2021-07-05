@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">ZoOm Unitel</string>
+    <string name="app_name">Zoom Unitel</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Definições</string>
 
     <string name="menu_home">Início</string>
     <string name="menu_perfil">Meu Perfil</string>
     <string name="menu_editar_perfil">Editar Perfil</string>
-    <string name="menu_favoritos">Mais lidas</string>
     <string name="menu_definicoes">@string/action_settings</string>
 
     <!--    ==========================LOGIN HINTS============================-->
@@ -56,7 +55,6 @@
     <string name="salvando_dados">Salvando dados…</string>
     <string name="msg_login_auth_carregando_dados">Carregando dados…</string>
     <string name="msg_pass_send_email">Enviando email…</string>
-    <string name="tentar_outra_vez">Tentar outra vez</string>
     <string name="leia_o_texto">Leia o texto na integra como na versão impressa</string>
     <string name="leia_o_texto_digitais">Leia o texto formatado para dispositivos digitais</string>
     <string name="formatos_dispon_veis">Formatos disponíveis</string>

@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MotionEvent;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,7 +58,7 @@ public class PdfViewActivity extends AppCompatActivity {
 
 
 
-        waitingDialog = new SpotsDialog.Builder().setContext(this).build();
+        waitingDialog = new SpotsDialog.Builder().setContext(this).setTheme(R.style.CustomSpotsDialog).build();
         waitingDialog.setMessage("Por favor aguarde...");
         waitingDialog.setCancelable(true);
 

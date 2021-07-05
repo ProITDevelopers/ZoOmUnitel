@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.http.SslError;
 import android.os.Build;
 import android.util.Log;
@@ -154,13 +156,13 @@ public class MetodosUsados {
 
         final String appPackageName = context.getPackageName();
         String appName = context.getString(R.string.app_name);
-        String appCategory = "Revistas";
+        String appCategory = "que é uma publicação anual promovida pela Academia UNITEL.";
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         String postData = "Obtenha o aplicativo " + appName +
-                " para ter acesso as melhores " + appCategory + "\n" +
-                Common.SHARE_URL_GOOGLE_DRIVE + appPackageName;
+                " para teres acesso a ZoOM Magazine, " + appCategory + "\n" +
+                Common.SHARE_URL_PLAYSTORE + appPackageName;
 
 
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Baixar Agora!");
@@ -210,40 +212,17 @@ public class MetodosUsados {
     //======================TRAFEGO_INTERNET===============================================//
 
     public static boolean conexaoInternetTrafego(Context context, final String TAG){
-        String site = "www.google.com";
-        WebView webViewInternet = new WebView(context);
-        final boolean[] valorRetorno = new boolean[1];
-
-        webViewInternet.setWebViewClient(new WebViewClient());
-        webViewInternet.loadUrl(site);
-
-        webViewInternet.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-                super.onReceivedSslError(view, handler, error);
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm!=null) {
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo !=null) {
+                return true;
+            } else {
+                return false;
             }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String descricaoErro, String failingUrl) {
-                super.onReceivedError(view, errorCode, descricaoErro, failingUrl);
-                if (errorCode == -2) {
-                    valorRetorno[0] = false;
-                    Log.i(TAG,"webView ERROR " + descricaoErro );
-                    Log.i(TAG,"webView ERROR " + errorCode );
-                }
-            }
-        });
-
-        webViewInternet.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
-                valorRetorno[0] = true;
-                Log.i(TAG,"webView " + progress );
-            }
-        });
-        Log.i(TAG,"webView " + valorRetorno[0]);
-
-        return valorRetorno[0];
+        }else{
+            return false;
+        }
     }
 
     public static String getTimestamp(String timestamp) {

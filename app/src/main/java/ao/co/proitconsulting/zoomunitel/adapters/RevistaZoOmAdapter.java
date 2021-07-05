@@ -114,6 +114,7 @@ public class RevistaZoOmAdapter extends RecyclerView.Adapter<RevistaZoOmAdapter.
                 }
 
             }else{
+
                 Picasso.get()
                         .load(Common.IMAGE_PATH + revistaZoOm.getImagem())
                         .networkPolicy(NetworkPolicy.OFFLINE)
